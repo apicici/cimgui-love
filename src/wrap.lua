@@ -77,14 +77,10 @@ function ImVec4.__div(u, a)
     return ct(u.x/a, u.y/a, u.z/a, u.w/a)
 end
 
--- wrap handwritten functions at the end of cimgui.h
+-- wrap FLT_MIN, FLT_MAX
 
 local FLT_MIN, FLT_MAX = C.igGET_FLT_MIN(), C.igGET_FLT_MAX()
 M.FLT_MIN, M.FLT_MAX = FLT_MIN, FLT_MAX
-
-M.LogText = function(fmt, ...)
-    return C.igLogText(fmt, ...)
-end
 
 -----------------------
 -- BEGIN GENERATED CODE
