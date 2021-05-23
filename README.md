@@ -122,6 +122,16 @@ Some particular things to keep in mind:
   local color = imgui.ImColor.HSV(h, s, v, a)
   color:SetHSV(h1, s1, v1, a1) -- equivalent to imgui.ImColor.SetHSV(color, h1, s1, v1, a1)
   ```
+- Note that currently the member function `ImGuiTextBuffer_end` poses a slight problem since calling `imgui.ImGuiTextBuffer.end(textbuffer)` or `textbuffer:end()` is not allowed by Lua since `end` is a reserved keyword. To access it you can use both `imgui.ImGuiTextBuffer["end"]` and `imgui.ImGuiTextBuffer.c_end`.
+  
+  ```lua
+  local textbuffer = imgui.ImGuiTextBuffer()
+  --the following all do the same:
+  imgui.ImGuiTextBuffer["end"](textbuffer)
+  imgui.ImGuiTextBuffer.c_end(textbuffer)
+  textbuffer:c_end()
+  ```
+  The automatic wrapper generator will use the same convention if similar member functions are introduced in future versions of imgui/cimgui.
 - Class constructors (those with a cimgui name of the form `ClassName_ClassName` or `ClassName_ClassName_OverloadIdentifier`) are wrapped as functions without the initial `ClassName_` (non-overloaded costructors are actually wrapped as the `__call` methametod of `imgui.ClassName`, but the result is the same).
   
   ```lua
