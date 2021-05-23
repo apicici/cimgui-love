@@ -1,0 +1,40 @@
+platform: x64
+skip_non_tags: true
+clone_depth: 1
+
+environment:
+  matrix:
+    - job_name: Windows 64
+      appveyor_build_worker_image: Visual Studio 2017
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-windows-x64
+      script_name: build64.bat
+    
+    - job_name: Windows 32
+      appveyor_build_worker_image: Visual Studio 2017
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-windows-x86
+      script_name: build32.bat
+
+    - job_name: Linux
+      appveyor_build_worker_image: Ubuntu1604
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-linux-x64
+      
+    - job_name: macOS
+      appveyor_build_worker_image: macOS-Mojave
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-macos-x64
+      
+install:
+  - git submodule update --init --recursive
+
+build_script:
+  - cmd: .appveyor\%script_name%
+  - sh: bash .appveyor/build.sh
+
+after_build:
+  - cmd: appveyor PushArtifact build.zip -FileName %artifact_name%-%APPVEYOR_REPO_TAG_NAME%.zip
+  - sh: appveyor PushArtifact build.zip -FileName ${artifact_name}-${APPVEYOR_REPO_TAG_NAME}.zip
+
+deploy:
+  - provider: GitHub
+    auth_token:
+      secure: 0DXlYfppH/jHL2wWQ/JTPYcjZxhFW+cA4QbaqBb3UCj9LU77ybORNlVtgP2JFidl
+    draft: true
