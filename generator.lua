@@ -1,7 +1,7 @@
 ------------------
 -- cdef.lua
 ------------------
-local cparser = require("cparser")
+local cparser = require("cparser.cparser")
 
 local tmpfile = io.tmpfile()
 cparser.cpp("cimgui/cimgui.h", tmpfile, {"-U__GNUC__", "-DCIMGUI_DEFINE_ENUMS_AND_STRUCTS"})
