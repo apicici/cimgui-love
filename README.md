@@ -156,7 +156,7 @@ The following functions in the Lua module are not wrappers of cimgui functions. 
 - `imgui.WheelMoved(x, y)`
 - `imgui.KeyPressed(key)`
 - `imgui.KeyReleased(key)`
-- `imgui.TextInpu(text)t`
+- `imgui.TextInput(text)`
 - `imgui.Shutdown()`
 - `imgui.GetWantCaptureMouse()`
 - `imgui.GetWantCaptureKeyboard()`
