@@ -138,7 +138,7 @@ function M.RenderDrawLists()
 
             love.graphics.setBlendMode("alpha")
 
-            local texture_id = cmd.TextureId
+            local texture_id = C.ImDrawCmd_GetTexID(cmd)
             if texture_id ~= nil then
                 local obj = M._textures[tostring(texture_id)]
                 local status, value = pcall(love_texture_test, obj)
