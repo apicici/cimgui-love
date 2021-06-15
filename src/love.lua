@@ -119,9 +119,9 @@ function M.RenderDrawLists()
     for i = 0, data.CmdListsCount - 1 do
         local cmd_list = data.CmdLists[i]
         local VtxSize = cmd_list.VtxBuffer.Size*ffi.sizeof("ImDrawVert")
-        local VtxData = ffi.string(ffi.cast("unsigned char*", cmd_list.VtxBuffer.Data), VtxSize)
-        local meshdata = love.image.newImageData(VtxSize/4, 1, "rgba8", VtxData)
-        local mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles")
+        local meshdata = love.image.newImageData(VtxSize/4, 1)
+        ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, VtxSize)
+        local mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "static")
 
         local IdxBuffer = {}
         for k = 1, cmd_list.IdxBuffer.Size do
