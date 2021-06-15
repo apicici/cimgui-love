@@ -205,9 +205,7 @@ typedef enum {
     ImGuiInputTextFlags_NoUndoRedo = 1 << 16,
     ImGuiInputTextFlags_CharsScientific = 1 << 17,
     ImGuiInputTextFlags_CallbackResize = 1 << 18,
-    ImGuiInputTextFlags_CallbackEdit = 1 << 19,
-    ImGuiInputTextFlags_Multiline = 1 << 20,
-    ImGuiInputTextFlags_NoMarkEdited = 1 << 21
+    ImGuiInputTextFlags_CallbackEdit = 1 << 19
 }ImGuiInputTextFlags_;
 typedef enum {
     ImGuiTreeNodeFlags_None = 0,
@@ -730,7 +728,6 @@ struct ImGuiIO
     ImFont* FontDefault;
     ImVec2 DisplayFramebufferScale;
     _Bool ConfigDockingNoSplit;
-    _Bool ConfigDockingWithShift;
     _Bool ConfigDockingAlwaysTabBar;
     _Bool ConfigDockingTransparentPayload;
     _Bool ConfigViewportsNoAutoMerge;
@@ -1400,7 +1397,8 @@ extern  void igSetTooltipV(const char* fmt,va_list args);
 extern  _Bool igBeginPopup(const char* str_id,ImGuiWindowFlags flags);
 extern  _Bool igBeginPopupModal(const char* name,_Bool* p_open,ImGuiWindowFlags flags);
 extern  void igEndPopup(void);
-extern  void igOpenPopup(const char* str_id,ImGuiPopupFlags popup_flags);
+extern  void igOpenPopup_Str(const char* str_id,ImGuiPopupFlags popup_flags);
+extern  void igOpenPopup_ID(ImGuiID id,ImGuiPopupFlags popup_flags);
 extern  void igOpenPopupOnItemClick(const char* str_id,ImGuiPopupFlags popup_flags);
 extern  void igCloseCurrentPopup(void);
 extern  _Bool igBeginPopupContextItem(const char* str_id,ImGuiPopupFlags popup_flags);
@@ -1422,6 +1420,7 @@ extern  int igTableGetColumnIndex(void);
 extern  int igTableGetRowIndex(void);
 extern  const char* igTableGetColumnName(int column_n);
 extern  ImGuiTableColumnFlags igTableGetColumnFlags(int column_n);
+extern  void igTableSetColumnEnabled(int column_n,_Bool v);
 extern  void igTableSetBgColor(ImGuiTableBgTarget target,ImU32 color,int column_n);
 extern  void igColumns(int count,const char* id,_Bool border);
 extern  void igNextColumn(void);
@@ -1437,7 +1436,7 @@ extern  _Bool igBeginTabItem(const char* label,_Bool* p_open,ImGuiTabItemFlags f
 extern  void igEndTabItem(void);
 extern  _Bool igTabItemButton(const char* label,ImGuiTabItemFlags flags);
 extern  void igSetTabItemClosed(const char* tab_or_docked_window_label);
-extern  void igDockSpace(ImGuiID id,const ImVec2 size,ImGuiDockNodeFlags flags,const ImGuiWindowClass* window_class);
+extern  ImGuiID igDockSpace(ImGuiID id,const ImVec2 size,ImGuiDockNodeFlags flags,const ImGuiWindowClass* window_class);
 extern  ImGuiID igDockSpaceOverViewport(const ImGuiViewport* viewport,ImGuiDockNodeFlags flags,const ImGuiWindowClass* window_class);
 extern  void igSetNextWindowDockID(ImGuiID dock_id,ImGuiCond cond);
 extern  void igSetNextWindowClass(const ImGuiWindowClass* window_class);
@@ -1623,6 +1622,7 @@ extern  void ImColor_SetHSV(ImColor* self,float h,float s,float v,float a);
 extern  void ImColor_HSV(ImColor *pOut,float h,float s,float v,float a);
 extern  ImDrawCmd* ImDrawCmd_ImDrawCmd(void);
 extern  void ImDrawCmd_destroy(ImDrawCmd* self);
+extern  ImTextureID ImDrawCmd_GetTexID(ImDrawCmd* self);
 extern  ImDrawListSplitter* ImDrawListSplitter_ImDrawListSplitter(void);
 extern  void ImDrawListSplitter_destroy(ImDrawListSplitter* self);
 extern  void ImDrawListSplitter_Clear(ImDrawListSplitter* self);
