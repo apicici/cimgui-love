@@ -255,7 +255,7 @@ If you want to generate the wrapper yourself you should do the following after c
 - `git checkout` the relevant commit in the `cimgui/imgui` nested submodule
 - run `cimgui/generator/generator.sh` or `cimgui/generator/generator.bat` depending on your system
 - run `generator.lua` in the base folder of the repository using Lua
-- compile the share library in `cimgui` using CMake
+- compile the shared library in `cimgui` using CMake
 - the Lua module is in the `src` subfolder
 
 
