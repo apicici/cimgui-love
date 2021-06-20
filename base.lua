@@ -10,6 +10,7 @@ local env = {
     string = string,
     table = table,
     love = love,
+    jit = jit,
 }
 setfenv(1, env)
 

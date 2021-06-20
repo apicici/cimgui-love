@@ -85,6 +85,7 @@ local &name& = &name& or {}
 
 templates.class_overloaded_constructor =
 [[M.&shortconstructor& = M.&shortconstructor&  or function(&args&)
+    jit.off(true)
     local p = C.&constructor&(&args&)
     return ffi.gc(p[0], C.&destructor&)
 end]]
@@ -92,13 +93,15 @@ end]]
 templates.class_single_constructor =
 [[local mt = getmetatable(&name&) or {}
 mt.__call = mt.__call or function(&callargs&)
+    jit.off(true)
     local p = C.&constructor&(&args&)
     return ffi.gc(p[0], C.&destructor&)
 end
 setmetatable(&name&, mt)]]
 
 templates.class_method_begin =
-[[&name&["&shortmethod&"] = &name&["&shortmethod&"]  or function(&wrapargs&)]] -- ["key"] instead of .key since in some cases shortmethod=end
+[[&name&["&shortmethod&"] = &name&["&shortmethod&"]  or function(&wrapargs&)
+    jit.off(true)]] -- ["key"] instead of .key since in some cases shortmethod=end
 
 templates.class_method_begin_fix_end =
 [[&name&.c_end = &name&["end"] ]]
@@ -114,7 +117,8 @@ ffi.metatype("&name&", &name&)
 ]]
 
 templates.function_begin =
-[[M.&shortfunction& = M.&shortfunction&  or function(&wrapargs&)]]
+[[M.&shortfunction& = M.&shortfunction&  or function(&wrapargs&)
+    jit.off(true)]]
 
 templates.out_arg =
 [[    local &arg& = ffi.new("&type&[1]")]]
