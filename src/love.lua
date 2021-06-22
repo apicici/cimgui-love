@@ -84,6 +84,8 @@ function M.Init()
     love.filesystem.createDirectory("/")
     ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
     io.IniFilename = ini_filename
+
+    io.BackendFlags = bit.bor(M.ImGuiBackendFlags_HasMouseCursors)
 end
 
 function M.BuildFontAtlas()
@@ -98,18 +100,38 @@ function M.Update(dt)
     local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
     io.DeltaTime = dt
-
-    -- Hide OS mouse cursor if ImGui is drawing it
-    love.mouse.setVisible(not io.MouseDrawCursor)
 end
 
 local function love_texture_test(t)
     return t:typeOf("Texture")
 end
 
+local cursors = {
+    [M.ImGuiMouseCursor_Arrow] = love.mouse.getSystemCursor("arrow"),
+    [M.ImGuiMouseCursor_TextInput] = love.mouse.getSystemCursor("ibeam"),
+    [M.ImGuiMouseCursor_ResizeAll] = love.mouse.getSystemCursor("sizeall"),
+    [M.ImGuiMouseCursor_ResizeNS] = love.mouse.getSystemCursor("sizens"),
+    [M.ImGuiMouseCursor_ResizeEW] = love.mouse.getSystemCursor("sizewe"),
+    [M.ImGuiMouseCursor_ResizeNESW] = love.mouse.getSystemCursor("sizenesw"),
+    [M.ImGuiMouseCursor_ResizeNWSE] = love.mouse.getSystemCursor("sizenwse"),
+    [M.ImGuiMouseCursor_Hand] = love.mouse.getSystemCursor("hand"),
+    [M.ImGuiMouseCursor_NotAllowed] = love.mouse.getSystemCursor("no"),
+}
+
 function M.RenderDrawLists()
     local io = C.igGetIO()
     local data = C.igGetDrawData()
+
+    -- change mouse cursor
+    if bit.band(io.ConfigFlags, M.ImGuiConfigFlags_NoMouseCursorChange) ~= M.ImGuiConfigFlags_NoMouseCursorChange then
+        local cursor = cursors[C.igGetMouseCursor()]
+        if io.MouseDrawCursor or not cursor then
+            love.mouse.setVisible(false) -- Hide OS mouse cursor if ImGui is drawing it
+        else
+            love.mouse.setVisible(true)
+            love.mouse.setCursor(cursor)
+        end
+    end
 
     -- Avoid rendering when minimized, scale coordinates for retina displays
     -- (screen coordinates != framebuffer coordinates)
