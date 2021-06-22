@@ -85,7 +85,7 @@ function M.Init()
     ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
     io.IniFilename = ini_filename
 
-    io.BackendFlags = bit.bor(M.ImGuiBackendFlags_HasMouseCursors)
+    io.BackendFlags = bit.bor(M.ImGuiBackendFlags_HasMouseCursors, M.ImGuiBackendFlags_HasSetMousePos)
 end
 
 function M.BuildFontAtlas()
@@ -100,6 +100,10 @@ function M.Update(dt)
     local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
     io.DeltaTime = dt
+
+    if io.WantSetMousePos then
+        love.mouse.setPosition(io.MousePos.x, io.MousePos.y)
+    end
 end
 
 local function love_texture_test(t)
