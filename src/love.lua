@@ -3,6 +3,7 @@
 local path = (...):gsub("[^%.]*$", "")
 local M = require(path .. "master")
 local ffi = require("ffi")
+local bit = require("bit")
 
 local C = M.C
 
@@ -267,8 +268,6 @@ function M.GetWantTextInput()
 end
 
 -- flag helpers
-
-local bit = require("bit")
 local flags = {}
 
 for name in pairs(M) do
