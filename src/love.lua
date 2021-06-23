@@ -97,6 +97,9 @@ function M.BuildFontAtlas()
     textureObject = love.graphics.newImage(imgdata)
 end
 
+local navinputs = ffi.new("float[?]", M.ImGuiNavInput_COUNT)
+local navinputs_size = ffi.sizeof("float")*M.ImGuiNavInput_COUNT
+
 function M.Update(dt)
     local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
@@ -104,6 +107,10 @@ function M.Update(dt)
 
     if io.WantSetMousePos then
         love.mouse.setPosition(io.MousePos.x, io.MousePos.y)
+    end
+
+    if bit.band(io.ConfigFlags, M.ImGuiConfigFlags_NavEnableGamepad) == M.ImGuiConfigFlags_NavEnableGamepad then
+        ffi.copy(io.NavInputs, navinputs, navinputs_size)
     end
 end
 
@@ -251,6 +258,76 @@ end
 
 function M.Shutdown()
     C.igDestroyContext(nil)
+end
+
+function M.JoystickAdded(joystick)
+    if not joystick:isGamepad() then return end
+    local io = C.igGetIO()
+    io.BackendFlags = bit.bor(io.BackendFlags, M.ImGuiBackendFlags_HasGamepad)
+end
+
+function M.JoystickRemoved()
+    for _, joystick in ipairs(love.joystick.getJoysticks()) do
+        if joystick:isGamepad() then return end
+    end
+    local io = C.igGetIO()
+    io.BackendFlags = bit.band(io.BackendFlags, bit.bnot(M.ImGuiBackendFlags_HasGamepad))
+end
+
+local gamepad_map = {
+    a = M.ImGuiNavInput_Activate,
+    b = M.ImGuiNavInput_Cancel,
+    y = M.ImGuiNavInput_Input,
+    x = M.ImGuiNavInput_Menu,
+    dpleft = M.ImGuiNavInput_DpadLeft,
+    dpright = M.ImGuiNavInput_DpadRight,
+    dpup = M.ImGuiNavInput_DpadUp,
+    dpdown = M.ImGuiNavInput_DpadDown,
+    leftx = {M.ImGuiNavInput_LStickRight, M.ImGuiNavInput_LStickLeft},
+    lefty = {M.ImGuiNavInput_LStickDown, M.ImGuiNavInput_LStickUp},
+    leftshoulder = {M.ImGuiNavInput_FocusPrev, M.ImGuiNavInput_TweakSlow},
+    rightshoulder = {M.ImGuiNavInput_FocusNext, M.ImGuiNavInput_TweakFast},
+}
+
+function M.GamepadPressed(button)
+    local idx = gamepad_map[button]
+    if type(idx) == "table" then
+        for i = 1, #idx do
+            navinputs[idx[i]] = 1
+        end
+    elseif idx then
+        navinputs[idx] = 1
+    end
+end
+
+function M.GamepadReleased(button)
+    local idx = gamepad_map[button]
+    if type(idx) == "table" then
+        for i = 1, #idx do
+            navinputs[idx[i]] = 0
+        end
+    elseif idx then
+        navinputs[idx] = 0
+    end
+end
+
+function M.GamepadAxis(axis, value, threshold)
+    threshold = threshold or 0
+    local idx = gamepad_map[axis]
+    if type(idx) == "table" then
+        if value > threshold then
+            navinputs[idx[1]] = value
+            navinputs[idx[2]] = 0
+        elseif value < -threshold then
+            navinputs[idx[1]] = 0
+            navinputs[idx[2]] = -value
+        else
+            navinputs[idx[1]] = 0
+            navinputs[idx[2]] = 0
+        end
+    elseif idx then
+        navinputs[idx] = value
+    end
 end
 
 -- input capture
