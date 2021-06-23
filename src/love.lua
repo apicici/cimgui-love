@@ -86,7 +86,7 @@ function M.Init()
     ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
     io.IniFilename = ini_filename
 
-    io.BackendFlags = bit.bor(M.ImGuiBackendFlags_HasMouseCursors, M.ImGuiBackendFlags_HasSetMousePos)
+    io.BackendFlags = bit.bor(C.ImGuiBackendFlags_HasMouseCursors, C.ImGuiBackendFlags_HasSetMousePos)
 end
 
 function M.BuildFontAtlas()
@@ -97,8 +97,8 @@ function M.BuildFontAtlas()
     textureObject = love.graphics.newImage(imgdata)
 end
 
-local navinputs = ffi.new("float[?]", M.ImGuiNavInput_COUNT)
-local navinputs_size = ffi.sizeof("float")*M.ImGuiNavInput_COUNT
+local navinputs = ffi.new("float[?]", C.ImGuiNavInput_COUNT)
+local navinputs_size = ffi.sizeof("float")*C.ImGuiNavInput_COUNT
 
 function M.Update(dt)
     local io = C.igGetIO()
@@ -109,7 +109,7 @@ function M.Update(dt)
         love.mouse.setPosition(io.MousePos.x, io.MousePos.y)
     end
 
-    if bit.band(io.ConfigFlags, M.ImGuiConfigFlags_NavEnableGamepad) == M.ImGuiConfigFlags_NavEnableGamepad then
+    if bit.band(io.ConfigFlags, C.ImGuiConfigFlags_NavEnableGamepad) == C.ImGuiConfigFlags_NavEnableGamepad then
         ffi.copy(io.NavInputs, navinputs, navinputs_size)
     end
 end
@@ -119,15 +119,15 @@ local function love_texture_test(t)
 end
 
 local cursors = {
-    [M.ImGuiMouseCursor_Arrow] = love.mouse.getSystemCursor("arrow"),
-    [M.ImGuiMouseCursor_TextInput] = love.mouse.getSystemCursor("ibeam"),
-    [M.ImGuiMouseCursor_ResizeAll] = love.mouse.getSystemCursor("sizeall"),
-    [M.ImGuiMouseCursor_ResizeNS] = love.mouse.getSystemCursor("sizens"),
-    [M.ImGuiMouseCursor_ResizeEW] = love.mouse.getSystemCursor("sizewe"),
-    [M.ImGuiMouseCursor_ResizeNESW] = love.mouse.getSystemCursor("sizenesw"),
-    [M.ImGuiMouseCursor_ResizeNWSE] = love.mouse.getSystemCursor("sizenwse"),
-    [M.ImGuiMouseCursor_Hand] = love.mouse.getSystemCursor("hand"),
-    [M.ImGuiMouseCursor_NotAllowed] = love.mouse.getSystemCursor("no"),
+    [C.ImGuiMouseCursor_Arrow] = love.mouse.getSystemCursor("arrow"),
+    [C.ImGuiMouseCursor_TextInput] = love.mouse.getSystemCursor("ibeam"),
+    [C.ImGuiMouseCursor_ResizeAll] = love.mouse.getSystemCursor("sizeall"),
+    [C.ImGuiMouseCursor_ResizeNS] = love.mouse.getSystemCursor("sizens"),
+    [C.ImGuiMouseCursor_ResizeEW] = love.mouse.getSystemCursor("sizewe"),
+    [C.ImGuiMouseCursor_ResizeNESW] = love.mouse.getSystemCursor("sizenesw"),
+    [C.ImGuiMouseCursor_ResizeNWSE] = love.mouse.getSystemCursor("sizenwse"),
+    [C.ImGuiMouseCursor_Hand] = love.mouse.getSystemCursor("hand"),
+    [C.ImGuiMouseCursor_NotAllowed] = love.mouse.getSystemCursor("no"),
 }
 
 function M.RenderDrawLists()
@@ -135,7 +135,7 @@ function M.RenderDrawLists()
     local data = C.igGetDrawData()
 
     -- change mouse cursor
-    if bit.band(io.ConfigFlags, M.ImGuiConfigFlags_NoMouseCursorChange) ~= M.ImGuiConfigFlags_NoMouseCursorChange then
+    if bit.band(io.ConfigFlags, C.ImGuiConfigFlags_NoMouseCursorChange) ~= C.ImGuiConfigFlags_NoMouseCursorChange then
         local cursor = cursors[C.igGetMouseCursor()]
         if io.MouseDrawCursor or not cursor then
             love.mouse.setVisible(false) -- Hide OS mouse cursor if ImGui is drawing it
@@ -263,7 +263,7 @@ end
 function M.JoystickAdded(joystick)
     if not joystick:isGamepad() then return end
     local io = C.igGetIO()
-    io.BackendFlags = bit.bor(io.BackendFlags, M.ImGuiBackendFlags_HasGamepad)
+    io.BackendFlags = bit.bor(io.BackendFlags, C.ImGuiBackendFlags_HasGamepad)
 end
 
 function M.JoystickRemoved()
@@ -271,22 +271,22 @@ function M.JoystickRemoved()
         if joystick:isGamepad() then return end
     end
     local io = C.igGetIO()
-    io.BackendFlags = bit.band(io.BackendFlags, bit.bnot(M.ImGuiBackendFlags_HasGamepad))
+    io.BackendFlags = bit.band(io.BackendFlags, bit.bnot(C.ImGuiBackendFlags_HasGamepad))
 end
 
 local gamepad_map = {
-    a = M.ImGuiNavInput_Activate,
-    b = M.ImGuiNavInput_Cancel,
-    y = M.ImGuiNavInput_Input,
-    x = M.ImGuiNavInput_Menu,
-    dpleft = M.ImGuiNavInput_DpadLeft,
-    dpright = M.ImGuiNavInput_DpadRight,
-    dpup = M.ImGuiNavInput_DpadUp,
-    dpdown = M.ImGuiNavInput_DpadDown,
-    leftx = {M.ImGuiNavInput_LStickRight, M.ImGuiNavInput_LStickLeft},
-    lefty = {M.ImGuiNavInput_LStickDown, M.ImGuiNavInput_LStickUp},
-    leftshoulder = {M.ImGuiNavInput_FocusPrev, M.ImGuiNavInput_TweakSlow},
-    rightshoulder = {M.ImGuiNavInput_FocusNext, M.ImGuiNavInput_TweakFast},
+    a = C.ImGuiNavInput_Activate,
+    b = C.ImGuiNavInput_Cancel,
+    y = C.ImGuiNavInput_Input,
+    x = C.ImGuiNavInput_Menu,
+    dpleft = C.ImGuiNavInput_DpadLeft,
+    dpright = C.ImGuiNavInput_DpadRight,
+    dpup = C.ImGuiNavInput_DpadUp,
+    dpdown = C.ImGuiNavInput_DpadDown,
+    leftx = {C.ImGuiNavInput_LStickRight, C.ImGuiNavInput_LStickLeft},
+    lefty = {C.ImGuiNavInput_LStickDown, C.ImGuiNavInput_LStickUp},
+    leftshoulder = {C.ImGuiNavInput_FocusPrev, C.ImGuiNavInput_TweakSlow},
+    rightshoulder = {C.ImGuiNavInput_FocusNext, C.ImGuiNavInput_TweakFast},
 }
 
 function M.GamepadPressed(button)
