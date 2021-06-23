@@ -4,6 +4,6 @@ cd build
 cmake -A x64 ../cimgui
 cmake --build . --config Release
 robocopy ../src Release/cimgui
-robocopy ../*.md Release/
+robocopy ../ Release/ *.md
 cd Release
 7z a -tzip build.zip *.dll *.md cimgui
