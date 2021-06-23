@@ -95,6 +95,36 @@ end
 love.quit = function()
     return imgui.Shutdown()
 end
+
+-- for gamepad support also add the following:
+
+love.joystickadded = function(joystick)
+    imgui.JoystickAdded(joystick)
+    -- your code here 
+end
+
+love.joystickremoved = function(joystick)
+    imgui.JoystickRemoved()
+    -- your code here 
+end
+
+love.gamepadpressed = function(joystick, button)
+    imgui.GamepadPressed(button)
+    -- your code here 
+end
+
+love.gamepadreleased = function(joystick, button)
+    imgui.GamepadReleased(button)
+    -- your code here 
+end
+
+-- choose threshold for considering analog controllers active, defaults to 0 if unspecified
+local threshold = 0.2 
+
+love.gamepadaxis = function(joystick, axis, value)
+    imgui.GamepadAxis(axis, value, threshold)
+    -- your code here 
+end
 ```
 
 ### More info on where to put the shared library
@@ -161,6 +191,11 @@ The following functions in the Lua module are not wrappers of cimgui functions. 
 - `imgui.GetWantCaptureMouse()`
 - `imgui.GetWantCaptureKeyboard()`
 - `imgui.GetWantTextInput()`
+- `imgui.JoystickAdded(joystick)`
+- `imgui.JoystickRemoved()`
+- `imgui.GamepadPressed(button)`
+- `imgui.GamepadReleased(button)`
+- `imgui.GamepadAxis(axis, value, threshold)`
 
 See the example above to figure out how to use them. `imgui.BuildFontAtlas` is used after changing/adding fonts (must be used *after* `imgui.Init`).
 
@@ -242,6 +277,9 @@ love.draw = function()
 end
 ```
 The same applies to the wrappers of other functions taking "ImTextureID" as an argument.
+
+### Gamepad
+Gamepad navigation is supported (once enabled in `io.ConfigFlags`). Note that it only works for joysticks that LÖVE recognises as gamepads. The mapping used is the default Xbox 360 mapping from Dear ImGui. You can change mappings using `love.joystick.setGamepadMapping`.
 
 ## Compiling the library and generating the wrappers
 
