@@ -8,5 +8,6 @@ cmake -A %ARCH% ../cimgui
 cmake --build . --config Release
 robocopy ../src Release/cimgui
 robocopy ../ Release/ *.md
+robocopy ../.appveyor/ Release/ *.md
 cd Release
 7z a -tzip build.zip *.dll *.md cimgui
