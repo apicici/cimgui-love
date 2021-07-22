@@ -7,10 +7,12 @@ environment:
     - job_name: Windows 64
       appveyor_build_worker_image: Visual Studio 2017
       artifact_name: $(APPVEYOR_PROJECT_SLUG)-windows-x64
+      WIN_ARCH: 64
     
     - job_name: Windows 32
       appveyor_build_worker_image: Visual Studio 2017
       artifact_name: $(APPVEYOR_PROJECT_SLUG)-windows-x86
+      WIN_ARCH: 32
 
     - job_name: Linux
       appveyor_build_worker_image: Ubuntu1604
