@@ -15,6 +15,10 @@ This distribution contains code from the following projects (full license text b
 	+ Website: https://github.com/ocornut/imgui
 	+ License: MIT License
 	+ Copyright (c) 2014-2021 Omar Cornut
+- love-imgui
+	+ Website: https://github.com/slages/love-imgui
+	+ License: MIT License
+	+ Copyright (c) 2016 slages
 - Proggy Fonts
 	+ Website: https://github.com/bluescan/proggyfonts
 	+ License: MIT License
