@@ -321,26 +321,28 @@ typedef enum {
 }ImGuiTableFlags_;
 typedef enum {
     ImGuiTableColumnFlags_None = 0,
-    ImGuiTableColumnFlags_DefaultHide = 1 << 0,
-    ImGuiTableColumnFlags_DefaultSort = 1 << 1,
-    ImGuiTableColumnFlags_WidthStretch = 1 << 2,
-    ImGuiTableColumnFlags_WidthFixed = 1 << 3,
-    ImGuiTableColumnFlags_NoResize = 1 << 4,
-    ImGuiTableColumnFlags_NoReorder = 1 << 5,
-    ImGuiTableColumnFlags_NoHide = 1 << 6,
-    ImGuiTableColumnFlags_NoClip = 1 << 7,
-    ImGuiTableColumnFlags_NoSort = 1 << 8,
-    ImGuiTableColumnFlags_NoSortAscending = 1 << 9,
-    ImGuiTableColumnFlags_NoSortDescending = 1 << 10,
-    ImGuiTableColumnFlags_NoHeaderWidth = 1 << 11,
-    ImGuiTableColumnFlags_PreferSortAscending = 1 << 12,
-    ImGuiTableColumnFlags_PreferSortDescending = 1 << 13,
-    ImGuiTableColumnFlags_IndentEnable = 1 << 14,
-    ImGuiTableColumnFlags_IndentDisable = 1 << 15,
-    ImGuiTableColumnFlags_IsEnabled = 1 << 20,
-    ImGuiTableColumnFlags_IsVisible = 1 << 21,
-    ImGuiTableColumnFlags_IsSorted = 1 << 22,
-    ImGuiTableColumnFlags_IsHovered = 1 << 23,
+    ImGuiTableColumnFlags_Disabled = 1 << 0,
+    ImGuiTableColumnFlags_DefaultHide = 1 << 1,
+    ImGuiTableColumnFlags_DefaultSort = 1 << 2,
+    ImGuiTableColumnFlags_WidthStretch = 1 << 3,
+    ImGuiTableColumnFlags_WidthFixed = 1 << 4,
+    ImGuiTableColumnFlags_NoResize = 1 << 5,
+    ImGuiTableColumnFlags_NoReorder = 1 << 6,
+    ImGuiTableColumnFlags_NoHide = 1 << 7,
+    ImGuiTableColumnFlags_NoClip = 1 << 8,
+    ImGuiTableColumnFlags_NoSort = 1 << 9,
+    ImGuiTableColumnFlags_NoSortAscending = 1 << 10,
+    ImGuiTableColumnFlags_NoSortDescending = 1 << 11,
+    ImGuiTableColumnFlags_NoHeaderLabel = 1 << 12,
+    ImGuiTableColumnFlags_NoHeaderWidth = 1 << 13,
+    ImGuiTableColumnFlags_PreferSortAscending = 1 << 14,
+    ImGuiTableColumnFlags_PreferSortDescending = 1 << 15,
+    ImGuiTableColumnFlags_IndentEnable = 1 << 16,
+    ImGuiTableColumnFlags_IndentDisable = 1 << 17,
+    ImGuiTableColumnFlags_IsEnabled = 1 << 24,
+    ImGuiTableColumnFlags_IsVisible = 1 << 25,
+    ImGuiTableColumnFlags_IsSorted = 1 << 26,
+    ImGuiTableColumnFlags_IsHovered = 1 << 27,
     ImGuiTableColumnFlags_WidthMask_ = ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_WidthFixed,
     ImGuiTableColumnFlags_IndentMask_ = ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_IndentDisable,
     ImGuiTableColumnFlags_StatusMask_ = ImGuiTableColumnFlags_IsEnabled | ImGuiTableColumnFlags_IsVisible | ImGuiTableColumnFlags_IsSorted | ImGuiTableColumnFlags_IsHovered,
@@ -472,13 +474,12 @@ typedef enum {
     ImGuiNavInput_FocusNext,
     ImGuiNavInput_TweakSlow,
     ImGuiNavInput_TweakFast,
-    ImGuiNavInput_KeyMenu_,
     ImGuiNavInput_KeyLeft_,
     ImGuiNavInput_KeyRight_,
     ImGuiNavInput_KeyUp_,
     ImGuiNavInput_KeyDown_,
     ImGuiNavInput_COUNT,
-    ImGuiNavInput_InternalStart_ = ImGuiNavInput_KeyMenu_
+    ImGuiNavInput_InternalStart_ = ImGuiNavInput_KeyLeft_
 }ImGuiNavInput_;
 typedef enum {
     ImGuiConfigFlags_None = 0,
@@ -565,6 +566,7 @@ typedef enum {
 }ImGuiCol_;
 typedef enum {
     ImGuiStyleVar_Alpha,
+    ImGuiStyleVar_DisabledAlpha,
     ImGuiStyleVar_WindowPadding,
     ImGuiStyleVar_WindowRounding,
     ImGuiStyleVar_WindowBorderSize,
@@ -623,11 +625,11 @@ typedef enum {
     ImGuiColorEditFlags_PickerHueWheel = 1 << 26,
     ImGuiColorEditFlags_InputRGB = 1 << 27,
     ImGuiColorEditFlags_InputHSV = 1 << 28,
-    ImGuiColorEditFlags__OptionsDefault = ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_PickerHueBar,
-    ImGuiColorEditFlags__DisplayMask = ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_DisplayHex,
-    ImGuiColorEditFlags__DataTypeMask = ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_Float,
-    ImGuiColorEditFlags__PickerMask = ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_PickerHueBar,
-    ImGuiColorEditFlags__InputMask = ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_InputHSV
+    ImGuiColorEditFlags_DefaultOptions_ = ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_PickerHueBar,
+    ImGuiColorEditFlags_DisplayMask_ = ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_DisplayHex,
+    ImGuiColorEditFlags_DataTypeMask_ = ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_Float,
+    ImGuiColorEditFlags_PickerMask_ = ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_PickerHueBar,
+    ImGuiColorEditFlags_InputMask_ = ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_InputHSV
 }ImGuiColorEditFlags_;
 typedef enum {
     ImGuiSliderFlags_None = 0,
@@ -666,6 +668,7 @@ typedef enum {
 struct ImGuiStyle
 {
     float Alpha;
+    float DisabledAlpha;
     ImVec2 WindowPadding;
     float WindowRounding;
     float WindowBorderSize;
@@ -775,6 +778,7 @@ struct ImGuiIO
     int MetricsActiveAllocations;
     ImVec2 MouseDelta;
     ImGuiKeyModFlags KeyMods;
+    ImGuiKeyModFlags KeyModsPrev;
     ImVec2 MousePosPrev;
     ImVec2 MouseClickedPos[5];
     double MouseClickedTime[5];
@@ -792,6 +796,7 @@ struct ImGuiIO
     float NavInputsDownDuration[ImGuiNavInput_COUNT];
     float NavInputsDownDurationPrev[ImGuiNavInput_COUNT];
     float PenPressure;
+    _Bool AppFocusLost;
     ImWchar16 InputQueueSurrogate;
     ImVector_ImWchar InputQueueCharacters;
 };
@@ -825,7 +830,6 @@ struct ImGuiWindowClass
     ImGuiViewportFlags ViewportFlagsOverrideClear;
     ImGuiTabItemFlags TabItemFlagsOverrideSet;
     ImGuiDockNodeFlags DockNodeFlagsOverrideSet;
-    ImGuiDockNodeFlags DockNodeFlagsOverrideClear;
     _Bool DockingAlwaysTabBar;
     _Bool DockingAllowUnclassed;
 };
@@ -1038,6 +1042,7 @@ struct ImFontAtlas
     int TexDesiredWidth;
     int TexGlyphPadding;
     _Bool Locked;
+    _Bool TexReady;
     _Bool TexPixelsUseColors;
     unsigned char* TexPixelsAlpha8;
     unsigned int* TexPixelsRGBA32;
@@ -1067,6 +1072,7 @@ struct ImFont
     short ConfigDataCount;
     ImWchar FallbackChar;
     ImWchar EllipsisChar;
+    ImWchar DotChar;
     _Bool DirtyLookupTables;
     float Scale;
     float Ascent, Descent;
@@ -1455,6 +1461,8 @@ extern  _Bool igBeginDragDropTarget(void);
 extern  const ImGuiPayload* igAcceptDragDropPayload(const char* type,ImGuiDragDropFlags flags);
 extern  void igEndDragDropTarget(void);
 extern  const ImGuiPayload* igGetDragDropPayload(void);
+extern  void igBeginDisabled(_Bool disabled);
+extern  void igEndDisabled(void);
 extern  void igPushClipRect(const ImVec2 clip_rect_min,const ImVec2 clip_rect_max,_Bool intersect_with_current_clip_rect);
 extern  void igPopClipRect(void);
 extern  void igSetItemDefaultFocus(void);
@@ -1541,7 +1549,9 @@ extern  void ImGuiStyle_ScaleAllSizes(ImGuiStyle* self,float scale_factor);
 extern  void ImGuiIO_AddInputCharacter(ImGuiIO* self,unsigned int c);
 extern  void ImGuiIO_AddInputCharacterUTF16(ImGuiIO* self,ImWchar16 c);
 extern  void ImGuiIO_AddInputCharactersUTF8(ImGuiIO* self,const char* str);
+extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_ClearInputCharacters(ImGuiIO* self);
+extern  void ImGuiIO_ClearInputKeys(ImGuiIO* self);
 extern  ImGuiIO* ImGuiIO_ImGuiIO(void);
 extern  void ImGuiIO_destroy(ImGuiIO* self);
 extern  ImGuiInputTextCallbackData* ImGuiInputTextCallbackData_ImGuiInputTextCallbackData(void);
@@ -1687,6 +1697,7 @@ extern  void ImDrawList_PrimVtx(ImDrawList* self,const ImVec2 pos,const ImVec2 u
 extern  void ImDrawList__ResetForNewFrame(ImDrawList* self);
 extern  void ImDrawList__ClearFreeMemory(ImDrawList* self);
 extern  void ImDrawList__PopUnusedDrawCmd(ImDrawList* self);
+extern  void ImDrawList__TryMergeDrawCmds(ImDrawList* self);
 extern  void ImDrawList__OnChangedClipRect(ImDrawList* self);
 extern  void ImDrawList__OnChangedTextureID(ImDrawList* self);
 extern  void ImDrawList__OnChangedVtxOffset(ImDrawList* self);
@@ -1759,7 +1770,6 @@ extern  void ImFont_GrowIndex(ImFont* self,int new_size);
 extern  void ImFont_AddGlyph(ImFont* self,const ImFontConfig* src_cfg,ImWchar c,float x0,float y0,float x1,float y1,float u0,float v0,float u1,float v1,float advance_x);
 extern  void ImFont_AddRemapChar(ImFont* self,ImWchar dst,ImWchar src,_Bool overwrite_dst);
 extern  void ImFont_SetGlyphVisible(ImFont* self,ImWchar c,_Bool visible);
-extern  void ImFont_SetFallbackChar(ImFont* self,ImWchar c);
 extern  _Bool ImFont_IsGlyphRangeUnused(ImFont* self,unsigned int c_begin,unsigned int c_last);
 extern  ImGuiViewport* ImGuiViewport_ImGuiViewport(void);
 extern  void ImGuiViewport_destroy(ImGuiViewport* self);
