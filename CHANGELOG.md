@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.84.1-1] (2021-08-24)
+### Changed
+- Updated to Dear ImGui 1.84.1 (docking branch)
+
 ## [1.83-3] (2021-06-23)
 ### Added
 - LÖVE implementation now honours Dear ImGui's requests to change the mouse cursor or move its position
@@ -35,7 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial release of `generator.lua` and LÖVE implementation
 - Generated the wrappers using Dear ImGui 1.82 (docking branch)
 
-[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.83-3...HEAD
+[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.84.1-1...HEAD
+[1.84.1-1]: https://github.com/apicici/cimgui-love/compare/1.83-3...1.84.1-1
 [1.83-3]: https://github.com/apicici/cimgui-love/compare/1.83-2...1.83-3
 [1.83-2]: https://github.com/apicici/cimgui-love/compare/1.83-1...1.83-2
 [1.83-1]: https://github.com/apicici/cimgui-love/compare/1.82-1...1.83-1
