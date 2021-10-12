@@ -132,13 +132,6 @@ ImDrawList["AddTriangle"] = ImDrawList["AddTriangle"]  or function(i1, i2, i3, i
     local out = C.ImDrawList_AddTriangle(i1, i2, i3, i4, i5, i6)
     return out
 end
-ImDrawList["AddCircle"] = ImDrawList["AddCircle"]  or function(i1, i2, i3, i4, i5, i6)
-    jit.off(true)
-    if i5 == nil then i5 = 0 end
-    if i6 == nil then i6 = 1.0 end
-    local out = C.ImDrawList_AddCircle(i1, i2, i3, i4, i5, i6)
-    return out
-end
 ImDrawList["PrimVtx"] = ImDrawList["PrimVtx"]  or function(i1, i2, i3, i4)
     jit.off(true)
     local out = C.ImDrawList_PrimVtx(i1, i2, i3, i4)
@@ -176,11 +169,6 @@ ImDrawList["AddBezierQuadratic"] = ImDrawList["AddBezierQuadratic"]  or function
     jit.off(true)
     if i7 == nil then i7 = 0 end
     local out = C.ImDrawList_AddBezierQuadratic(i1, i2, i3, i4, i5, i6, i7)
-    return out
-end
-ImDrawList["_PathArcToN"] = ImDrawList["_PathArcToN"]  or function(i1, i2, i3, i4, i5, i6)
-    jit.off(true)
-    local out = C.ImDrawList__PathArcToN(i1, i2, i3, i4, i5, i6)
     return out
 end
 ImDrawList["PrimWriteVtx"] = ImDrawList["PrimWriteVtx"]  or function(i1, i2, i3, i4)
@@ -323,14 +311,30 @@ ImDrawList["PathArcTo"] = ImDrawList["PathArcTo"]  or function(i1, i2, i3, i4, i
     local out = C.ImDrawList_PathArcTo(i1, i2, i3, i4, i5, i6)
     return out
 end
+ImDrawList["PathLineToMergeDuplicate"] = ImDrawList["PathLineToMergeDuplicate"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImDrawList_PathLineToMergeDuplicate(i1, i2)
+    return out
+end
 ImDrawList["_ResetForNewFrame"] = ImDrawList["_ResetForNewFrame"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList__ResetForNewFrame(i1)
     return out
 end
+ImDrawList["_TryMergeDrawCmds"] = ImDrawList["_TryMergeDrawCmds"]  or function(i1)
+    jit.off(true)
+    local out = C.ImDrawList__TryMergeDrawCmds(i1)
+    return out
+end
 ImDrawList["AddTriangleFilled"] = ImDrawList["AddTriangleFilled"]  or function(i1, i2, i3, i4, i5)
     jit.off(true)
     local out = C.ImDrawList_AddTriangleFilled(i1, i2, i3, i4, i5)
+    return out
+end
+ImDrawList["AddBezierCubic"] = ImDrawList["AddBezierCubic"]  or function(i1, i2, i3, i4, i5, i6, i7, i8)
+    jit.off(true)
+    if i8 == nil then i8 = 0 end
+    local out = C.ImDrawList_AddBezierCubic(i1, i2, i3, i4, i5, i6, i7, i8)
     return out
 end
 ImDrawList["GetClipRectMin"] = ImDrawList["GetClipRectMin"]  or function(i1)
@@ -339,21 +343,22 @@ ImDrawList["GetClipRectMin"] = ImDrawList["GetClipRectMin"]  or function(i1)
     local out = C.ImDrawList_GetClipRectMin(o1, i1)
     return o1[0], out
 end
+ImDrawList["PathBezierQuadraticCurveTo"] = ImDrawList["PathBezierQuadraticCurveTo"]  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i4 == nil then i4 = 0 end
+    local out = C.ImDrawList_PathBezierQuadraticCurveTo(i1, i2, i3, i4)
+    return out
+end
+ImDrawList["AddCircle"] = ImDrawList["AddCircle"]  or function(i1, i2, i3, i4, i5, i6)
+    jit.off(true)
+    if i5 == nil then i5 = 0 end
+    if i6 == nil then i6 = 1.0 end
+    local out = C.ImDrawList_AddCircle(i1, i2, i3, i4, i5, i6)
+    return out
+end
 ImDrawList["_ClearFreeMemory"] = ImDrawList["_ClearFreeMemory"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList__ClearFreeMemory(i1)
-    return out
-end
-ImDrawList["AddRectFilled"] = ImDrawList["AddRectFilled"]  or function(i1, i2, i3, i4, i5, i6)
-    jit.off(true)
-    if i5 == nil then i5 = 0.0 end
-    if i6 == nil then i6 = 0 end
-    local out = C.ImDrawList_AddRectFilled(i1, i2, i3, i4, i5, i6)
-    return out
-end
-ImDrawList["_TryMergeDrawCmds"] = ImDrawList["_TryMergeDrawCmds"]  or function(i1)
-    jit.off(true)
-    local out = C.ImDrawList__TryMergeDrawCmds(i1)
     return out
 end
 ImDrawList["PrimUnreserve"] = ImDrawList["PrimUnreserve"]  or function(i1, i2, i3)
@@ -361,14 +366,15 @@ ImDrawList["PrimUnreserve"] = ImDrawList["PrimUnreserve"]  or function(i1, i2, i
     local out = C.ImDrawList_PrimUnreserve(i1, i2, i3)
     return out
 end
-ImDrawList["AddQuadFilled"] = ImDrawList["AddQuadFilled"]  or function(i1, i2, i3, i4, i5, i6)
+ImDrawList["PathBezierCubicCurveTo"] = ImDrawList["PathBezierCubicCurveTo"]  or function(i1, i2, i3, i4, i5)
     jit.off(true)
-    local out = C.ImDrawList_AddQuadFilled(i1, i2, i3, i4, i5, i6)
+    if i5 == nil then i5 = 0 end
+    local out = C.ImDrawList_PathBezierCubicCurveTo(i1, i2, i3, i4, i5)
     return out
 end
-ImDrawList["ChannelsMerge"] = ImDrawList["ChannelsMerge"]  or function(i1)
+ImDrawList["PrimRect"] = ImDrawList["PrimRect"]  or function(i1, i2, i3, i4)
     jit.off(true)
-    local out = C.ImDrawList_ChannelsMerge(i1)
+    local out = C.ImDrawList_PrimRect(i1, i2, i3, i4)
     return out
 end
 ImDrawList["AddImageRounded"] = ImDrawList["AddImageRounded"]  or function(i1, i2, i3, i4, i5, i6, i7, i8, i9)
@@ -380,9 +386,21 @@ ImDrawList["AddImageRounded"] = ImDrawList["AddImageRounded"]  or function(i1, i
     local out = C.ImDrawList_AddImageRounded(i1, i2, i3, i4, i5, i6, i7, i8, i9)
     return out
 end
-ImDrawList["PrimRect"] = ImDrawList["PrimRect"]  or function(i1, i2, i3, i4)
+ImDrawList["ChannelsMerge"] = ImDrawList["ChannelsMerge"]  or function(i1)
     jit.off(true)
-    local out = C.ImDrawList_PrimRect(i1, i2, i3, i4)
+    local out = C.ImDrawList_ChannelsMerge(i1)
+    return out
+end
+ImDrawList["PathStroke"] = ImDrawList["PathStroke"]  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    if i4 == nil then i4 = 1.0 end
+    local out = C.ImDrawList_PathStroke(i1, i2, i3, i4)
+    return out
+end
+ImDrawList["AddQuadFilled"] = ImDrawList["AddQuadFilled"]  or function(i1, i2, i3, i4, i5, i6)
+    jit.off(true)
+    local out = C.ImDrawList_AddQuadFilled(i1, i2, i3, i4, i5, i6)
     return out
 end
 ImDrawList["PathClear"] = ImDrawList["PathClear"]  or function(i1)
@@ -393,11 +411,6 @@ end
 ImDrawList["PopTextureID"] = ImDrawList["PopTextureID"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList_PopTextureID(i1)
-    return out
-end
-ImDrawList["AddCallback"] = ImDrawList["AddCallback"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImDrawList_AddCallback(i1, i2, i3)
     return out
 end
 ImDrawList["AddImage"] = ImDrawList["AddImage"]  or function(i1, i2, i3, i4, i5, i6, i7)
@@ -411,16 +424,14 @@ ImDrawList["AddImage"] = ImDrawList["AddImage"]  or function(i1, i2, i3, i4, i5,
     local out = C.ImDrawList_AddImage(i1, i2, i3, i4, i5, i6, i7)
     return out
 end
-ImDrawList["PathStroke"] = ImDrawList["PathStroke"]  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    if i4 == nil then i4 = 1.0 end
-    local out = C.ImDrawList_PathStroke(i1, i2, i3, i4)
-    return out
-end
 ImDrawList["PushClipRectFullScreen"] = ImDrawList["PushClipRectFullScreen"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList_PushClipRectFullScreen(i1)
+    return out
+end
+ImDrawList["AddCallback"] = ImDrawList["AddCallback"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImDrawList_AddCallback(i1, i2, i3)
     return out
 end
 ImDrawList["AddNgon"] = ImDrawList["AddNgon"]  or function(i1, i2, i3, i4, i5, i6)
@@ -429,32 +440,21 @@ ImDrawList["AddNgon"] = ImDrawList["AddNgon"]  or function(i1, i2, i3, i4, i5, i
     local out = C.ImDrawList_AddNgon(i1, i2, i3, i4, i5, i6)
     return out
 end
-ImDrawList["PathLineToMergeDuplicate"] = ImDrawList["PathLineToMergeDuplicate"]  or function(i1, i2)
+ImDrawList["_PathArcToN"] = ImDrawList["_PathArcToN"]  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
-    local out = C.ImDrawList_PathLineToMergeDuplicate(i1, i2)
+    local out = C.ImDrawList__PathArcToN(i1, i2, i3, i4, i5, i6)
+    return out
+end
+ImDrawList["AddRectFilled"] = ImDrawList["AddRectFilled"]  or function(i1, i2, i3, i4, i5, i6)
+    jit.off(true)
+    if i5 == nil then i5 = 0.0 end
+    if i6 == nil then i6 = 0 end
+    local out = C.ImDrawList_AddRectFilled(i1, i2, i3, i4, i5, i6)
     return out
 end
 ImDrawList["_OnChangedVtxOffset"] = ImDrawList["_OnChangedVtxOffset"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList__OnChangedVtxOffset(i1)
-    return out
-end
-ImDrawList["PathBezierCubicCurveTo"] = ImDrawList["PathBezierCubicCurveTo"]  or function(i1, i2, i3, i4, i5)
-    jit.off(true)
-    if i5 == nil then i5 = 0 end
-    local out = C.ImDrawList_PathBezierCubicCurveTo(i1, i2, i3, i4, i5)
-    return out
-end
-ImDrawList["PathBezierQuadraticCurveTo"] = ImDrawList["PathBezierQuadraticCurveTo"]  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i4 == nil then i4 = 0 end
-    local out = C.ImDrawList_PathBezierQuadraticCurveTo(i1, i2, i3, i4)
-    return out
-end
-ImDrawList["AddBezierCubic"] = ImDrawList["AddBezierCubic"]  or function(i1, i2, i3, i4, i5, i6, i7, i8)
-    jit.off(true)
-    if i8 == nil then i8 = 0 end
-    local out = C.ImDrawList_AddBezierCubic(i1, i2, i3, i4, i5, i6, i7, i8)
     return out
 end
 local mt = getmetatable(ImDrawList) or {}
@@ -493,6 +493,38 @@ end
 M.ImGuiTextRange = ImGuiTextRange
 ffi.metatype("ImGuiTextRange", ImGuiTextRange)
 
+local ImGuiTableColumnSortSpecs = ImGuiTableColumnSortSpecs or {}
+ImGuiTableColumnSortSpecs.__index = ImGuiTableColumnSortSpecs
+local mt = getmetatable(ImGuiTableColumnSortSpecs) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiTableColumnSortSpecs_ImGuiTableColumnSortSpecs()
+    return ffi.gc(p[0], C.ImGuiTableColumnSortSpecs_destroy)
+end
+setmetatable(ImGuiTableColumnSortSpecs, mt)
+M.ImGuiTableColumnSortSpecs = ImGuiTableColumnSortSpecs
+ffi.metatype("ImGuiTableColumnSortSpecs", ImGuiTableColumnSortSpecs)
+
+local ImGuiStoragePair = ImGuiStoragePair or {}
+ImGuiStoragePair.__index = ImGuiStoragePair
+M.ImGuiStoragePair_Int = M.ImGuiStoragePair_Int  or function(i1, i2)
+    jit.off(true)
+    local p = C.ImGuiStoragePair_ImGuiStoragePair_Int(i1, i2)
+    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
+end
+M.ImGuiStoragePair_Float = M.ImGuiStoragePair_Float  or function(i1, i2)
+    jit.off(true)
+    local p = C.ImGuiStoragePair_ImGuiStoragePair_Float(i1, i2)
+    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
+end
+M.ImGuiStoragePair_Ptr = M.ImGuiStoragePair_Ptr  or function(i1, i2)
+    jit.off(true)
+    local p = C.ImGuiStoragePair_ImGuiStoragePair_Ptr(i1, i2)
+    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
+end
+M.ImGuiStoragePair = ImGuiStoragePair
+ffi.metatype("ImGuiStoragePair", ImGuiStoragePair)
+
 local ImFontGlyphRangesBuilder = ImFontGlyphRangesBuilder or {}
 ImFontGlyphRangesBuilder.__index = ImFontGlyphRangesBuilder
 ImFontGlyphRangesBuilder["AddChar"] = ImFontGlyphRangesBuilder["AddChar"]  or function(i1, i2)
@@ -503,6 +535,11 @@ end
 ImFontGlyphRangesBuilder["Clear"] = ImFontGlyphRangesBuilder["Clear"]  or function(i1)
     jit.off(true)
     local out = C.ImFontGlyphRangesBuilder_Clear(i1)
+    return out
+end
+ImFontGlyphRangesBuilder["AddRanges"] = ImFontGlyphRangesBuilder["AddRanges"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImFontGlyphRangesBuilder_AddRanges(i1, i2)
     return out
 end
 ImFontGlyphRangesBuilder["BuildRanges"] = ImFontGlyphRangesBuilder["BuildRanges"]  or function(i1)
@@ -516,19 +553,14 @@ ImFontGlyphRangesBuilder["AddText"] = ImFontGlyphRangesBuilder["AddText"]  or fu
     local out = C.ImFontGlyphRangesBuilder_AddText(i1, i2, i3)
     return out
 end
-ImFontGlyphRangesBuilder["SetBit"] = ImFontGlyphRangesBuilder["SetBit"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImFontGlyphRangesBuilder_SetBit(i1, i2)
-    return out
-end
 ImFontGlyphRangesBuilder["GetBit"] = ImFontGlyphRangesBuilder["GetBit"]  or function(i1, i2)
     jit.off(true)
     local out = C.ImFontGlyphRangesBuilder_GetBit(i1, i2)
     return out
 end
-ImFontGlyphRangesBuilder["AddRanges"] = ImFontGlyphRangesBuilder["AddRanges"]  or function(i1, i2)
+ImFontGlyphRangesBuilder["SetBit"] = ImFontGlyphRangesBuilder["SetBit"]  or function(i1, i2)
     jit.off(true)
-    local out = C.ImFontGlyphRangesBuilder_AddRanges(i1, i2)
+    local out = C.ImFontGlyphRangesBuilder_SetBit(i1, i2)
     return out
 end
 local mt = getmetatable(ImFontGlyphRangesBuilder) or {}
@@ -569,6 +601,18 @@ setmetatable(ImGuiListClipper, mt)
 M.ImGuiListClipper = ImGuiListClipper
 ffi.metatype("ImGuiListClipper", ImGuiListClipper)
 
+local ImGuiTableSortSpecs = ImGuiTableSortSpecs or {}
+ImGuiTableSortSpecs.__index = ImGuiTableSortSpecs
+local mt = getmetatable(ImGuiTableSortSpecs) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiTableSortSpecs_ImGuiTableSortSpecs()
+    return ffi.gc(p[0], C.ImGuiTableSortSpecs_destroy)
+end
+setmetatable(ImGuiTableSortSpecs, mt)
+M.ImGuiTableSortSpecs = ImGuiTableSortSpecs
+ffi.metatype("ImGuiTableSortSpecs", ImGuiTableSortSpecs)
+
 local ImVec4 = ImVec4 or {}
 ImVec4.__index = ImVec4
 M.ImVec4_Nil = M.ImVec4_Nil  or function()
@@ -586,16 +630,16 @@ ffi.metatype("ImVec4", ImVec4)
 
 local ImGuiViewport = ImGuiViewport or {}
 ImGuiViewport.__index = ImGuiViewport
-ImGuiViewport["GetCenter"] = ImGuiViewport["GetCenter"]  or function(i1)
-    jit.off(true)
-    local o1 = ffi.new("ImVec2[1]")
-    local out = C.ImGuiViewport_GetCenter(o1, i1)
-    return o1[0], out
-end
 ImGuiViewport["GetWorkCenter"] = ImGuiViewport["GetWorkCenter"]  or function(i1)
     jit.off(true)
     local o1 = ffi.new("ImVec2[1]")
     local out = C.ImGuiViewport_GetWorkCenter(o1, i1)
+    return o1[0], out
+end
+ImGuiViewport["GetCenter"] = ImGuiViewport["GetCenter"]  or function(i1)
+    jit.off(true)
+    local o1 = ffi.new("ImVec2[1]")
+    local out = C.ImGuiViewport_GetCenter(o1, i1)
     return o1[0], out
 end
 local mt = getmetatable(ImGuiViewport) or {}
@@ -676,9 +720,9 @@ ImFontAtlas["IsBuilt"] = ImFontAtlas["IsBuilt"]  or function(i1)
     local out = C.ImFontAtlas_IsBuilt(i1)
     return out
 end
-ImFontAtlas["AddCustomRectRegular"] = ImFontAtlas["AddCustomRectRegular"]  or function(i1, i2, i3)
+ImFontAtlas["ClearTexData"] = ImFontAtlas["ClearTexData"]  or function(i1)
     jit.off(true)
-    local out = C.ImFontAtlas_AddCustomRectRegular(i1, i2, i3)
+    local out = C.ImFontAtlas_ClearTexData(i1)
     return out
 end
 ImFontAtlas["GetTexDataAsAlpha8"] = ImFontAtlas["GetTexDataAsAlpha8"]  or function(i1)
@@ -690,9 +734,9 @@ ImFontAtlas["GetTexDataAsAlpha8"] = ImFontAtlas["GetTexDataAsAlpha8"]  or functi
     local out = C.ImFontAtlas_GetTexDataAsAlpha8(i1, o1, o2, o3, o4)
     return o1[0], o2[0], o3[0], o4[0], out
 end
-ImFontAtlas["AddFontDefault"] = ImFontAtlas["AddFontDefault"]  or function(i1, i2)
+ImFontAtlas["GetGlyphRangesJapanese"] = ImFontAtlas["GetGlyphRangesJapanese"]  or function(i1)
     jit.off(true)
-    local out = C.ImFontAtlas_AddFontDefault(i1, i2)
+    local out = C.ImFontAtlas_GetGlyphRangesJapanese(i1)
     return out
 end
 ImFontAtlas["ClearInputData"] = ImFontAtlas["ClearInputData"]  or function(i1)
@@ -705,19 +749,9 @@ ImFontAtlas["GetGlyphRangesVietnamese"] = ImFontAtlas["GetGlyphRangesVietnamese"
     local out = C.ImFontAtlas_GetGlyphRangesVietnamese(i1)
     return out
 end
-ImFontAtlas["AddFont"] = ImFontAtlas["AddFont"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImFontAtlas_AddFont(i1, i2)
-    return out
-end
 ImFontAtlas["ClearFonts"] = ImFontAtlas["ClearFonts"]  or function(i1)
     jit.off(true)
     local out = C.ImFontAtlas_ClearFonts(i1)
-    return out
-end
-ImFontAtlas["ClearTexData"] = ImFontAtlas["ClearTexData"]  or function(i1)
-    jit.off(true)
-    local out = C.ImFontAtlas_ClearTexData(i1)
     return out
 end
 ImFontAtlas["GetGlyphRangesDefault"] = ImFontAtlas["GetGlyphRangesDefault"]  or function(i1)
@@ -725,9 +759,19 @@ ImFontAtlas["GetGlyphRangesDefault"] = ImFontAtlas["GetGlyphRangesDefault"]  or 
     local out = C.ImFontAtlas_GetGlyphRangesDefault(i1)
     return out
 end
+ImFontAtlas["AddFontFromMemoryCompressedTTF"] = ImFontAtlas["AddFontFromMemoryCompressedTTF"]  or function(i1, i2, i3, i4, i5, i6)
+    jit.off(true)
+    local out = C.ImFontAtlas_AddFontFromMemoryCompressedTTF(i1, i2, i3, i4, i5, i6)
+    return out
+end
 ImFontAtlas["GetGlyphRangesKorean"] = ImFontAtlas["GetGlyphRangesKorean"]  or function(i1)
     jit.off(true)
     local out = C.ImFontAtlas_GetGlyphRangesKorean(i1)
+    return out
+end
+ImFontAtlas["GetGlyphRangesChineseFull"] = ImFontAtlas["GetGlyphRangesChineseFull"]  or function(i1)
+    jit.off(true)
+    local out = C.ImFontAtlas_GetGlyphRangesChineseFull(i1)
     return out
 end
 ImFontAtlas["GetTexDataAsRGBA32"] = ImFontAtlas["GetTexDataAsRGBA32"]  or function(i1)
@@ -739,16 +783,6 @@ ImFontAtlas["GetTexDataAsRGBA32"] = ImFontAtlas["GetTexDataAsRGBA32"]  or functi
     local out = C.ImFontAtlas_GetTexDataAsRGBA32(i1, o1, o2, o3, o4)
     return o1[0], o2[0], o3[0], o4[0], out
 end
-ImFontAtlas["AddFontFromMemoryCompressedTTF"] = ImFontAtlas["AddFontFromMemoryCompressedTTF"]  or function(i1, i2, i3, i4, i5, i6)
-    jit.off(true)
-    local out = C.ImFontAtlas_AddFontFromMemoryCompressedTTF(i1, i2, i3, i4, i5, i6)
-    return out
-end
-ImFontAtlas["GetGlyphRangesChineseFull"] = ImFontAtlas["GetGlyphRangesChineseFull"]  or function(i1)
-    jit.off(true)
-    local out = C.ImFontAtlas_GetGlyphRangesChineseFull(i1)
-    return out
-end
 ImFontAtlas["GetMouseCursorTexData"] = ImFontAtlas["GetMouseCursorTexData"]  or function(i1, i2)
     jit.off(true)
     local o1 = ffi.new("ImVec2[1]")
@@ -758,9 +792,19 @@ ImFontAtlas["GetMouseCursorTexData"] = ImFontAtlas["GetMouseCursorTexData"]  or 
     local out = C.ImFontAtlas_GetMouseCursorTexData(i1, i2, o1, o2, o3, o4)
     return o1[0], o2[0], o3[0], o4[0], out
 end
-ImFontAtlas["GetGlyphRangesJapanese"] = ImFontAtlas["GetGlyphRangesJapanese"]  or function(i1)
+ImFontAtlas["AddFont"] = ImFontAtlas["AddFont"]  or function(i1, i2)
     jit.off(true)
-    local out = C.ImFontAtlas_GetGlyphRangesJapanese(i1)
+    local out = C.ImFontAtlas_AddFont(i1, i2)
+    return out
+end
+ImFontAtlas["AddFontDefault"] = ImFontAtlas["AddFontDefault"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImFontAtlas_AddFontDefault(i1, i2)
+    return out
+end
+ImFontAtlas["AddCustomRectRegular"] = ImFontAtlas["AddCustomRectRegular"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImFontAtlas_AddCustomRectRegular(i1, i2, i3)
     return out
 end
 ImFontAtlas["GetGlyphRangesThai"] = ImFontAtlas["GetGlyphRangesThai"]  or function(i1)
@@ -778,45 +822,8 @@ setmetatable(ImFontAtlas, mt)
 M.ImFontAtlas = ImFontAtlas
 ffi.metatype("ImFontAtlas", ImFontAtlas)
 
-local ImGuiStoragePair = ImGuiStoragePair or {}
-ImGuiStoragePair.__index = ImGuiStoragePair
-M.ImGuiStoragePair_Int = M.ImGuiStoragePair_Int  or function(i1, i2)
-    jit.off(true)
-    local p = C.ImGuiStoragePair_ImGuiStoragePair_Int(i1, i2)
-    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
-end
-M.ImGuiStoragePair_Float = M.ImGuiStoragePair_Float  or function(i1, i2)
-    jit.off(true)
-    local p = C.ImGuiStoragePair_ImGuiStoragePair_Float(i1, i2)
-    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
-end
-M.ImGuiStoragePair_Ptr = M.ImGuiStoragePair_Ptr  or function(i1, i2)
-    jit.off(true)
-    local p = C.ImGuiStoragePair_ImGuiStoragePair_Ptr(i1, i2)
-    return ffi.gc(p[0], C.ImGuiStoragePair_destroy)
-end
-M.ImGuiStoragePair = ImGuiStoragePair
-ffi.metatype("ImGuiStoragePair", ImGuiStoragePair)
-
-local ImGuiTableSortSpecs = ImGuiTableSortSpecs or {}
-ImGuiTableSortSpecs.__index = ImGuiTableSortSpecs
-local mt = getmetatable(ImGuiTableSortSpecs) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiTableSortSpecs_ImGuiTableSortSpecs()
-    return ffi.gc(p[0], C.ImGuiTableSortSpecs_destroy)
-end
-setmetatable(ImGuiTableSortSpecs, mt)
-M.ImGuiTableSortSpecs = ImGuiTableSortSpecs
-ffi.metatype("ImGuiTableSortSpecs", ImGuiTableSortSpecs)
-
 local ImDrawData = ImDrawData or {}
 ImDrawData.__index = ImDrawData
-ImDrawData["Clear"] = ImDrawData["Clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImDrawData_Clear(i1)
-    return out
-end
 ImDrawData["DeIndexAllBuffers"] = ImDrawData["DeIndexAllBuffers"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawData_DeIndexAllBuffers(i1)
@@ -825,6 +832,11 @@ end
 ImDrawData["ScaleClipRects"] = ImDrawData["ScaleClipRects"]  or function(i1, i2)
     jit.off(true)
     local out = C.ImDrawData_ScaleClipRects(i1, i2)
+    return out
+end
+ImDrawData["Clear"] = ImDrawData["Clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImDrawData_Clear(i1)
     return out
 end
 local mt = getmetatable(ImDrawData) or {}
@@ -836,6 +848,403 @@ end
 setmetatable(ImDrawData, mt)
 M.ImDrawData = ImDrawData
 ffi.metatype("ImDrawData", ImDrawData)
+
+local ImColor = ImColor or {}
+ImColor.__index = ImColor
+ImColor["HSV"] = ImColor["HSV"]  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i4 == nil then i4 = 1.0 end
+    local o1 = ffi.new("ImColor[1]")
+    local out = C.ImColor_HSV(o1, i1, i2, i3, i4)
+    return o1[0], out
+end
+ImColor["SetHSV"] = ImColor["SetHSV"]  or function(i1, i2, i3, i4, i5)
+    jit.off(true)
+    if i5 == nil then i5 = 1.0 end
+    local out = C.ImColor_SetHSV(i1, i2, i3, i4, i5)
+    return out
+end
+M.ImColor_Nil = M.ImColor_Nil  or function()
+    jit.off(true)
+    local p = C.ImColor_ImColor_Nil()
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_Int = M.ImColor_Int  or function(i1, i2, i3, i4)
+    jit.off(true)
+    local p = C.ImColor_ImColor_Int(i1, i2, i3, i4)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_U32 = M.ImColor_U32  or function(i1)
+    jit.off(true)
+    local p = C.ImColor_ImColor_U32(i1)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_Float = M.ImColor_Float  or function(i1, i2, i3, i4)
+    jit.off(true)
+    local p = C.ImColor_ImColor_Float(i1, i2, i3, i4)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_Vec4 = M.ImColor_Vec4  or function(i1)
+    jit.off(true)
+    local p = C.ImColor_ImColor_Vec4(i1)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor = ImColor
+ffi.metatype("ImColor", ImColor)
+
+local ImDrawListSplitter = ImDrawListSplitter or {}
+ImDrawListSplitter.__index = ImDrawListSplitter
+ImDrawListSplitter["Split"] = ImDrawListSplitter["Split"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImDrawListSplitter_Split(i1, i2, i3)
+    return out
+end
+ImDrawListSplitter["SetCurrentChannel"] = ImDrawListSplitter["SetCurrentChannel"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImDrawListSplitter_SetCurrentChannel(i1, i2, i3)
+    return out
+end
+ImDrawListSplitter["Merge"] = ImDrawListSplitter["Merge"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImDrawListSplitter_Merge(i1, i2)
+    return out
+end
+ImDrawListSplitter["ClearFreeMemory"] = ImDrawListSplitter["ClearFreeMemory"]  or function(i1)
+    jit.off(true)
+    local out = C.ImDrawListSplitter_ClearFreeMemory(i1)
+    return out
+end
+ImDrawListSplitter["Clear"] = ImDrawListSplitter["Clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImDrawListSplitter_Clear(i1)
+    return out
+end
+local mt = getmetatable(ImDrawListSplitter) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImDrawListSplitter_ImDrawListSplitter()
+    return ffi.gc(p[0], C.ImDrawListSplitter_destroy)
+end
+setmetatable(ImDrawListSplitter, mt)
+M.ImDrawListSplitter = ImDrawListSplitter
+ffi.metatype("ImDrawListSplitter", ImDrawListSplitter)
+
+local ImFontAtlasCustomRect = ImFontAtlasCustomRect or {}
+ImFontAtlasCustomRect.__index = ImFontAtlasCustomRect
+ImFontAtlasCustomRect["IsPacked"] = ImFontAtlasCustomRect["IsPacked"]  or function(i1)
+    jit.off(true)
+    local out = C.ImFontAtlasCustomRect_IsPacked(i1)
+    return out
+end
+local mt = getmetatable(ImFontAtlasCustomRect) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImFontAtlasCustomRect_ImFontAtlasCustomRect()
+    return ffi.gc(p[0], C.ImFontAtlasCustomRect_destroy)
+end
+setmetatable(ImFontAtlasCustomRect, mt)
+M.ImFontAtlasCustomRect = ImFontAtlasCustomRect
+ffi.metatype("ImFontAtlasCustomRect", ImFontAtlasCustomRect)
+
+local ImGuiTextBuffer = ImGuiTextBuffer or {}
+ImGuiTextBuffer.__index = ImGuiTextBuffer
+ImGuiTextBuffer["appendf"] = ImGuiTextBuffer["appendf"]  or function(i1, i2, ...)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_appendf(i1, i2, ...)
+    return out
+end
+ImGuiTextBuffer["append"] = ImGuiTextBuffer["append"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_append(i1, i2, i3)
+    return out
+end
+ImGuiTextBuffer["clear"] = ImGuiTextBuffer["clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_clear(i1)
+    return out
+end
+ImGuiTextBuffer["c_str"] = ImGuiTextBuffer["c_str"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_c_str(i1)
+    return out
+end
+ImGuiTextBuffer["reserve"] = ImGuiTextBuffer["reserve"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_reserve(i1, i2)
+    return out
+end
+ImGuiTextBuffer["empty"] = ImGuiTextBuffer["empty"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_empty(i1)
+    return out
+end
+ImGuiTextBuffer["size"] = ImGuiTextBuffer["size"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_size(i1)
+    return out
+end
+ImGuiTextBuffer["begin"] = ImGuiTextBuffer["begin"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_begin(i1)
+    return out
+end
+ImGuiTextBuffer["end"] = ImGuiTextBuffer["end"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextBuffer_end(i1)
+    return out
+end
+ImGuiTextBuffer.c_end = ImGuiTextBuffer["end"] 
+local mt = getmetatable(ImGuiTextBuffer) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiTextBuffer_ImGuiTextBuffer()
+    return ffi.gc(p[0], C.ImGuiTextBuffer_destroy)
+end
+setmetatable(ImGuiTextBuffer, mt)
+M.ImGuiTextBuffer = ImGuiTextBuffer
+ffi.metatype("ImGuiTextBuffer", ImGuiTextBuffer)
+
+local ImGuiStyle = ImGuiStyle or {}
+ImGuiStyle.__index = ImGuiStyle
+ImGuiStyle["ScaleAllSizes"] = ImGuiStyle["ScaleAllSizes"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiStyle_ScaleAllSizes(i1, i2)
+    return out
+end
+local mt = getmetatable(ImGuiStyle) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiStyle_ImGuiStyle()
+    return ffi.gc(p[0], C.ImGuiStyle_destroy)
+end
+setmetatable(ImGuiStyle, mt)
+M.ImGuiStyle = ImGuiStyle
+ffi.metatype("ImGuiStyle", ImGuiStyle)
+
+local ImGuiPlatformMonitor = ImGuiPlatformMonitor or {}
+ImGuiPlatformMonitor.__index = ImGuiPlatformMonitor
+local mt = getmetatable(ImGuiPlatformMonitor) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiPlatformMonitor_ImGuiPlatformMonitor()
+    return ffi.gc(p[0], C.ImGuiPlatformMonitor_destroy)
+end
+setmetatable(ImGuiPlatformMonitor, mt)
+M.ImGuiPlatformMonitor = ImGuiPlatformMonitor
+ffi.metatype("ImGuiPlatformMonitor", ImGuiPlatformMonitor)
+
+local ImGuiIO = ImGuiIO or {}
+ImGuiIO.__index = ImGuiIO
+ImGuiIO["AddInputCharactersUTF8"] = ImGuiIO["AddInputCharactersUTF8"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_AddInputCharactersUTF8(i1, i2)
+    return out
+end
+ImGuiIO["ClearInputCharacters"] = ImGuiIO["ClearInputCharacters"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiIO_ClearInputCharacters(i1)
+    return out
+end
+ImGuiIO["AddFocusEvent"] = ImGuiIO["AddFocusEvent"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_AddFocusEvent(i1, i2)
+    return out
+end
+ImGuiIO["AddInputCharacterUTF16"] = ImGuiIO["AddInputCharacterUTF16"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_AddInputCharacterUTF16(i1, i2)
+    return out
+end
+ImGuiIO["ClearInputKeys"] = ImGuiIO["ClearInputKeys"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiIO_ClearInputKeys(i1)
+    return out
+end
+ImGuiIO["AddInputCharacter"] = ImGuiIO["AddInputCharacter"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_AddInputCharacter(i1, i2)
+    return out
+end
+local mt = getmetatable(ImGuiIO) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiIO_ImGuiIO()
+    return ffi.gc(p[0], C.ImGuiIO_destroy)
+end
+setmetatable(ImGuiIO, mt)
+M.ImGuiIO = ImGuiIO
+ffi.metatype("ImGuiIO", ImGuiIO)
+
+local ImGuiPlatformIO = ImGuiPlatformIO or {}
+ImGuiPlatformIO.__index = ImGuiPlatformIO
+local mt = getmetatable(ImGuiPlatformIO) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiPlatformIO_ImGuiPlatformIO()
+    return ffi.gc(p[0], C.ImGuiPlatformIO_destroy)
+end
+setmetatable(ImGuiPlatformIO, mt)
+M.ImGuiPlatformIO = ImGuiPlatformIO
+ffi.metatype("ImGuiPlatformIO", ImGuiPlatformIO)
+
+local ImGuiOnceUponAFrame = ImGuiOnceUponAFrame or {}
+ImGuiOnceUponAFrame.__index = ImGuiOnceUponAFrame
+local mt = getmetatable(ImGuiOnceUponAFrame) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiOnceUponAFrame_ImGuiOnceUponAFrame()
+    return ffi.gc(p[0], C.ImGuiOnceUponAFrame_destroy)
+end
+setmetatable(ImGuiOnceUponAFrame, mt)
+M.ImGuiOnceUponAFrame = ImGuiOnceUponAFrame
+ffi.metatype("ImGuiOnceUponAFrame", ImGuiOnceUponAFrame)
+
+local ImGuiWindowClass = ImGuiWindowClass or {}
+ImGuiWindowClass.__index = ImGuiWindowClass
+local mt = getmetatable(ImGuiWindowClass) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiWindowClass_ImGuiWindowClass()
+    return ffi.gc(p[0], C.ImGuiWindowClass_destroy)
+end
+setmetatable(ImGuiWindowClass, mt)
+M.ImGuiWindowClass = ImGuiWindowClass
+ffi.metatype("ImGuiWindowClass", ImGuiWindowClass)
+
+local ImGuiStorage = ImGuiStorage or {}
+ImGuiStorage.__index = ImGuiStorage
+ImGuiStorage["SetBool"] = ImGuiStorage["SetBool"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiStorage_SetBool(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetVoidPtr"] = ImGuiStorage["GetVoidPtr"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiStorage_GetVoidPtr(i1, i2)
+    return out
+end
+ImGuiStorage["SetFloat"] = ImGuiStorage["SetFloat"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiStorage_SetFloat(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetBoolRef"] = ImGuiStorage["GetBoolRef"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = false end
+    local out = C.ImGuiStorage_GetBoolRef(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetInt"] = ImGuiStorage["GetInt"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.ImGuiStorage_GetInt(i1, i2, i3)
+    return out
+end
+ImGuiStorage["Clear"] = ImGuiStorage["Clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiStorage_Clear(i1)
+    return out
+end
+ImGuiStorage["GetBool"] = ImGuiStorage["GetBool"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = false end
+    local out = C.ImGuiStorage_GetBool(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetIntRef"] = ImGuiStorage["GetIntRef"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.ImGuiStorage_GetIntRef(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetFloatRef"] = ImGuiStorage["GetFloatRef"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0.0 end
+    local out = C.ImGuiStorage_GetFloatRef(i1, i2, i3)
+    return out
+end
+ImGuiStorage["GetVoidPtrRef"] = ImGuiStorage["GetVoidPtrRef"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiStorage_GetVoidPtrRef(i1, i2, i3)
+    return out
+end
+ImGuiStorage["BuildSortByKey"] = ImGuiStorage["BuildSortByKey"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiStorage_BuildSortByKey(i1)
+    return out
+end
+ImGuiStorage["SetInt"] = ImGuiStorage["SetInt"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiStorage_SetInt(i1, i2, i3)
+    return out
+end
+ImGuiStorage["SetAllInt"] = ImGuiStorage["SetAllInt"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiStorage_SetAllInt(i1, i2)
+    return out
+end
+ImGuiStorage["GetFloat"] = ImGuiStorage["GetFloat"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0.0 end
+    local out = C.ImGuiStorage_GetFloat(i1, i2, i3)
+    return out
+end
+ImGuiStorage["SetVoidPtr"] = ImGuiStorage["SetVoidPtr"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiStorage_SetVoidPtr(i1, i2, i3)
+    return out
+end
+M.ImGuiStorage = ImGuiStorage
+ffi.metatype("ImGuiStorage", ImGuiStorage)
+
+local ImGuiPayload = ImGuiPayload or {}
+ImGuiPayload.__index = ImGuiPayload
+ImGuiPayload["Clear"] = ImGuiPayload["Clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiPayload_Clear(i1)
+    return out
+end
+ImGuiPayload["IsDelivery"] = ImGuiPayload["IsDelivery"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiPayload_IsDelivery(i1)
+    return out
+end
+ImGuiPayload["IsPreview"] = ImGuiPayload["IsPreview"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiPayload_IsPreview(i1)
+    return out
+end
+ImGuiPayload["IsDataType"] = ImGuiPayload["IsDataType"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiPayload_IsDataType(i1, i2)
+    return out
+end
+local mt = getmetatable(ImGuiPayload) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImGuiPayload_ImGuiPayload()
+    return ffi.gc(p[0], C.ImGuiPayload_destroy)
+end
+setmetatable(ImGuiPayload, mt)
+M.ImGuiPayload = ImGuiPayload
+ffi.metatype("ImGuiPayload", ImGuiPayload)
+
+local ImDrawCmd = ImDrawCmd or {}
+ImDrawCmd.__index = ImDrawCmd
+ImDrawCmd["GetTexID"] = ImDrawCmd["GetTexID"]  or function(i1)
+    jit.off(true)
+    local out = C.ImDrawCmd_GetTexID(i1)
+    return out
+end
+local mt = getmetatable(ImDrawCmd) or {}
+mt.__call = mt.__call or function(self)
+    jit.off(true)
+    local p = C.ImDrawCmd_ImDrawCmd()
+    return ffi.gc(p[0], C.ImDrawCmd_destroy)
+end
+setmetatable(ImDrawCmd, mt)
+M.ImDrawCmd = ImDrawCmd
+ffi.metatype("ImDrawCmd", ImDrawCmd)
 
 local ImGuiInputTextCallbackData = ImGuiInputTextCallbackData or {}
 ImGuiInputTextCallbackData.__index = ImGuiInputTextCallbackData
@@ -873,6 +1282,45 @@ end
 setmetatable(ImGuiInputTextCallbackData, mt)
 M.ImGuiInputTextCallbackData = ImGuiInputTextCallbackData
 ffi.metatype("ImGuiInputTextCallbackData", ImGuiInputTextCallbackData)
+
+local ImGuiTextFilter = ImGuiTextFilter or {}
+ImGuiTextFilter.__index = ImGuiTextFilter
+ImGuiTextFilter["Draw"] = ImGuiTextFilter["Draw"]  or function(i1, i2, i3)
+    jit.off(true)
+    if i2 == nil then i2 = "Filter(inc,-exc)" end
+    if i3 == nil then i3 = 0.0 end
+    local out = C.ImGuiTextFilter_Draw(i1, i2, i3)
+    return out
+end
+ImGuiTextFilter["Clear"] = ImGuiTextFilter["Clear"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextFilter_Clear(i1)
+    return out
+end
+ImGuiTextFilter["PassFilter"] = ImGuiTextFilter["PassFilter"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiTextFilter_PassFilter(i1, i2, i3)
+    return out
+end
+ImGuiTextFilter["IsActive"] = ImGuiTextFilter["IsActive"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextFilter_IsActive(i1)
+    return out
+end
+ImGuiTextFilter["Build"] = ImGuiTextFilter["Build"]  or function(i1)
+    jit.off(true)
+    local out = C.ImGuiTextFilter_Build(i1)
+    return out
+end
+local mt = getmetatable(ImGuiTextFilter) or {}
+mt.__call = mt.__call or function(self, i1)
+    jit.off(true)
+    local p = C.ImGuiTextFilter_ImGuiTextFilter(i1)
+    return ffi.gc(p[0], C.ImGuiTextFilter_destroy)
+end
+setmetatable(ImGuiTextFilter, mt)
+M.ImGuiTextFilter = ImGuiTextFilter
+ffi.metatype("ImGuiTextFilter", ImGuiTextFilter)
 
 local ImFont = ImFont or {}
 ImFont.__index = ImFont
@@ -939,14 +1387,14 @@ ImFont["CalcWordWrapPositionA"] = ImFont["CalcWordWrapPositionA"]  or function(i
     local out = C.ImFont_CalcWordWrapPositionA(i1, i2, i3, i4, i5)
     return out
 end
+ImFont["IsGlyphRangeUnused"] = ImFont["IsGlyphRangeUnused"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImFont_IsGlyphRangeUnused(i1, i2, i3)
+    return out
+end
 ImFont["GetCharAdvance"] = ImFont["GetCharAdvance"]  or function(i1, i2)
     jit.off(true)
     local out = C.ImFont_GetCharAdvance(i1, i2)
-    return out
-end
-ImFont["FindGlyph"] = ImFont["FindGlyph"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImFont_FindGlyph(i1, i2)
     return out
 end
 ImFont["CalcTextSizeA"] = ImFont["CalcTextSizeA"]  or function(i1, i2, i3, i4, i5, i6, i7)
@@ -955,9 +1403,9 @@ ImFont["CalcTextSizeA"] = ImFont["CalcTextSizeA"]  or function(i1, i2, i3, i4, i
     local out = C.ImFont_CalcTextSizeA(o1, i1, i2, i3, i4, i5, i6, i7)
     return o1[0], out
 end
-ImFont["IsGlyphRangeUnused"] = ImFont["IsGlyphRangeUnused"]  or function(i1, i2, i3)
+ImFont["FindGlyph"] = ImFont["FindGlyph"]  or function(i1, i2)
     jit.off(true)
-    local out = C.ImFont_IsGlyphRangeUnused(i1, i2, i3)
+    local out = C.ImFont_FindGlyph(i1, i2)
     return out
 end
 local mt = getmetatable(ImFont) or {}
@@ -969,413 +1417,6 @@ end
 setmetatable(ImFont, mt)
 M.ImFont = ImFont
 ffi.metatype("ImFont", ImFont)
-
-local ImGuiStyle = ImGuiStyle or {}
-ImGuiStyle.__index = ImGuiStyle
-ImGuiStyle["ScaleAllSizes"] = ImGuiStyle["ScaleAllSizes"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiStyle_ScaleAllSizes(i1, i2)
-    return out
-end
-local mt = getmetatable(ImGuiStyle) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiStyle_ImGuiStyle()
-    return ffi.gc(p[0], C.ImGuiStyle_destroy)
-end
-setmetatable(ImGuiStyle, mt)
-M.ImGuiStyle = ImGuiStyle
-ffi.metatype("ImGuiStyle", ImGuiStyle)
-
-local ImGuiTableColumnSortSpecs = ImGuiTableColumnSortSpecs or {}
-ImGuiTableColumnSortSpecs.__index = ImGuiTableColumnSortSpecs
-local mt = getmetatable(ImGuiTableColumnSortSpecs) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiTableColumnSortSpecs_ImGuiTableColumnSortSpecs()
-    return ffi.gc(p[0], C.ImGuiTableColumnSortSpecs_destroy)
-end
-setmetatable(ImGuiTableColumnSortSpecs, mt)
-M.ImGuiTableColumnSortSpecs = ImGuiTableColumnSortSpecs
-ffi.metatype("ImGuiTableColumnSortSpecs", ImGuiTableColumnSortSpecs)
-
-local ImGuiIO = ImGuiIO or {}
-ImGuiIO.__index = ImGuiIO
-ImGuiIO["AddInputCharactersUTF8"] = ImGuiIO["AddInputCharactersUTF8"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiIO_AddInputCharactersUTF8(i1, i2)
-    return out
-end
-ImGuiIO["ClearInputCharacters"] = ImGuiIO["ClearInputCharacters"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiIO_ClearInputCharacters(i1)
-    return out
-end
-ImGuiIO["AddFocusEvent"] = ImGuiIO["AddFocusEvent"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiIO_AddFocusEvent(i1, i2)
-    return out
-end
-ImGuiIO["AddInputCharacterUTF16"] = ImGuiIO["AddInputCharacterUTF16"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiIO_AddInputCharacterUTF16(i1, i2)
-    return out
-end
-ImGuiIO["AddInputCharacter"] = ImGuiIO["AddInputCharacter"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiIO_AddInputCharacter(i1, i2)
-    return out
-end
-local mt = getmetatable(ImGuiIO) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiIO_ImGuiIO()
-    return ffi.gc(p[0], C.ImGuiIO_destroy)
-end
-setmetatable(ImGuiIO, mt)
-M.ImGuiIO = ImGuiIO
-ffi.metatype("ImGuiIO", ImGuiIO)
-
-local ImDrawListSplitter = ImDrawListSplitter or {}
-ImDrawListSplitter.__index = ImDrawListSplitter
-ImDrawListSplitter["Clear"] = ImDrawListSplitter["Clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImDrawListSplitter_Clear(i1)
-    return out
-end
-ImDrawListSplitter["Split"] = ImDrawListSplitter["Split"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImDrawListSplitter_Split(i1, i2, i3)
-    return out
-end
-ImDrawListSplitter["SetCurrentChannel"] = ImDrawListSplitter["SetCurrentChannel"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImDrawListSplitter_SetCurrentChannel(i1, i2, i3)
-    return out
-end
-ImDrawListSplitter["Merge"] = ImDrawListSplitter["Merge"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImDrawListSplitter_Merge(i1, i2)
-    return out
-end
-ImDrawListSplitter["ClearFreeMemory"] = ImDrawListSplitter["ClearFreeMemory"]  or function(i1)
-    jit.off(true)
-    local out = C.ImDrawListSplitter_ClearFreeMemory(i1)
-    return out
-end
-local mt = getmetatable(ImDrawListSplitter) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImDrawListSplitter_ImDrawListSplitter()
-    return ffi.gc(p[0], C.ImDrawListSplitter_destroy)
-end
-setmetatable(ImDrawListSplitter, mt)
-M.ImDrawListSplitter = ImDrawListSplitter
-ffi.metatype("ImDrawListSplitter", ImDrawListSplitter)
-
-local ImGuiOnceUponAFrame = ImGuiOnceUponAFrame or {}
-ImGuiOnceUponAFrame.__index = ImGuiOnceUponAFrame
-local mt = getmetatable(ImGuiOnceUponAFrame) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiOnceUponAFrame_ImGuiOnceUponAFrame()
-    return ffi.gc(p[0], C.ImGuiOnceUponAFrame_destroy)
-end
-setmetatable(ImGuiOnceUponAFrame, mt)
-M.ImGuiOnceUponAFrame = ImGuiOnceUponAFrame
-ffi.metatype("ImGuiOnceUponAFrame", ImGuiOnceUponAFrame)
-
-local ImColor = ImColor or {}
-ImColor.__index = ImColor
-ImColor["SetHSV"] = ImColor["SetHSV"]  or function(i1, i2, i3, i4, i5)
-    jit.off(true)
-    if i5 == nil then i5 = 1.0 end
-    local out = C.ImColor_SetHSV(i1, i2, i3, i4, i5)
-    return out
-end
-ImColor["HSV"] = ImColor["HSV"]  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i4 == nil then i4 = 1.0 end
-    local o1 = ffi.new("ImColor[1]")
-    local out = C.ImColor_HSV(o1, i1, i2, i3, i4)
-    return o1[0], out
-end
-M.ImColor_Nil = M.ImColor_Nil  or function()
-    jit.off(true)
-    local p = C.ImColor_ImColor_Nil()
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor_Int = M.ImColor_Int  or function(i1, i2, i3, i4)
-    jit.off(true)
-    local p = C.ImColor_ImColor_Int(i1, i2, i3, i4)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor_U32 = M.ImColor_U32  or function(i1)
-    jit.off(true)
-    local p = C.ImColor_ImColor_U32(i1)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor_Float = M.ImColor_Float  or function(i1, i2, i3, i4)
-    jit.off(true)
-    local p = C.ImColor_ImColor_Float(i1, i2, i3, i4)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor_Vec4 = M.ImColor_Vec4  or function(i1)
-    jit.off(true)
-    local p = C.ImColor_ImColor_Vec4(i1)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor = ImColor
-ffi.metatype("ImColor", ImColor)
-
-local ImGuiStorage = ImGuiStorage or {}
-ImGuiStorage.__index = ImGuiStorage
-ImGuiStorage["SetBool"] = ImGuiStorage["SetBool"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiStorage_SetBool(i1, i2, i3)
-    return out
-end
-ImGuiStorage["SetVoidPtr"] = ImGuiStorage["SetVoidPtr"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiStorage_SetVoidPtr(i1, i2, i3)
-    return out
-end
-ImGuiStorage["SetFloat"] = ImGuiStorage["SetFloat"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiStorage_SetFloat(i1, i2, i3)
-    return out
-end
-ImGuiStorage["GetBoolRef"] = ImGuiStorage["GetBoolRef"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = false end
-    local out = C.ImGuiStorage_GetBoolRef(i1, i2, i3)
-    return out
-end
-ImGuiStorage["GetInt"] = ImGuiStorage["GetInt"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.ImGuiStorage_GetInt(i1, i2, i3)
-    return out
-end
-ImGuiStorage["Clear"] = ImGuiStorage["Clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiStorage_Clear(i1)
-    return out
-end
-ImGuiStorage["SetInt"] = ImGuiStorage["SetInt"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiStorage_SetInt(i1, i2, i3)
-    return out
-end
-ImGuiStorage["GetVoidPtrRef"] = ImGuiStorage["GetVoidPtrRef"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiStorage_GetVoidPtrRef(i1, i2, i3)
-    return out
-end
-ImGuiStorage["GetIntRef"] = ImGuiStorage["GetIntRef"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.ImGuiStorage_GetIntRef(i1, i2, i3)
-    return out
-end
-ImGuiStorage["GetBool"] = ImGuiStorage["GetBool"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = false end
-    local out = C.ImGuiStorage_GetBool(i1, i2, i3)
-    return out
-end
-ImGuiStorage["SetAllInt"] = ImGuiStorage["SetAllInt"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiStorage_SetAllInt(i1, i2)
-    return out
-end
-ImGuiStorage["GetVoidPtr"] = ImGuiStorage["GetVoidPtr"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiStorage_GetVoidPtr(i1, i2)
-    return out
-end
-ImGuiStorage["GetFloat"] = ImGuiStorage["GetFloat"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0.0 end
-    local out = C.ImGuiStorage_GetFloat(i1, i2, i3)
-    return out
-end
-ImGuiStorage["BuildSortByKey"] = ImGuiStorage["BuildSortByKey"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiStorage_BuildSortByKey(i1)
-    return out
-end
-ImGuiStorage["GetFloatRef"] = ImGuiStorage["GetFloatRef"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0.0 end
-    local out = C.ImGuiStorage_GetFloatRef(i1, i2, i3)
-    return out
-end
-M.ImGuiStorage = ImGuiStorage
-ffi.metatype("ImGuiStorage", ImGuiStorage)
-
-local ImGuiPayload = ImGuiPayload or {}
-ImGuiPayload.__index = ImGuiPayload
-ImGuiPayload["Clear"] = ImGuiPayload["Clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiPayload_Clear(i1)
-    return out
-end
-ImGuiPayload["IsDelivery"] = ImGuiPayload["IsDelivery"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiPayload_IsDelivery(i1)
-    return out
-end
-ImGuiPayload["IsPreview"] = ImGuiPayload["IsPreview"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiPayload_IsPreview(i1)
-    return out
-end
-ImGuiPayload["IsDataType"] = ImGuiPayload["IsDataType"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiPayload_IsDataType(i1, i2)
-    return out
-end
-local mt = getmetatable(ImGuiPayload) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiPayload_ImGuiPayload()
-    return ffi.gc(p[0], C.ImGuiPayload_destroy)
-end
-setmetatable(ImGuiPayload, mt)
-M.ImGuiPayload = ImGuiPayload
-ffi.metatype("ImGuiPayload", ImGuiPayload)
-
-local ImDrawCmd = ImDrawCmd or {}
-ImDrawCmd.__index = ImDrawCmd
-ImDrawCmd["GetTexID"] = ImDrawCmd["GetTexID"]  or function(i1)
-    jit.off(true)
-    local out = C.ImDrawCmd_GetTexID(i1)
-    return out
-end
-local mt = getmetatable(ImDrawCmd) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImDrawCmd_ImDrawCmd()
-    return ffi.gc(p[0], C.ImDrawCmd_destroy)
-end
-setmetatable(ImDrawCmd, mt)
-M.ImDrawCmd = ImDrawCmd
-ffi.metatype("ImDrawCmd", ImDrawCmd)
-
-local ImFontAtlasCustomRect = ImFontAtlasCustomRect or {}
-ImFontAtlasCustomRect.__index = ImFontAtlasCustomRect
-ImFontAtlasCustomRect["IsPacked"] = ImFontAtlasCustomRect["IsPacked"]  or function(i1)
-    jit.off(true)
-    local out = C.ImFontAtlasCustomRect_IsPacked(i1)
-    return out
-end
-local mt = getmetatable(ImFontAtlasCustomRect) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImFontAtlasCustomRect_ImFontAtlasCustomRect()
-    return ffi.gc(p[0], C.ImFontAtlasCustomRect_destroy)
-end
-setmetatable(ImFontAtlasCustomRect, mt)
-M.ImFontAtlasCustomRect = ImFontAtlasCustomRect
-ffi.metatype("ImFontAtlasCustomRect", ImFontAtlasCustomRect)
-
-local ImGuiTextFilter = ImGuiTextFilter or {}
-ImGuiTextFilter.__index = ImGuiTextFilter
-ImGuiTextFilter["Clear"] = ImGuiTextFilter["Clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextFilter_Clear(i1)
-    return out
-end
-ImGuiTextFilter["PassFilter"] = ImGuiTextFilter["PassFilter"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiTextFilter_PassFilter(i1, i2, i3)
-    return out
-end
-ImGuiTextFilter["Draw"] = ImGuiTextFilter["Draw"]  or function(i1, i2, i3)
-    jit.off(true)
-    if i2 == nil then i2 = "Filter(inc,-exc)" end
-    if i3 == nil then i3 = 0.0 end
-    local out = C.ImGuiTextFilter_Draw(i1, i2, i3)
-    return out
-end
-ImGuiTextFilter["IsActive"] = ImGuiTextFilter["IsActive"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextFilter_IsActive(i1)
-    return out
-end
-ImGuiTextFilter["Build"] = ImGuiTextFilter["Build"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextFilter_Build(i1)
-    return out
-end
-local mt = getmetatable(ImGuiTextFilter) or {}
-mt.__call = mt.__call or function(self, i1)
-    jit.off(true)
-    local p = C.ImGuiTextFilter_ImGuiTextFilter(i1)
-    return ffi.gc(p[0], C.ImGuiTextFilter_destroy)
-end
-setmetatable(ImGuiTextFilter, mt)
-M.ImGuiTextFilter = ImGuiTextFilter
-ffi.metatype("ImGuiTextFilter", ImGuiTextFilter)
-
-local ImGuiTextBuffer = ImGuiTextBuffer or {}
-ImGuiTextBuffer.__index = ImGuiTextBuffer
-ImGuiTextBuffer["appendf"] = ImGuiTextBuffer["appendf"]  or function(i1, i2, ...)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_appendf(i1, i2, ...)
-    return out
-end
-ImGuiTextBuffer["append"] = ImGuiTextBuffer["append"]  or function(i1, i2, i3)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_append(i1, i2, i3)
-    return out
-end
-ImGuiTextBuffer["clear"] = ImGuiTextBuffer["clear"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_clear(i1)
-    return out
-end
-ImGuiTextBuffer["c_str"] = ImGuiTextBuffer["c_str"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_c_str(i1)
-    return out
-end
-ImGuiTextBuffer["reserve"] = ImGuiTextBuffer["reserve"]  or function(i1, i2)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_reserve(i1, i2)
-    return out
-end
-ImGuiTextBuffer["size"] = ImGuiTextBuffer["size"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_size(i1)
-    return out
-end
-ImGuiTextBuffer["empty"] = ImGuiTextBuffer["empty"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_empty(i1)
-    return out
-end
-ImGuiTextBuffer["begin"] = ImGuiTextBuffer["begin"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_begin(i1)
-    return out
-end
-ImGuiTextBuffer["end"] = ImGuiTextBuffer["end"]  or function(i1)
-    jit.off(true)
-    local out = C.ImGuiTextBuffer_end(i1)
-    return out
-end
-ImGuiTextBuffer.c_end = ImGuiTextBuffer["end"] 
-local mt = getmetatable(ImGuiTextBuffer) or {}
-mt.__call = mt.__call or function(self)
-    jit.off(true)
-    local p = C.ImGuiTextBuffer_ImGuiTextBuffer()
-    return ffi.gc(p[0], C.ImGuiTextBuffer_destroy)
-end
-setmetatable(ImGuiTextBuffer, mt)
-M.ImGuiTextBuffer = ImGuiTextBuffer
-ffi.metatype("ImGuiTextBuffer", ImGuiTextBuffer)
 
 local ImVec2 = ImVec2 or {}
 ImVec2.__index = ImVec2
@@ -1399,11 +1440,6 @@ M.CalcTextSize = M.CalcTextSize  or function(i1, i2, i3, i4)
     local o1 = ffi.new("ImVec2[1]")
     local out = C.igCalcTextSize(o1, i1, i2, i3, i4)
     return o1[0], out
-end
-M.GetWindowContentRegionWidth = M.GetWindowContentRegionWidth  or function()
-    jit.off(true)
-    local out = C.igGetWindowContentRegionWidth()
-    return out
 end
 M.TableNextColumn = M.TableNextColumn  or function()
     jit.off(true)
@@ -1478,16 +1514,6 @@ M.ColorPicker4 = M.ColorPicker4  or function(i1, i2, i3, i4)
     local out = C.igColorPicker4(i1, i2, i3, i4)
     return out
 end
-M.DragIntRange2 = M.DragIntRange2  or function(i1, i2, i3, i4, i5, i6, i7, i8, i9)
-    jit.off(true)
-    if i4 == nil then i4 = 1.0 end
-    if i5 == nil then i5 = 0 end
-    if i6 == nil then i6 = 0 end
-    if i7 == nil then i7 = "%d" end
-    if i9 == nil then i9 = 0 end
-    local out = C.igDragIntRange2(i1, i2, i3, i4, i5, i6, i7, i8, i9)
-    return out
-end
 M.BeginListBox = M.BeginListBox  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(0, 0) end
@@ -1506,11 +1532,6 @@ M.SetNextItemWidth = M.SetNextItemWidth  or function(i1)
     local out = C.igSetNextItemWidth(i1)
     return out
 end
-M.SetCursorScreenPos = M.SetCursorScreenPos  or function(i1)
-    jit.off(true)
-    local out = C.igSetCursorScreenPos(i1)
-    return out
-end
 M.IsRectVisible_Nil = M.IsRectVisible_Nil  or function(i1)
     jit.off(true)
     local out = C.igIsRectVisible_Nil(i1)
@@ -1519,6 +1540,12 @@ end
 M.IsRectVisible_Vec2 = M.IsRectVisible_Vec2  or function(i1, i2)
     jit.off(true)
     local out = C.igIsRectVisible_Vec2(i1, i2)
+    return out
+end
+M.SetNextWindowDockID = M.SetNextWindowDockID  or function(i1, i2)
+    jit.off(true)
+    if i2 == nil then i2 = 0 end
+    local out = C.igSetNextWindowDockID(i1, i2)
     return out
 end
 M.SetColumnOffset = M.SetColumnOffset  or function(i1, i2)
@@ -1542,6 +1569,12 @@ M.VSliderInt = M.VSliderInt  or function(i1, i2, i3, i4, i5, i6, i7)
     if i6 == nil then i6 = "%d" end
     if i7 == nil then i7 = 0 end
     local out = C.igVSliderInt(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
+M.OpenPopupOnItemClick = M.OpenPopupOnItemClick  or function(i1, i2)
+    jit.off(true)
+    if i2 == nil then i2 = 1 end
+    local out = C.igOpenPopupOnItemClick(i1, i2)
     return out
 end
 M.IsAnyMouseDown = M.IsAnyMouseDown  or function()
@@ -1611,6 +1644,12 @@ end
 M.CheckboxFlags_UintPtr = M.CheckboxFlags_UintPtr  or function(i1, i2, i3)
     jit.off(true)
     local out = C.igCheckboxFlags_UintPtr(i1, i2, i3)
+    return out
+end
+M.IsWindowHovered = M.IsWindowHovered  or function(i1)
+    jit.off(true)
+    if i1 == nil then i1 = 0 end
+    local out = C.igIsWindowHovered(i1)
     return out
 end
 M.PlotHistogram_FloatPtr = M.PlotHistogram_FloatPtr  or function(i1, i2, i3, i4, i5, i6, i7, i8, i9)
@@ -1769,11 +1808,6 @@ M.BeginChild_ID = M.BeginChild_ID  or function(i1, i2, i3, i4)
     local out = C.igBeginChild_ID(i1, i2, i3, i4)
     return out
 end
-M.IsItemToggledOpen = M.IsItemToggledOpen  or function()
-    jit.off(true)
-    local out = C.igIsItemToggledOpen()
-    return out
-end
 M.ShowDemoWindow = M.ShowDemoWindow  or function(i1)
     jit.off(true)
     local out = C.igShowDemoWindow(i1)
@@ -1795,6 +1829,12 @@ M.Begin = M.Begin  or function(i1, i2, i3)
     local out = C.igBegin(i1, i2, i3)
     return out
 end
+M.ColorEdit3 = M.ColorEdit3  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igColorEdit3(i1, i2, i3)
+    return out
+end
 M.GetAllocatorFunctions = M.GetAllocatorFunctions  or function(i1, i2, i3)
     jit.off(true)
     local out = C.igGetAllocatorFunctions(i1, i2, i3)
@@ -1803,6 +1843,11 @@ end
 M.GetFontSize = M.GetFontSize  or function()
     jit.off(true)
     local out = C.igGetFontSize()
+    return out
+end
+M.GetWindowDockID = M.GetWindowDockID  or function()
+    jit.off(true)
+    local out = C.igGetWindowDockID()
     return out
 end
 M.InputTextMultiline = M.InputTextMultiline  or function(i1, i2, i3, i4, i5, i6, i7)
@@ -1855,21 +1900,30 @@ M.GetTextLineHeightWithSpacing = M.GetTextLineHeightWithSpacing  or function()
     local out = C.igGetTextLineHeightWithSpacing()
     return out
 end
+M.GetPlatformIO = M.GetPlatformIO  or function()
+    jit.off(true)
+    local out = C.igGetPlatformIO()
+    return out
+end
 M.SetColumnWidth = M.SetColumnWidth  or function(i1, i2)
     jit.off(true)
     local out = C.igSetColumnWidth(i1, i2)
     return out
 end
-M.BeginTabItem = M.BeginTabItem  or function(i1, i2, i3)
+M.GetWindowViewport = M.GetWindowViewport  or function()
     jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igBeginTabItem(i1, i2, i3)
+    local out = C.igGetWindowViewport()
     return out
 end
 M.VSliderScalar = M.VSliderScalar  or function(i1, i2, i3, i4, i5, i6, i7, i8)
     jit.off(true)
     if i8 == nil then i8 = 0 end
     local out = C.igVSliderScalar(i1, i2, i3, i4, i5, i6, i7, i8)
+    return out
+end
+M.GetWindowDpiScale = M.GetWindowDpiScale  or function()
+    jit.off(true)
+    local out = C.igGetWindowDpiScale()
     return out
 end
 M.SliderFloat3 = M.SliderFloat3  or function(i1, i2, i3, i4, i5, i6)
@@ -1911,9 +1965,14 @@ M.GetMousePosOnOpeningCurrentPopup = M.GetMousePosOnOpeningCurrentPopup  or func
     local out = C.igGetMousePosOnOpeningCurrentPopup(o1)
     return o1[0], out
 end
-M.GetForegroundDrawList = M.GetForegroundDrawList  or function()
+M.GetForegroundDrawList_Nil = M.GetForegroundDrawList_Nil  or function()
     jit.off(true)
-    local out = C.igGetForegroundDrawList()
+    local out = C.igGetForegroundDrawList_Nil()
+    return out
+end
+M.GetForegroundDrawList_ViewportPtr = M.GetForegroundDrawList_ViewportPtr  or function(i1)
+    jit.off(true)
+    local out = C.igGetForegroundDrawList_ViewportPtr(i1)
     return out
 end
 M.EndDragDropSource = M.EndDragDropSource  or function()
@@ -1943,6 +2002,16 @@ M.InputInt3 = M.InputInt3  or function(i1, i2, i3)
     local out = C.igInputInt3(i1, i2, i3)
     return out
 end
+M.SetNextWindowClass = M.SetNextWindowClass  or function(i1)
+    jit.off(true)
+    local out = C.igSetNextWindowClass(i1)
+    return out
+end
+M.DestroyPlatformWindows = M.DestroyPlatformWindows  or function()
+    jit.off(true)
+    local out = C.igDestroyPlatformWindows()
+    return out
+end
 M.DragInt3 = M.DragInt3  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
     if i3 == nil then i3 = 1.0 end
@@ -1951,6 +2020,11 @@ M.DragInt3 = M.DragInt3  or function(i1, i2, i3, i4, i5, i6, i7)
     if i6 == nil then i6 = "%d" end
     if i7 == nil then i7 = 0 end
     local out = C.igDragInt3(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
+M.RenderPlatformWindowsDefault = M.RenderPlatformWindowsDefault  or function(i1, i2)
+    jit.off(true)
+    local out = C.igRenderPlatformWindowsDefault(i1, i2)
     return out
 end
 M.GetContentRegionMax = M.GetContentRegionMax  or function()
@@ -1986,9 +2060,10 @@ M.ResetMouseDragDelta = M.ResetMouseDragDelta  or function(i1)
     local out = C.igResetMouseDragDelta(i1)
     return out
 end
-M.SetCursorPosY = M.SetCursorPosY  or function(i1)
+M.DockSpaceOverViewport = M.DockSpaceOverViewport  or function(i1, i2, i3)
     jit.off(true)
-    local out = C.igSetCursorPosY(i1)
+    if i2 == nil then i2 = 0 end
+    local out = C.igDockSpaceOverViewport(i1, i2, i3)
     return out
 end
 M.EndListBox = M.EndListBox  or function()
@@ -2131,6 +2206,11 @@ M.PopStyleVar = M.PopStyleVar  or function(i1)
     local out = C.igPopStyleVar(i1)
     return out
 end
+M.FindViewportByPlatformHandle = M.FindViewportByPlatformHandle  or function(i1)
+    jit.off(true)
+    local out = C.igFindViewportByPlatformHandle(i1)
+    return out
+end
 M.TreeNode_Str = M.TreeNode_Str  or function(i1)
     jit.off(true)
     local out = C.igTreeNode_Str(i1)
@@ -2162,10 +2242,9 @@ M.CaptureKeyboardFromApp = M.CaptureKeyboardFromApp  or function(i1)
     local out = C.igCaptureKeyboardFromApp(i1)
     return out
 end
-M.SetKeyboardFocusHere = M.SetKeyboardFocusHere  or function(i1)
+M.EndTable = M.EndTable  or function()
     jit.off(true)
-    if i1 == nil then i1 = 0 end
-    local out = C.igSetKeyboardFocusHere(i1)
+    local out = C.igEndTable()
     return out
 end
 M.DebugCheckVersionAndDataLayout = M.DebugCheckVersionAndDataLayout  or function(i1, i2, i3, i4, i5, i6, i7)
@@ -2189,9 +2268,9 @@ M.IsMouseHoveringRect = M.IsMouseHoveringRect  or function(i1, i2, i3)
     local out = C.igIsMouseHoveringRect(i1, i2, i3)
     return out
 end
-M.SetCurrentContext = M.SetCurrentContext  or function(i1)
+M.IsItemDeactivated = M.IsItemDeactivated  or function()
     jit.off(true)
-    local out = C.igSetCurrentContext(i1)
+    local out = C.igIsItemDeactivated()
     return out
 end
 M.PushStyleVar_Float = M.PushStyleVar_Float  or function(i1, i2)
@@ -2220,9 +2299,9 @@ M.SetWindowFocus_Str = M.SetWindowFocus_Str  or function(i1)
     local out = C.igSetWindowFocus_Str(i1)
     return out
 end
-M.PopAllowKeyboardFocus = M.PopAllowKeyboardFocus  or function()
+M.PushItemWidth = M.PushItemWidth  or function(i1)
     jit.off(true)
-    local out = C.igPopAllowKeyboardFocus()
+    local out = C.igPushItemWidth(i1)
     return out
 end
 M.LoadIniSettingsFromDisk = M.LoadIniSettingsFromDisk  or function(i1)
@@ -2252,9 +2331,9 @@ M.LabelText = M.LabelText  or function(i1, i2, ...)
     local out = C.igLabelText(i1, i2, ...)
     return out
 end
-M.LogFinish = M.LogFinish  or function()
+M.GetFont = M.GetFont  or function()
     jit.off(true)
-    local out = C.igLogFinish()
+    local out = C.igGetFont()
     return out
 end
 M.IsKeyPressed = M.IsKeyPressed  or function(i1, i2)
@@ -2263,9 +2342,14 @@ M.IsKeyPressed = M.IsKeyPressed  or function(i1, i2)
     local out = C.igIsKeyPressed(i1, i2)
     return out
 end
-M.GetBackgroundDrawList = M.GetBackgroundDrawList  or function()
+M.GetBackgroundDrawList_Nil = M.GetBackgroundDrawList_Nil  or function()
     jit.off(true)
-    local out = C.igGetBackgroundDrawList()
+    local out = C.igGetBackgroundDrawList_Nil()
+    return out
+end
+M.GetBackgroundDrawList_ViewportPtr = M.GetBackgroundDrawList_ViewportPtr  or function(i1)
+    jit.off(true)
+    local out = C.igGetBackgroundDrawList_ViewportPtr(i1)
     return out
 end
 M.SmallButton = M.SmallButton  or function(i1)
@@ -2313,6 +2397,13 @@ M.InputFloat = M.InputFloat  or function(i1, i2, i3, i4, i5, i6)
     if i5 == nil then i5 = "%.3f" end
     if i6 == nil then i6 = 0 end
     local out = C.igInputFloat(i1, i2, i3, i4, i5, i6)
+    return out
+end
+M.DockSpace = M.DockSpace  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i2 == nil then i2 = M.ImVec2_Float(0, 0) end
+    if i3 == nil then i3 = 0 end
+    local out = C.igDockSpace(i1, i2, i3, i4)
     return out
 end
 M.ColorConvertRGBtoHSV = M.ColorConvertRGBtoHSV  or function(i1, i2, i3)
@@ -2447,6 +2538,12 @@ M.MemFree = M.MemFree  or function(i1)
     local out = C.igMemFree(i1)
     return out
 end
+M.IsItemClicked = M.IsItemClicked  or function(i1)
+    jit.off(true)
+    if i1 == nil then i1 = 0 end
+    local out = C.igIsItemClicked(i1)
+    return out
+end
 M.ProgressBar = M.ProgressBar  or function(i1, i2, i3)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(-FLT_MIN, 0) end
@@ -2525,6 +2622,13 @@ M.GetDrawData = M.GetDrawData  or function()
     local out = C.igGetDrawData()
     return out
 end
+M.VSliderFloat = M.VSliderFloat  or function(i1, i2, i3, i4, i5, i6, i7)
+    jit.off(true)
+    if i6 == nil then i6 = "%.3f" end
+    if i7 == nil then i7 = 0 end
+    local out = C.igVSliderFloat(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
 M.IsMouseClicked = M.IsMouseClicked  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = false end
@@ -2534,6 +2638,22 @@ end
 M.CalcItemWidth = M.CalcItemWidth  or function()
     jit.off(true)
     local out = C.igCalcItemWidth()
+    return out
+end
+M.Unindent = M.Unindent  or function(i1)
+    jit.off(true)
+    if i1 == nil then i1 = 0.0 end
+    local out = C.igUnindent(i1)
+    return out
+end
+M.TreePush_Str = M.TreePush_Str  or function(i1)
+    jit.off(true)
+    local out = C.igTreePush_Str(i1)
+    return out
+end
+M.TreePush_Ptr = M.TreePush_Ptr  or function(i1)
+    jit.off(true)
+    local out = C.igTreePush_Ptr(i1)
     return out
 end
 M.Indent = M.Indent  or function(i1)
@@ -2548,52 +2668,10 @@ M.SetDragDropPayload = M.SetDragDropPayload  or function(i1, i2, i3, i4)
     local out = C.igSetDragDropPayload(i1, i2, i3, i4)
     return out
 end
-M.SetClipboardText = M.SetClipboardText  or function(i1)
+M.InputTextWithHint = M.InputTextWithHint  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
-    local out = C.igSetClipboardText(i1)
-    return out
-end
-M.TableSetupColumn = M.TableSetupColumn  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    if i3 == nil then i3 = 0.0 end
-    if i4 == nil then i4 = 0 end
-    local out = C.igTableSetupColumn(i1, i2, i3, i4)
-    return out
-end
-M.VSliderFloat = M.VSliderFloat  or function(i1, i2, i3, i4, i5, i6, i7)
-    jit.off(true)
-    if i6 == nil then i6 = "%.3f" end
-    if i7 == nil then i7 = 0 end
-    local out = C.igVSliderFloat(i1, i2, i3, i4, i5, i6, i7)
-    return out
-end
-M.Unindent = M.Unindent  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = 0.0 end
-    local out = C.igUnindent(i1)
-    return out
-end
-M.SetNextWindowFocus = M.SetNextWindowFocus  or function()
-    jit.off(true)
-    local out = C.igSetNextWindowFocus()
-    return out
-end
-M.SameLine = M.SameLine  or function(i1, i2)
-    jit.off(true)
-    if i1 == nil then i1 = 0.0 end
-    if i2 == nil then i2 = -1.0 end
-    local out = C.igSameLine(i1, i2)
-    return out
-end
-M.TreePush_Str = M.TreePush_Str  or function(i1)
-    jit.off(true)
-    local out = C.igTreePush_Str(i1)
-    return out
-end
-M.TreePush_Ptr = M.TreePush_Ptr  or function(i1)
-    jit.off(true)
-    local out = C.igTreePush_Ptr(i1)
+    if i5 == nil then i5 = 0 end
+    local out = C.igInputTextWithHint(i1, i2, i3, i4, i5, i6, i7)
     return out
 end
 M.TreeNodeEx_Str = M.TreeNodeEx_Str  or function(i1, i2)
@@ -2622,6 +2700,72 @@ M.TextUnformatted = M.TextUnformatted  or function(i1, i2)
     local out = C.igTextUnformatted(i1, i2)
     return out
 end
+M.TextDisabled = M.TextDisabled  or function(i1, ...)
+    jit.off(true)
+    local out = C.igTextDisabled(i1, ...)
+    return out
+end
+M.TableSetColumnIndex = M.TableSetColumnIndex  or function(i1)
+    jit.off(true)
+    local out = C.igTableSetColumnIndex(i1)
+    return out
+end
+M.SetClipboardText = M.SetClipboardText  or function(i1)
+    jit.off(true)
+    local out = C.igSetClipboardText(i1)
+    return out
+end
+M.TableSetupColumn = M.TableSetupColumn  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i2 == nil then i2 = 0 end
+    if i3 == nil then i3 = 0.0 end
+    if i4 == nil then i4 = 0 end
+    local out = C.igTableSetupColumn(i1, i2, i3, i4)
+    return out
+end
+M.TableHeadersRow = M.TableHeadersRow  or function()
+    jit.off(true)
+    local out = C.igTableHeadersRow()
+    return out
+end
+M.SetNextWindowFocus = M.SetNextWindowFocus  or function()
+    jit.off(true)
+    local out = C.igSetNextWindowFocus()
+    return out
+end
+M.SameLine = M.SameLine  or function(i1, i2)
+    jit.off(true)
+    if i1 == nil then i1 = 0.0 end
+    if i2 == nil then i2 = -1.0 end
+    local out = C.igSameLine(i1, i2)
+    return out
+end
+M.TableHeader = M.TableHeader  or function(i1)
+    jit.off(true)
+    local out = C.igTableHeader(i1)
+    return out
+end
+M.SetCurrentContext = M.SetCurrentContext  or function(i1)
+    jit.off(true)
+    local out = C.igSetCurrentContext(i1)
+    return out
+end
+M.TableGetColumnName = M.TableGetColumnName  or function(i1)
+    jit.off(true)
+    if i1 == nil then i1 = -1 end
+    local out = C.igTableGetColumnName(i1)
+    return out
+end
+M.TableGetColumnIndex = M.TableGetColumnIndex  or function()
+    jit.off(true)
+    local out = C.igTableGetColumnIndex()
+    return out
+end
+M.TableGetColumnCount = M.TableGetColumnCount  or function()
+    jit.off(true)
+    local out = C.igTableGetColumnCount()
+    return out
+end
 M.TableGetSortSpecs = M.TableGetSortSpecs  or function()
     jit.off(true)
     local out = C.igTableGetSortSpecs()
@@ -2644,14 +2788,16 @@ M.PopItemWidth = M.PopItemWidth  or function()
     local out = C.igPopItemWidth()
     return out
 end
-M.TextDisabled = M.TextDisabled  or function(i1, ...)
+M.StyleColorsClassic = M.StyleColorsClassic  or function(i1)
     jit.off(true)
-    local out = C.igTextDisabled(i1, ...)
+    local out = C.igStyleColorsClassic(i1)
     return out
 end
-M.TableSetColumnIndex = M.TableSetColumnIndex  or function(i1)
+M.SliderInt4 = M.SliderInt4  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
-    local out = C.igTableSetColumnIndex(i1)
+    if i5 == nil then i5 = "%d" end
+    if i6 == nil then i6 = 0 end
+    local out = C.igSliderInt4(i1, i2, i3, i4, i5, i6)
     return out
 end
 M.InputDouble = M.InputDouble  or function(i1, i2, i3, i4, i5, i6)
@@ -2663,25 +2809,25 @@ M.InputDouble = M.InputDouble  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igInputDouble(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.TableHeadersRow = M.TableHeadersRow  or function()
-    jit.off(true)
-    local out = C.igTableHeadersRow()
-    return out
-end
 M.EndPopup = M.EndPopup  or function()
     jit.off(true)
     local out = C.igEndPopup()
     return out
 end
-M.TableHeader = M.TableHeader  or function(i1)
+M.SliderFloat4 = M.SliderFloat4  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
-    local out = C.igTableHeader(i1)
+    if i5 == nil then i5 = "%.3f" end
+    if i6 == nil then i6 = 0 end
+    local out = C.igSliderFloat4(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.TableGetColumnName = M.TableGetColumnName  or function(i1)
+M.SliderAngle = M.SliderAngle  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
-    if i1 == nil then i1 = -1 end
-    local out = C.igTableGetColumnName(i1)
+    if i3 == nil then i3 = -360.0 end
+    if i4 == nil then i4 = 360.0 end
+    if i5 == nil then i5 = "%.0f deg" end
+    if i6 == nil then i6 = 0 end
+    local out = C.igSliderAngle(i1, i2, i3, i4, i5, i6)
     return out
 end
 M.Selectable_Bool = M.Selectable_Bool  or function(i1, i2, i3, i4)
@@ -2711,19 +2857,22 @@ M.ListBox_FnBoolPtr = M.ListBox_FnBoolPtr  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igListBox_FnBoolPtr(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.TableGetColumnIndex = M.TableGetColumnIndex  or function()
+M.ShowUserGuide = M.ShowUserGuide  or function()
     jit.off(true)
-    local out = C.igTableGetColumnIndex()
+    local out = C.igShowUserGuide()
     return out
 end
-M.TableGetColumnCount = M.TableGetColumnCount  or function()
+M.SetNextWindowPos = M.SetNextWindowPos  or function(i1, i2, i3)
     jit.off(true)
-    local out = C.igTableGetColumnCount()
+    if i2 == nil then i2 = 0 end
+    if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
+    local out = C.igSetNextWindowPos(i1, i2, i3)
     return out
 end
-M.SetNextWindowSizeConstraints = M.SetNextWindowSizeConstraints  or function(i1, i2, i3, i4)
+M.SetNextWindowSize = M.SetNextWindowSize  or function(i1, i2)
     jit.off(true)
-    local out = C.igSetNextWindowSizeConstraints(i1, i2, i3, i4)
+    if i2 == nil then i2 = 0 end
+    local out = C.igSetNextWindowSize(i1, i2)
     return out
 end
 M.GetVersion = M.GetVersion  or function()
@@ -2736,9 +2885,16 @@ M.EndCombo = M.EndCombo  or function()
     local out = C.igEndCombo()
     return out
 end
-M.StyleColorsClassic = M.StyleColorsClassic  or function(i1)
+M.SetWindowSize_Vec2 = M.SetWindowSize_Vec2  or function(i1, i2)
     jit.off(true)
-    local out = C.igStyleColorsClassic(i1)
+    if i2 == nil then i2 = 0 end
+    local out = C.igSetWindowSize_Vec2(i1, i2)
+    return out
+end
+M.SetWindowSize_Str = M.SetWindowSize_Str  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igSetWindowSize_Str(i1, i2, i3)
     return out
 end
 M.PushTextWrapPos = M.PushTextWrapPos  or function(i1)
@@ -2747,11 +2903,21 @@ M.PushTextWrapPos = M.PushTextWrapPos  or function(i1)
     local out = C.igPushTextWrapPos(i1)
     return out
 end
-M.SliderInt4 = M.SliderInt4  or function(i1, i2, i3, i4, i5, i6)
+M.GetFrameHeight = M.GetFrameHeight  or function()
     jit.off(true)
-    if i5 == nil then i5 = "%d" end
-    if i6 == nil then i6 = 0 end
-    local out = C.igSliderInt4(i1, i2, i3, i4, i5, i6)
+    local out = C.igGetFrameHeight()
+    return out
+end
+M.SetWindowCollapsed_Bool = M.SetWindowCollapsed_Bool  or function(i1, i2)
+    jit.off(true)
+    if i2 == nil then i2 = 0 end
+    local out = C.igSetWindowCollapsed_Bool(i1, i2)
+    return out
+end
+M.SetWindowCollapsed_Str = M.SetWindowCollapsed_Str  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igSetWindowCollapsed_Str(i1, i2, i3)
     return out
 end
 M.GetDragDropPayload = M.GetDragDropPayload  or function()
@@ -2764,16 +2930,14 @@ M.AlignTextToFramePadding = M.AlignTextToFramePadding  or function()
     local out = C.igAlignTextToFramePadding()
     return out
 end
-M.GetTextLineHeight = M.GetTextLineHeight  or function()
+M.PopAllowKeyboardFocus = M.PopAllowKeyboardFocus  or function()
     jit.off(true)
-    local out = C.igGetTextLineHeight()
+    local out = C.igPopAllowKeyboardFocus()
     return out
 end
-M.SliderFloat4 = M.SliderFloat4  or function(i1, i2, i3, i4, i5, i6)
+M.SetScrollX = M.SetScrollX  or function(i1)
     jit.off(true)
-    if i5 == nil then i5 = "%.3f" end
-    if i6 == nil then i6 = 0 end
-    local out = C.igSliderFloat4(i1, i2, i3, i4, i5, i6)
+    local out = C.igSetScrollX(i1)
     return out
 end
 M.SetNextWindowContentSize = M.SetNextWindowContentSize  or function(i1)
@@ -2791,30 +2955,26 @@ M.EndTooltip = M.EndTooltip  or function()
     local out = C.igEndTooltip()
     return out
 end
-M.SliderAngle = M.SliderAngle  or function(i1, i2, i3, i4, i5, i6)
+M.SetScrollHereY = M.SetScrollHereY  or function(i1)
     jit.off(true)
-    if i3 == nil then i3 = -360.0 end
-    if i4 == nil then i4 = 360.0 end
-    if i5 == nil then i5 = "%.0f deg" end
-    if i6 == nil then i6 = 0 end
-    local out = C.igSliderAngle(i1, i2, i3, i4, i5, i6)
+    if i1 == nil then i1 = 0.5 end
+    local out = C.igSetScrollHereY(i1)
     return out
 end
-M.ShowUserGuide = M.ShowUserGuide  or function()
+M.SetScrollHereX = M.SetScrollHereX  or function(i1)
     jit.off(true)
-    local out = C.igShowUserGuide()
+    if i1 == nil then i1 = 0.5 end
+    local out = C.igSetScrollHereX(i1)
     return out
 end
-M.SetWindowSize_Vec2 = M.SetWindowSize_Vec2  or function(i1, i2)
+M.SetNextWindowViewport = M.SetNextWindowViewport  or function(i1)
     jit.off(true)
-    if i2 == nil then i2 = 0 end
-    local out = C.igSetWindowSize_Vec2(i1, i2)
+    local out = C.igSetNextWindowViewport(i1)
     return out
 end
-M.SetWindowSize_Str = M.SetWindowSize_Str  or function(i1, i2, i3)
+M.SetNextWindowSizeConstraints = M.SetNextWindowSizeConstraints  or function(i1, i2, i3, i4)
     jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igSetWindowSize_Str(i1, i2, i3)
+    local out = C.igSetNextWindowSizeConstraints(i1, i2, i3, i4)
     return out
 end
 M.ShowAboutWindow = M.ShowAboutWindow  or function(i1)
@@ -2832,38 +2992,36 @@ M.ShowStyleSelector = M.ShowStyleSelector  or function(i1)
     local out = C.igShowStyleSelector(i1)
     return out
 end
-M.SetWindowCollapsed_Bool = M.SetWindowCollapsed_Bool  or function(i1, i2)
+M.SetNextWindowCollapsed = M.SetNextWindowCollapsed  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = 0 end
-    local out = C.igSetWindowCollapsed_Bool(i1, i2)
+    local out = C.igSetNextWindowCollapsed(i1, i2)
     return out
 end
-M.SetWindowCollapsed_Str = M.SetWindowCollapsed_Str  or function(i1, i2, i3)
+M.LogFinish = M.LogFinish  or function()
     jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igSetWindowCollapsed_Str(i1, i2, i3)
+    local out = C.igLogFinish()
     return out
 end
-M.GetFont = M.GetFont  or function()
+M.SetKeyboardFocusHere = M.SetKeyboardFocusHere  or function(i1)
     jit.off(true)
-    local out = C.igGetFont()
+    if i1 == nil then i1 = 0 end
+    local out = C.igSetKeyboardFocusHere(i1)
     return out
 end
-M.SetScrollX = M.SetScrollX  or function(i1)
+M.SetItemDefaultFocus = M.SetItemDefaultFocus  or function()
     jit.off(true)
-    local out = C.igSetScrollX(i1)
+    local out = C.igSetItemDefaultFocus()
     return out
 end
-M.SetScrollHereY = M.SetScrollHereY  or function(i1)
+M.SetCursorScreenPos = M.SetCursorScreenPos  or function(i1)
     jit.off(true)
-    if i1 == nil then i1 = 0.5 end
-    local out = C.igSetScrollHereY(i1)
+    local out = C.igSetCursorScreenPos(i1)
     return out
 end
-M.SetScrollHereX = M.SetScrollHereX  or function(i1)
+M.SetCursorPosY = M.SetCursorPosY  or function(i1)
     jit.off(true)
-    if i1 == nil then i1 = 0.5 end
-    local out = C.igSetScrollHereX(i1)
+    local out = C.igSetCursorPosY(i1)
     return out
 end
 M.StyleColorsLight = M.StyleColorsLight  or function(i1)
@@ -2871,28 +3029,14 @@ M.StyleColorsLight = M.StyleColorsLight  or function(i1)
     local out = C.igStyleColorsLight(i1)
     return out
 end
-M.SetNextWindowSize = M.SetNextWindowSize  or function(i1, i2)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    local out = C.igSetNextWindowSize(i1, i2)
-    return out
-end
-M.SetNextWindowPos = M.SetNextWindowPos  or function(i1, i2, i3)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
-    local out = C.igSetNextWindowPos(i1, i2, i3)
-    return out
-end
-M.SetNextWindowCollapsed = M.SetNextWindowCollapsed  or function(i1, i2)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    local out = C.igSetNextWindowCollapsed(i1, i2)
-    return out
-end
 M.GetWindowHeight = M.GetWindowHeight  or function()
     jit.off(true)
     local out = C.igGetWindowHeight()
+    return out
+end
+M.UpdatePlatformWindows = M.UpdatePlatformWindows  or function()
+    jit.off(true)
+    local out = C.igUpdatePlatformWindows()
     return out
 end
 M.SetNextItemOpen = M.SetNextItemOpen  or function(i1, i2)
@@ -2914,27 +3058,9 @@ M.TableSetBgColor = M.TableSetBgColor  or function(i1, i2, i3)
     local out = C.igTableSetBgColor(i1, i2, i3)
     return out
 end
-M.GetCurrentContext = M.GetCurrentContext  or function()
+M.ShowStackToolWindow = M.ShowStackToolWindow  or function(i1)
     jit.off(true)
-    local out = C.igGetCurrentContext()
-    return out
-end
-M.MenuItem_Bool = M.MenuItem_Bool  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i3 == nil then i3 = false end
-    if i4 == nil then i4 = true end
-    local out = C.igMenuItem_Bool(i1, i2, i3, i4)
-    return out
-end
-M.MenuItem_BoolPtr = M.MenuItem_BoolPtr  or function(i1, i2, i3, i4)
-    jit.off(true)
-    if i4 == nil then i4 = true end
-    local out = C.igMenuItem_BoolPtr(i1, i2, i3, i4)
-    return out
-end
-M.ColorConvertFloat4ToU32 = M.ColorConvertFloat4ToU32  or function(i1)
-    jit.off(true)
-    local out = C.igColorConvertFloat4ToU32(i1)
+    local out = C.igShowStackToolWindow(i1)
     return out
 end
 M.DestroyContext = M.DestroyContext  or function(i1)
@@ -2942,43 +3068,24 @@ M.DestroyContext = M.DestroyContext  or function(i1)
     local out = C.igDestroyContext(i1)
     return out
 end
-M.DragFloat2 = M.DragFloat2  or function(i1, i2, i3, i4, i5, i6, i7)
+M.ColorConvertFloat4ToU32 = M.ColorConvertFloat4ToU32  or function(i1)
     jit.off(true)
-    if i3 == nil then i3 = 1.0 end
-    if i4 == nil then i4 = 0.0 end
-    if i5 == nil then i5 = 0.0 end
-    if i6 == nil then i6 = "%.3f" end
-    if i7 == nil then i7 = 0 end
-    local out = C.igDragFloat2(i1, i2, i3, i4, i5, i6, i7)
-    return out
-end
-M.CollapsingHeader_TreeNodeFlags = M.CollapsingHeader_TreeNodeFlags  or function(i1, i2)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    local out = C.igCollapsingHeader_TreeNodeFlags(i1, i2)
-    return out
-end
-M.CollapsingHeader_BoolPtr = M.CollapsingHeader_BoolPtr  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igCollapsingHeader_BoolPtr(i1, i2, i3)
-    return out
-end
-M.IsWindowHovered = M.IsWindowHovered  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = 0 end
-    local out = C.igIsWindowHovered(i1)
-    return out
-end
-M.InputTextWithHint = M.InputTextWithHint  or function(i1, i2, i3, i4, i5, i6, i7)
-    jit.off(true)
-    if i5 == nil then i5 = 0 end
-    local out = C.igInputTextWithHint(i1, i2, i3, i4, i5, i6, i7)
+    local out = C.igColorConvertFloat4ToU32(i1)
     return out
 end
 M.IsItemEdited = M.IsItemEdited  or function()
     jit.off(true)
     local out = C.igIsItemEdited()
+    return out
+end
+M.BeginGroup = M.BeginGroup  or function()
+    jit.off(true)
+    local out = C.igBeginGroup()
+    return out
+end
+M.GetStyleColorVec4 = M.GetStyleColorVec4  or function(i1)
+    jit.off(true)
+    local out = C.igGetStyleColorVec4(i1)
     return out
 end
 M.TableNextRow = M.TableNextRow  or function(i1, i2)
@@ -2993,12 +3100,6 @@ M.EndTabItem = M.EndTabItem  or function()
     local out = C.igEndTabItem()
     return out
 end
-M.IsItemClicked = M.IsItemClicked  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = 0 end
-    local out = C.igIsItemClicked(i1)
-    return out
-end
 M.SliderScalar = M.SliderScalar  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
     if i7 == nil then i7 = 0 end
@@ -3009,6 +3110,11 @@ M.BeginCombo = M.BeginCombo  or function(i1, i2, i3)
     jit.off(true)
     if i3 == nil then i3 = 0 end
     local out = C.igBeginCombo(i1, i2, i3)
+    return out
+end
+M.GetTextLineHeight = M.GetTextLineHeight  or function()
+    jit.off(true)
+    local out = C.igGetTextLineHeight()
     return out
 end
 M.TableSetColumnEnabled = M.TableSetColumnEnabled  or function(i1, i2)
@@ -3046,9 +3152,15 @@ M.SliderInt = M.SliderInt  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igSliderInt(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.GetScrollMaxX = M.GetScrollMaxX  or function()
+M.GetCursorScreenPos = M.GetCursorScreenPos  or function()
     jit.off(true)
-    local out = C.igGetScrollMaxX()
+    local o1 = ffi.new("ImVec2[1]")
+    local out = C.igGetCursorScreenPos(o1)
+    return o1[0], out
+end
+M.GetCurrentContext = M.GetCurrentContext  or function()
+    jit.off(true)
+    local out = C.igGetCurrentContext()
     return out
 end
 M.OpenPopup_Str = M.OpenPopup_Str  or function(i1, i2)
@@ -3063,14 +3175,6 @@ M.OpenPopup_ID = M.OpenPopup_ID  or function(i1, i2)
     local out = C.igOpenPopup_ID(i1, i2)
     return out
 end
-M.GetMouseDragDelta = M.GetMouseDragDelta  or function(i1, i2)
-    jit.off(true)
-    if i1 == nil then i1 = 0 end
-    if i2 == nil then i2 = -1.0 end
-    local o1 = ffi.new("ImVec2[1]")
-    local out = C.igGetMouseDragDelta(o1, i1, i2)
-    return o1[0], out
-end
 M.GetDrawListSharedData = M.GetDrawListSharedData  or function()
     jit.off(true)
     local out = C.igGetDrawListSharedData()
@@ -3081,15 +3185,30 @@ M.IsItemActive = M.IsItemActive  or function()
     local out = C.igIsItemActive()
     return out
 end
+M.DragFloat2 = M.DragFloat2  or function(i1, i2, i3, i4, i5, i6, i7)
+    jit.off(true)
+    if i3 == nil then i3 = 1.0 end
+    if i4 == nil then i4 = 0.0 end
+    if i5 == nil then i5 = 0.0 end
+    if i6 == nil then i6 = "%.3f" end
+    if i7 == nil then i7 = 0 end
+    local out = C.igDragFloat2(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
+M.EndTabBar = M.EndTabBar  or function()
+    jit.off(true)
+    local out = C.igEndTabBar()
+    return out
+end
 M.GetWindowContentRegionMax = M.GetWindowContentRegionMax  or function()
     jit.off(true)
     local o1 = ffi.new("ImVec2[1]")
     local out = C.igGetWindowContentRegionMax(o1)
     return o1[0], out
 end
-M.BeginMainMenuBar = M.BeginMainMenuBar  or function()
+M.Dummy = M.Dummy  or function(i1)
     jit.off(true)
-    local out = C.igBeginMainMenuBar()
+    local out = C.igDummy(i1)
     return out
 end
 M.EndDisabled = M.EndDisabled  or function()
@@ -3097,19 +3216,10 @@ M.EndDisabled = M.EndDisabled  or function()
     local out = C.igEndDisabled()
     return out
 end
-M.Dummy = M.Dummy  or function(i1)
+M.BeginPopup = M.BeginPopup  or function(i1, i2)
     jit.off(true)
-    local out = C.igDummy(i1)
-    return out
-end
-M.DragInt = M.DragInt  or function(i1, i2, i3, i4, i5, i6, i7)
-    jit.off(true)
-    if i3 == nil then i3 = 1.0 end
-    if i4 == nil then i4 = 0 end
-    if i5 == nil then i5 = 0 end
-    if i6 == nil then i6 = "%d" end
-    if i7 == nil then i7 = 0 end
-    local out = C.igDragInt(i1, i2, i3, i4, i5, i6, i7)
+    if i2 == nil then i2 = 0 end
+    local out = C.igBeginPopup(i1, i2)
     return out
 end
 M.GetTreeNodeToLabelSpacing = M.GetTreeNodeToLabelSpacing  or function()
@@ -3120,6 +3230,18 @@ end
 M.PopID = M.PopID  or function()
     jit.off(true)
     local out = C.igPopID()
+    return out
+end
+M.CollapsingHeader_TreeNodeFlags = M.CollapsingHeader_TreeNodeFlags  or function(i1, i2)
+    jit.off(true)
+    if i2 == nil then i2 = 0 end
+    local out = C.igCollapsingHeader_TreeNodeFlags(i1, i2)
+    return out
+end
+M.CollapsingHeader_BoolPtr = M.CollapsingHeader_BoolPtr  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igCollapsingHeader_BoolPtr(i1, i2, i3)
     return out
 end
 M.BeginTable = M.BeginTable  or function(i1, i2, i3, i4, i5)
@@ -3133,6 +3255,64 @@ end
 M.SaveIniSettingsToDisk = M.SaveIniSettingsToDisk  or function(i1)
     jit.off(true)
     local out = C.igSaveIniSettingsToDisk(i1)
+    return out
+end
+M.PopTextWrapPos = M.PopTextWrapPos  or function()
+    jit.off(true)
+    local out = C.igPopTextWrapPos()
+    return out
+end
+M.GetStyleColorName = M.GetStyleColorName  or function(i1)
+    jit.off(true)
+    local out = C.igGetStyleColorName(i1)
+    return out
+end
+M.DragIntRange2 = M.DragIntRange2  or function(i1, i2, i3, i4, i5, i6, i7, i8, i9)
+    jit.off(true)
+    if i4 == nil then i4 = 1.0 end
+    if i5 == nil then i5 = 0 end
+    if i6 == nil then i6 = 0 end
+    if i7 == nil then i7 = "%d" end
+    if i9 == nil then i9 = 0 end
+    local out = C.igDragIntRange2(i1, i2, i3, i4, i5, i6, i7, i8, i9)
+    return out
+end
+M.MemAlloc = M.MemAlloc  or function(i1)
+    jit.off(true)
+    local out = C.igMemAlloc(i1)
+    return out
+end
+M.GetStyle = M.GetStyle  or function()
+    jit.off(true)
+    local out = C.igGetStyle()
+    return out
+end
+M.BeginDragDropTarget = M.BeginDragDropTarget  or function()
+    jit.off(true)
+    local out = C.igBeginDragDropTarget()
+    return out
+end
+M.Image = M.Image  or function(i1, i2, i3, i4, i5, i6)
+    jit.off(true)
+    if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
+    if i4 == nil then i4 = M.ImVec2_Float(1, 1) end
+    if i5 == nil then i5 = M.ImVec4_Float(1, 1, 1, 1) end
+    if i6 == nil then i6 = M.ImVec4_Float(0, 0, 0, 0) end
+    local ptr = ffi.cast("void *", i1)
+    M._textures[tostring(ptr)] = i1
+    i1 = ptr
+    local out = C.igImage(i1, i2, i3, i4, i5, i6)
+    return out
+end
+M.SetTabItemClosed = M.SetTabItemClosed  or function(i1)
+    jit.off(true)
+    local out = C.igSetTabItemClosed(i1)
+    return out
+end
+M.ColorPicker3 = M.ColorPicker3  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igColorPicker3(i1, i2, i3)
     return out
 end
 M.Combo_Str_arr = M.Combo_Str_arr  or function(i1, i2, i3, i4, i5)
@@ -3153,65 +3333,21 @@ M.Combo_FnBoolPtr = M.Combo_FnBoolPtr  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igCombo_FnBoolPtr(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.GetStyleColorName = M.GetStyleColorName  or function(i1)
+M.DragInt = M.DragInt  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
-    local out = C.igGetStyleColorName(i1)
+    if i3 == nil then i3 = 1.0 end
+    if i4 == nil then i4 = 0 end
+    if i5 == nil then i5 = 0 end
+    if i6 == nil then i6 = "%d" end
+    if i7 == nil then i7 = 0 end
+    local out = C.igDragInt(i1, i2, i3, i4, i5, i6, i7)
     return out
 end
-M.MemAlloc = M.MemAlloc  or function(i1)
-    jit.off(true)
-    local out = C.igMemAlloc(i1)
-    return out
-end
-M.BeginPopup = M.BeginPopup  or function(i1, i2)
-    jit.off(true)
-    if i2 == nil then i2 = 0 end
-    local out = C.igBeginPopup(i1, i2)
-    return out
-end
-M.GetStyle = M.GetStyle  or function()
-    jit.off(true)
-    local out = C.igGetStyle()
-    return out
-end
-M.GetCursorScreenPos = M.GetCursorScreenPos  or function()
-    jit.off(true)
-    local o1 = ffi.new("ImVec2[1]")
-    local out = C.igGetCursorScreenPos(o1)
-    return o1[0], out
-end
-M.Image = M.Image  or function(i1, i2, i3, i4, i5, i6)
-    jit.off(true)
-    if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
-    if i4 == nil then i4 = M.ImVec2_Float(1, 1) end
-    if i5 == nil then i5 = M.ImVec4_Float(1, 1, 1, 1) end
-    if i6 == nil then i6 = M.ImVec4_Float(0, 0, 0, 0) end
-    local ptr = ffi.cast("void *", i1)
-    M._textures[tostring(ptr)] = i1
-    i1 = ptr
-    local out = C.igImage(i1, i2, i3, i4, i5, i6)
-    return out
-end
-M.SetTabItemClosed = M.SetTabItemClosed  or function(i1)
-    jit.off(true)
-    local out = C.igSetTabItemClosed(i1)
-    return out
-end
-M.BeginDragDropTarget = M.BeginDragDropTarget  or function()
-    jit.off(true)
-    local out = C.igBeginDragDropTarget()
-    return out
-end
-M.ColorEdit3 = M.ColorEdit3  or function(i1, i2, i3)
+M.ColorButton = M.ColorButton  or function(i1, i2, i3, i4)
     jit.off(true)
     if i3 == nil then i3 = 0 end
-    local out = C.igColorEdit3(i1, i2, i3)
-    return out
-end
-M.ColorPicker3 = M.ColorPicker3  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igColorPicker3(i1, i2, i3)
+    if i4 == nil then i4 = M.ImVec2_Float(0, 0) end
+    local out = C.igColorButton(i1, i2, i3, i4)
     return out
 end
 M.GetColumnIndex = M.GetColumnIndex  or function()
@@ -3241,29 +3377,24 @@ M.EndChildFrame = M.EndChildFrame  or function()
     local out = C.igEndChildFrame()
     return out
 end
-M.EndTable = M.EndTable  or function()
+M.BeginMainMenuBar = M.BeginMainMenuBar  or function()
     jit.off(true)
-    local out = C.igEndTable()
+    local out = C.igBeginMainMenuBar()
     return out
 end
-M.GetClipboardText = M.GetClipboardText  or function()
+M.FindViewportByID = M.FindViewportByID  or function(i1)
     jit.off(true)
-    local out = C.igGetClipboardText()
-    return out
-end
-M.GetFrameHeight = M.GetFrameHeight  or function()
-    jit.off(true)
-    local out = C.igGetFrameHeight()
-    return out
-end
-M.GetCursorPosX = M.GetCursorPosX  or function()
-    jit.off(true)
-    local out = C.igGetCursorPosX()
+    local out = C.igFindViewportByID(i1)
     return out
 end
 M.GetCursorPosY = M.GetCursorPosY  or function()
     jit.off(true)
     local out = C.igGetCursorPosY()
+    return out
+end
+M.GetClipboardText = M.GetClipboardText  or function()
+    jit.off(true)
+    local out = C.igGetClipboardText()
     return out
 end
 M.BeginMenu = M.BeginMenu  or function(i1, i2)
@@ -3272,11 +3403,30 @@ M.BeginMenu = M.BeginMenu  or function(i1, i2)
     local out = C.igBeginMenu(i1, i2)
     return out
 end
-M.ColorButton = M.ColorButton  or function(i1, i2, i3, i4)
+M.IsKeyDown = M.IsKeyDown  or function(i1)
+    jit.off(true)
+    local out = C.igIsKeyDown(i1)
+    return out
+end
+M.IsMouseDown = M.IsMouseDown  or function(i1)
+    jit.off(true)
+    local out = C.igIsMouseDown(i1)
+    return out
+end
+M.GetCursorPosX = M.GetCursorPosX  or function()
+    jit.off(true)
+    local out = C.igGetCursorPosX()
+    return out
+end
+M.LogButtons = M.LogButtons  or function()
+    jit.off(true)
+    local out = C.igLogButtons()
+    return out
+end
+M.BeginTabItem = M.BeginTabItem  or function(i1, i2, i3)
     jit.off(true)
     if i3 == nil then i3 = 0 end
-    if i4 == nil then i4 = M.ImVec2_Float(0, 0) end
-    local out = C.igColorButton(i1, i2, i3, i4)
+    local out = C.igBeginTabItem(i1, i2, i3)
     return out
 end
 M.GetFontTexUvWhitePixel = M.GetFontTexUvWhitePixel  or function()
@@ -3292,39 +3442,9 @@ M.Columns = M.Columns  or function(i1, i2, i3)
     local out = C.igColumns(i1, i2, i3)
     return out
 end
-M.IsKeyDown = M.IsKeyDown  or function(i1)
-    jit.off(true)
-    local out = C.igIsKeyDown(i1)
-    return out
-end
-M.IsMouseDown = M.IsMouseDown  or function(i1)
-    jit.off(true)
-    local out = C.igIsMouseDown(i1)
-    return out
-end
-M.EndTabBar = M.EndTabBar  or function()
-    jit.off(true)
-    local out = C.igEndTabBar()
-    return out
-end
-M.LogButtons = M.LogButtons  or function()
-    jit.off(true)
-    local out = C.igLogButtons()
-    return out
-end
-M.GetScrollMaxY = M.GetScrollMaxY  or function()
-    jit.off(true)
-    local out = C.igGetScrollMaxY()
-    return out
-end
 M.GetWindowWidth = M.GetWindowWidth  or function()
     jit.off(true)
     local out = C.igGetWindowWidth()
-    return out
-end
-M.GetStyleColorVec4 = M.GetStyleColorVec4  or function(i1)
-    jit.off(true)
-    local out = C.igGetStyleColorVec4(i1)
     return out
 end
 M.SliderInt3 = M.SliderInt3  or function(i1, i2, i3, i4, i5, i6)
@@ -3334,14 +3454,37 @@ M.SliderInt3 = M.SliderInt3  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igSliderInt3(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.GetWindowDrawList = M.GetWindowDrawList  or function()
+M.GetMouseDragDelta = M.GetMouseDragDelta  or function(i1, i2)
     jit.off(true)
-    local out = C.igGetWindowDrawList()
+    if i1 == nil then i1 = 0 end
+    if i2 == nil then i2 = -1.0 end
+    local o1 = ffi.new("ImVec2[1]")
+    local out = C.igGetMouseDragDelta(o1, i1, i2)
+    return o1[0], out
+end
+M.GetScrollMaxY = M.GetScrollMaxY  or function()
+    jit.off(true)
+    local out = C.igGetScrollMaxY()
+    return out
+end
+M.IsWindowDocked = M.IsWindowDocked  or function()
+    jit.off(true)
+    local out = C.igIsWindowDocked()
+    return out
+end
+M.BulletText = M.BulletText  or function(i1, ...)
+    jit.off(true)
+    local out = C.igBulletText(i1, ...)
     return out
 end
 M.EndGroup = M.EndGroup  or function()
     jit.off(true)
     local out = C.igEndGroup()
+    return out
+end
+M.GetWindowDrawList = M.GetWindowDrawList  or function()
+    jit.off(true)
+    local out = C.igGetWindowDrawList()
     return out
 end
 M.ImageButton = M.ImageButton  or function(i1, i2, i3, i4, i5, i6, i7)
@@ -3357,45 +3500,6 @@ M.ImageButton = M.ImageButton  or function(i1, i2, i3, i4, i5, i6, i7)
     local out = C.igImageButton(i1, i2, i3, i4, i5, i6, i7)
     return out
 end
-M.PushItemWidth = M.PushItemWidth  or function(i1)
-    jit.off(true)
-    local out = C.igPushItemWidth(i1)
-    return out
-end
-M.InputInt4 = M.InputInt4  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igInputInt4(i1, i2, i3)
-    return out
-end
-M.BulletText = M.BulletText  or function(i1, ...)
-    jit.off(true)
-    local out = C.igBulletText(i1, ...)
-    return out
-end
-M.IsWindowFocused = M.IsWindowFocused  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = 0 end
-    local out = C.igIsWindowFocused(i1)
-    return out
-end
-M.InvisibleButton = M.InvisibleButton  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igInvisibleButton(i1, i2, i3)
-    return out
-end
-M.GetCursorPos = M.GetCursorPos  or function()
-    jit.off(true)
-    local o1 = ffi.new("ImVec2[1]")
-    local out = C.igGetCursorPos(o1)
-    return o1[0], out
-end
-M.BeginGroup = M.BeginGroup  or function()
-    jit.off(true)
-    local out = C.igBeginGroup()
-    return out
-end
 M.LogToClipboard = M.LogToClipboard  or function(i1)
     jit.off(true)
     if i1 == nil then i1 = -1 end
@@ -3408,14 +3512,23 @@ M.BeginPopupContextWindow = M.BeginPopupContextWindow  or function(i1, i2)
     local out = C.igBeginPopupContextWindow(i1, i2)
     return out
 end
-M.IsItemDeactivated = M.IsItemDeactivated  or function()
+M.GetCursorPos = M.GetCursorPos  or function()
     jit.off(true)
-    local out = C.igIsItemDeactivated()
+    local o1 = ffi.new("ImVec2[1]")
+    local out = C.igGetCursorPos(o1)
+    return o1[0], out
+end
+M.MenuItem_Bool = M.MenuItem_Bool  or function(i1, i2, i3, i4)
+    jit.off(true)
+    if i3 == nil then i3 = false end
+    if i4 == nil then i4 = true end
+    local out = C.igMenuItem_Bool(i1, i2, i3, i4)
     return out
 end
-M.SetItemDefaultFocus = M.SetItemDefaultFocus  or function()
+M.MenuItem_BoolPtr = M.MenuItem_BoolPtr  or function(i1, i2, i3, i4)
     jit.off(true)
-    local out = C.igSetItemDefaultFocus()
+    if i4 == nil then i4 = true end
+    local out = C.igMenuItem_BoolPtr(i1, i2, i3, i4)
     return out
 end
 M.CaptureMouseFromApp = M.CaptureMouseFromApp  or function(i1)
@@ -3424,9 +3537,21 @@ M.CaptureMouseFromApp = M.CaptureMouseFromApp  or function(i1)
     local out = C.igCaptureMouseFromApp(i1)
     return out
 end
+M.InputInt4 = M.InputInt4  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igInputInt4(i1, i2, i3)
+    return out
+end
 M.PushFont = M.PushFont  or function(i1)
     jit.off(true)
     local out = C.igPushFont(i1)
+    return out
+end
+M.InvisibleButton = M.InvisibleButton  or function(i1, i2, i3)
+    jit.off(true)
+    if i3 == nil then i3 = 0 end
+    local out = C.igInvisibleButton(i1, i2, i3)
     return out
 end
 M.InputText = M.InputText  or function(i1, i2, i3, i4, i5, i6)
@@ -3435,20 +3560,25 @@ M.InputText = M.InputText  or function(i1, i2, i3, i4, i5, i6)
     local out = C.igInputText(i1, i2, i3, i4, i5, i6)
     return out
 end
-M.OpenPopupOnItemClick = M.OpenPopupOnItemClick  or function(i1, i2)
+M.IsWindowFocused = M.IsWindowFocused  or function(i1)
     jit.off(true)
-    if i2 == nil then i2 = 1 end
-    local out = C.igOpenPopupOnItemClick(i1, i2)
+    if i1 == nil then i1 = 0 end
+    local out = C.igIsWindowFocused(i1)
     return out
 end
-M.PopTextWrapPos = M.PopTextWrapPos  or function()
+M.IsItemToggledOpen = M.IsItemToggledOpen  or function()
     jit.off(true)
-    local out = C.igPopTextWrapPos()
+    local out = C.igIsItemToggledOpen()
     return out
 end
 M.IsWindowAppearing = M.IsWindowAppearing  or function()
     jit.off(true)
     local out = C.igIsWindowAppearing()
+    return out
+end
+M.GetScrollMaxX = M.GetScrollMaxX  or function()
+    jit.off(true)
+    local out = C.igGetScrollMaxX()
     return out
 end
 M.SetTooltip = M.SetTooltip  or function(i1, ...)
