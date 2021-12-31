@@ -735,6 +735,7 @@ struct ImGuiIO
     ImFont* FontDefault;
     ImVec2 DisplayFramebufferScale;
     _Bool ConfigDockingNoSplit;
+    _Bool ConfigDockingWithShift;
     _Bool ConfigDockingAlwaysTabBar;
     _Bool ConfigDockingTransparentPayload;
     _Bool ConfigViewportsNoAutoMerge;
@@ -789,10 +790,11 @@ struct ImGuiIO
     double MouseClickedTime[5];
     _Bool MouseClicked[5];
     _Bool MouseDoubleClicked[5];
+    ImU16 MouseClickedCount[5];
+    ImU16 MouseClickedLastCount[5];
     _Bool MouseReleased[5];
     _Bool MouseDownOwned[5];
     _Bool MouseDownOwnedUnlessPopupClose[5];
-    _Bool MouseDownWasDoubleClick[5];
     float MouseDownDuration[5];
     float MouseDownDurationPrev[5];
     ImVec2 MouseDragMaxDistanceAbs[5];
@@ -896,10 +898,9 @@ struct ImGuiListClipper
     int DisplayStart;
     int DisplayEnd;
     int ItemsCount;
-    int StepNo;
-    int ItemsFrozen;
     float ItemsHeight;
     float StartPosY;
+    void* TempData;
 };
 struct ImColor
 {
@@ -1503,7 +1504,6 @@ extern  ImDrawListSharedData* igGetDrawListSharedData(void);
 extern  const char* igGetStyleColorName(ImGuiCol idx);
 extern  void igSetStateStorage(ImGuiStorage* storage);
 extern  ImGuiStorage* igGetStateStorage(void);
-extern  void igCalcListClipping(int items_count,float items_height,int* out_items_display_start,int* out_items_display_end);
 extern  _Bool igBeginChildFrame(ImGuiID id,const ImVec2 size,ImGuiWindowFlags flags);
 extern  void igEndChildFrame(void);
 extern  void igCalcTextSize(ImVec2 *pOut,const char* text,const char* text_end,_Bool hide_text_after_double_hash,float wrap_width);
@@ -1521,6 +1521,7 @@ extern  _Bool igIsMouseDown(ImGuiMouseButton button);
 extern  _Bool igIsMouseClicked(ImGuiMouseButton button,_Bool repeat);
 extern  _Bool igIsMouseReleased(ImGuiMouseButton button);
 extern  _Bool igIsMouseDoubleClicked(ImGuiMouseButton button);
+extern  int igGetMouseClickedCount(ImGuiMouseButton button);
 extern  _Bool igIsMouseHoveringRect(const ImVec2 r_min,const ImVec2 r_max,_Bool clip);
 extern  _Bool igIsMousePosValid(const ImVec2* mouse_pos);
 extern  _Bool igIsAnyMouseDown(void);
@@ -1628,6 +1629,7 @@ extern  void ImGuiListClipper_destroy(ImGuiListClipper* self);
 extern  void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height);
 extern  void ImGuiListClipper_End(ImGuiListClipper* self);
 extern  _Bool ImGuiListClipper_Step(ImGuiListClipper* self);
+extern  void ImGuiListClipper_ForceDisplayRangeByIndices(ImGuiListClipper* self,int item_min,int item_max);
 extern  ImColor* ImColor_ImColor_Nil(void);
 extern  void ImColor_destroy(ImColor* self);
 extern  ImColor* ImColor_ImColor_Int(int r,int g,int b,int a);

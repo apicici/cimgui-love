@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.86] (2021-12-31)
+### Changed
+- Updated to Dear ImGui 1.86 (docking branch)
+
 ## [1.85-1] (2021-10-12)
 ### Changed
 - Updated to Dear ImGui 1.85 (docking branch)
@@ -51,7 +55,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial release of `generator.lua` and LÖVE implementation
 - Generated the wrappers using Dear ImGui 1.82 (docking branch)
 
-[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.85-1...HEAD
+[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.86-1...HEAD
+[1.86-1]: https://github.com/apicici/cimgui-love/compare/1.85-1...1.86-1
 [1.85-1]: https://github.com/apicici/cimgui-love/compare/1.84.2-2...1.85-1
 [1.84.2-2]: https://github.com/apicici/cimgui-love/compare/1.84.2-1...1.84.2-2
 [1.84.2-1]: https://github.com/apicici/cimgui-love/compare/1.84.1-1...1.84.2-1
