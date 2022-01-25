@@ -13,30 +13,74 @@ local vertexformat = {
     {"VertexColor", "byte", 4}
 }
 
-local lovekeymap = {
-    ["tab"] = 1,
-    ["left"] = 2,
-    ["right"] = 3,
-    ["up"] = 4,
-    ["down"] = 5,
-    ["pageup"] = 6,
-    ["pagedown"] = 7,
-    ["home"] = 8,
-    ["end"] = 9,
-    ["insert"] = 10,
-    ["delete"] = 11,
-    ["backspace"] = 12,
-    ["space"] = 13,
-    ["return"] = 14,
-    ["escape"] = 15,
-    ["kpenter"] = 16,
-    ["a"] = 17,
-    ["c"] = 18,
-    ["v"] = 19,
-    ["x"] = 20,
-    ["y"] = 21,
-    ["z"] = 22
+local lovekeymap = {}
+
+local letters = "abcdefghijklmnopqrstuvwxyz"
+for i = 1, #letters do
+    local letter = letters:sub(i,i)
+    lovekeymap[letter] = C["ImGuiKey_" .. letter:upper()]
+end
+for i = 0, 9 do
+    lovekeymap[tostring(i)] =  C["ImGuiKey_" .. i]
+    lovekeymap["kp" .. i] =  C["ImGuiKey_Keypad" .. i]
+end
+for i = 1, 12 do
+    lovekeymap["f" .. i] =  C["ImGuiKey_F" .. i]
+end
+local inverse_map = {
+    ["LeftArrow"] = "left",
+    ["RightArrow"] = "right",
+    ["UpArrow"] = "up",
+    ["DownArrow"] = "down",
+    ["Tab"] = string.lower,
+    ["PageUp"] = string.lower,
+    ["PageDown"] = string.lower,
+    ["Home"] = string.lower,
+    ["End"] = string.lower,
+    ["Insert"] = string.lower,
+    ["Delete"] = string.lower,
+    ["Backspace"] = string.lower,
+    ["Space"] = string.lower,
+    ["Enter"] = "return",
+    ["Escape"] = string.lower,
+    ["LeftCtrl"] = "lctrl",
+    ["LeftShift"] = "lshift",
+    ["LeftAlt"] = "lgui",
+    ["LeftSuper"] = "lgui",
+    ["RightCtrl"] = "rctrl",
+    ["RightShift"] = "rshift",
+    ["RightAlt"] = "ralt",
+    ["RightSuper"] = "rgui",
+    ["Menu"] = string.lower,
+    ["Apostrophe"] = "'",
+    ["Comma"] = ",",
+    ["Minus"] = "-",
+    ["Period"] = ".",
+    ["Slash"] = "/",
+    ["Semicolon"] = ";",
+    ["Equal"] = "=",
+    ["LeftBracket"] = "[",
+    ["Backslash"] = "\\",
+    ["RightBracket"] = "]",
+    ["GraveAccent"] = "`",
+    ["CapsLock"] = string.lower,
+    ["ScrollLock"] = string.lower,
+    ["NumLock"] = string.lower,
+    ["PrintScreen"] = string.lower,
+    ["Pause"] = string.lower,
+    ["KeypadDecimal"] = "kp.",
+    ["KeypadDivide"] = "kp/",
+    ["KeypadMultiply"] = "kp*",
+    ["KeypadSubtract"] = "kp-",
+    ["KeypadAdd"] = "kp+",
+    ["KeypadEnter"] = "kpenter",
+    ["KeypadEqual"] = "kp=",
 }
+for k, v in pairs(inverse_map) do
+    v = type(v) == "function" and v(k) or v
+    lovekeymap[v] = C["ImGuiKey_" .. k]
+end
+
 
 local ini_filename, textureObject
 
@@ -47,30 +91,6 @@ function M.Init()
     M.BuildFontAtlas()
 
     local io = C.igGetIO()
-    local kmap = io.KeyMap
-
-    kmap[C.ImGuiKey_Tab] = lovekeymap["tab"]
-    kmap[C.ImGuiKey_LeftArrow] = lovekeymap["left"]
-    kmap[C.ImGuiKey_RightArrow] = lovekeymap["right"]
-    kmap[C.ImGuiKey_UpArrow] = lovekeymap["up"]
-    kmap[C.ImGuiKey_DownArrow] = lovekeymap["down"]
-    kmap[C.ImGuiKey_PageUp] = lovekeymap["pageup"]
-    kmap[C.ImGuiKey_PageDown] = lovekeymap["pagedown"]
-    kmap[C.ImGuiKey_Home] = lovekeymap["home"]
-    kmap[C.ImGuiKey_End] = lovekeymap["end"]
-    kmap[C.ImGuiKey_Insert] = lovekeymap["insert"]
-    kmap[C.ImGuiKey_Delete] = lovekeymap["delete"]
-    kmap[C.ImGuiKey_Backspace] = lovekeymap["backspace"]
-    kmap[C.ImGuiKey_Space] = lovekeymap["space"]
-    kmap[C.ImGuiKey_Enter] = lovekeymap["return"]
-    kmap[C.ImGuiKey_Escape] = lovekeymap["escape"]
-    kmap[C.ImGuiKey_KeyPadEnter] = lovekeymap["kpenter"]
-    kmap[C.ImGuiKey_A] = lovekeymap["a"]
-    kmap[C.ImGuiKey_C] = lovekeymap["c"]
-    kmap[C.ImGuiKey_V] = lovekeymap["v"]
-    kmap[C.ImGuiKey_X] = lovekeymap["x"]
-    kmap[C.ImGuiKey_Y] = lovekeymap["y"]
-    kmap[C.ImGuiKey_Z] = lovekeymap["z"]
 
     io.GetClipboardTextFn = function(userdata)
         return love.system.getClipboardText()
@@ -97,9 +117,6 @@ function M.BuildFontAtlas()
     textureObject = love.graphics.newImage(imgdata)
 end
 
-local navinputs = ffi.new("float[?]", C.ImGuiNavInput_COUNT)
-local navinputs_size = ffi.sizeof("float")*C.ImGuiNavInput_COUNT
-
 function M.Update(dt)
     local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
@@ -107,10 +124,6 @@ function M.Update(dt)
 
     if io.WantSetMousePos then
         love.mouse.setPosition(io.MousePos.x, io.MousePos.y)
-    end
-
-    if bit.band(io.ConfigFlags, C.ImGuiConfigFlags_NavEnableGamepad) == C.ImGuiConfigFlags_NavEnableGamepad then
-        ffi.copy(io.NavInputs, navinputs, navinputs_size)
     end
 end
 
@@ -163,7 +176,6 @@ function M.RenderDrawLists()
         end
         mesh:setVertexMap(IdxBuffer)
 
-        local position = 1
         for k = 0, cmd_list.CmdBuffer.Size - 1 do
             local cmd = cmd_list.CmdBuffer.Data[k]
             local clipX, clipY = cmd.ClipRect.x, cmd.ClipRect.y
@@ -186,9 +198,8 @@ function M.RenderDrawLists()
             end
 
             love.graphics.setScissor(clipX, clipY, clipW, clipH)
-            mesh:setDrawRange(position, cmd.ElemCount)
+            mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
             love.graphics.draw(mesh)
-            position = position + cmd.ElemCount
             love.graphics.setBlendMode("alpha")
         end
     end
@@ -196,9 +207,8 @@ function M.RenderDrawLists()
 end
 
 function M.MouseMoved(x, y)
-    local io = C.igGetIO()
     if love.window.hasMouseFocus() then
-        io.MousePos.x, io.MousePos.y = x, y
+        C.igGetIO():AddMousePosEvent(x, y)
     end
 end
 
@@ -206,50 +216,39 @@ local mouse_buttons = {true, true, true}
 
 function M.MousePressed(button)
     if mouse_buttons[button] then
-        C.igGetIO().MouseDown[button - 1] = true
+        C.igGetIO():AddMouseButtonEvent(button - 1, true)
     end
 end
 
 function M.MouseReleased(button)
     if mouse_buttons[button] then
-        C.igGetIO().MouseDown[button - 1] = false
+        C.igGetIO():AddMouseButtonEvent(button - 1, false)
     end
 end
 
 function M.WheelMoved(x, y)
-    local io = C.igGetIO()
-    io.MouseWheelH = x
-    io.MouseWheel = y
+    C.igGetIO():AddMouseWheelEvent(x, y)
+end
+
+
+local function update_mods()
+    local key_mods = bit.bor(
+        love.keyboard.isDown("rshift", "lshift") and C.ImGuiKeyModFlags_Shift or C.ImGuiKeyModFlags_None,
+        love.keyboard.isDown("rctrl", "lctrl") and C.ImGuiKeyModFlags_Ctrl or C.ImGuiKeyModFlags_None,
+        love.keyboard.isDown("ralt", "lalt") and C.ImGuiKeyModFlags_Alt or C.ImGuiKeyModFlags_None,
+        love.keyboard.isDown("rgui", "lgui") and C.ImGuiKeyModFlags_Super or C.ImGuiKeyModFlags_None
+    )
+    C.igGetIO():AddKeyModsEvent(key_mods)
 end
 
 function M.KeyPressed(key)
-    local io = C.igGetIO()
-    if lovekeymap[key] then
-        io.KeysDown[lovekeymap[key]] = true
-    elseif key == "rshift" or key == "lshift" then
-        io.KeyShift = true
-    elseif key == "rctrl" or key == "lctrl" then
-        io.KeyCtrl = true
-    elseif key == "ralt" or key == "lalt" then
-        io.KeyAlt = true
-    elseif key == "rgui" or key == "lgui" then
-        io.KeySuper = true
-    end
+    C.igGetIO():AddKeyEvent(lovekeymap[key] or C.ImGuiKey_None, true)
+    update_mods()
 end
 
 function M.KeyReleased(key)
-    local io = C.igGetIO()
-    if lovekeymap[key] then
-        io.KeysDown[lovekeymap[key]] = false
-    elseif key == "rshift" or key == "lshift" then
-        io.KeyShift = false
-    elseif key == "rctrl" or key == "lctrl" then
-        io.KeyCtrl = false
-    elseif key == "ralt" or key == "lalt" then
-        io.KeyAlt = false
-    elseif key == "rgui" or key == "lgui" then
-        io.KeySuper = false
-    end
+    C.igGetIO():AddKeyEvent(lovekeymap[key] or C.ImGuiKey_None, false)
+    update_mods()
 end
 
 function M.TextInput(text)
@@ -275,58 +274,54 @@ function M.JoystickRemoved()
 end
 
 local gamepad_map = {
-    a = C.ImGuiNavInput_Activate,
-    b = C.ImGuiNavInput_Cancel,
-    y = C.ImGuiNavInput_Input,
-    x = C.ImGuiNavInput_Menu,
-    dpleft = C.ImGuiNavInput_DpadLeft,
-    dpright = C.ImGuiNavInput_DpadRight,
-    dpup = C.ImGuiNavInput_DpadUp,
-    dpdown = C.ImGuiNavInput_DpadDown,
-    leftx = {C.ImGuiNavInput_LStickRight, C.ImGuiNavInput_LStickLeft},
-    lefty = {C.ImGuiNavInput_LStickDown, C.ImGuiNavInput_LStickUp},
-    leftshoulder = {C.ImGuiNavInput_FocusPrev, C.ImGuiNavInput_TweakSlow},
-    rightshoulder = {C.ImGuiNavInput_FocusNext, C.ImGuiNavInput_TweakFast},
+    start = C.ImGuiKey_GamepadStart,
+    back = C.ImGuiKey_GamepadBack,
+    a = C.ImGuiKey_GamepadFaceDown,
+    b = C.ImGuiKey_GamepadFaceRight,
+    y = C.ImGuiKey_GamepadFaceUp,
+    x = C.ImGuiKey_GamepadFaceLeft,
+    dpleft = C.ImGuiKey_GamepadDpadLeft,
+    dpright = C.ImGuiKey_GamepadDpadRight,
+    dpup = C.ImGuiKey_GamepadDpadUp,
+    dpdown = C.ImGuiKey_GamepadDpadDown,
+    leftshoulder = C.ImGuiKey_GamepadL1,
+    rightshoulder = C.ImGuiKey_GamepadR1,
+    leftstick = C.ImGuiKey_GamepadL3,
+    rightstick = C.ImGuiKey_GamepadR3,
+    --analog
+    triggerleft = C.ImGuiKey_GamepadL2,
+    triggerright = C.ImGuiKey_GamepadR2,
+    leftx = {C.ImGuiKey_GamepadLStickLeft, C.ImGuiKey_GamepadLStickRight},
+    lefty = {C.ImGuiKey_GamepadLStickUp, C.ImGuiKey_GamepadLStickDown},
+    rightx = {C.ImGuiKey_GamepadRStickLeft, C.ImGuiKey_GamepadRStickRight},
+    righty = {C.ImGuiKey_GamepadRStickUp, C.ImGuiKey_GamepadRStickDown},
 }
 
 function M.GamepadPressed(button)
-    local idx = gamepad_map[button]
-    if type(idx) == "table" then
-        for i = 1, #idx do
-            navinputs[idx[i]] = 1
-        end
-    elseif idx then
-        navinputs[idx] = 1
-    end
+    C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, true)
 end
 
 function M.GamepadReleased(button)
-    local idx = gamepad_map[button]
-    if type(idx) == "table" then
-        for i = 1, #idx do
-            navinputs[idx[i]] = 0
-        end
-    elseif idx then
-        navinputs[idx] = 0
-    end
+    C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, false)
 end
 
 function M.GamepadAxis(axis, value, threshold)
     threshold = threshold or 0
-    local idx = gamepad_map[axis]
-    if type(idx) == "table" then
+    local io = C.igGetIO()
+    local imguikey = gamepad_map[axis]
+    if type(imguikey) == "table" then
         if value > threshold then
-            navinputs[idx[1]] = value
-            navinputs[idx[2]] = 0
+            io:AddKeyAnalogEvent(imguikey[2], true, value)
+            io:AddKeyAnalogEvent(imguikey[1], false, 0)
         elseif value < -threshold then
-            navinputs[idx[1]] = 0
-            navinputs[idx[2]] = -value
+            io:AddKeyAnalogEvent(imguikey[1], true, -value)
+            io:AddKeyAnalogEvent(imguikey[2], false, 0)
         else
-            navinputs[idx[1]] = 0
-            navinputs[idx[2]] = 0
+           io:AddKeyAnalogEvent(imguikey[1], false, 0)
+           io:AddKeyAnalogEvent(imguikey[2], false, 0)
         end
-    elseif idx then
-        navinputs[idx] = value
+    elseif imguikey then
+        io:AddKeyAnalogEvent(imguikey, value ~= 0, value)
     end
 end
 

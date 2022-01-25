@@ -14,11 +14,13 @@ typedef struct ImGuiTableSortSpecs ImGuiTableSortSpecs;
 typedef struct ImGuiStyle ImGuiStyle;
 typedef struct ImGuiStorage ImGuiStorage;
 typedef struct ImGuiSizeCallbackData ImGuiSizeCallbackData;
+typedef struct ImGuiPlatformImeData ImGuiPlatformImeData;
 typedef struct ImGuiPlatformMonitor ImGuiPlatformMonitor;
 typedef struct ImGuiPlatformIO ImGuiPlatformIO;
 typedef struct ImGuiPayload ImGuiPayload;
 typedef struct ImGuiOnceUponAFrame ImGuiOnceUponAFrame;
 typedef struct ImGuiListClipper ImGuiListClipper;
+typedef struct ImGuiKeyData ImGuiKeyData;
 typedef struct ImGuiInputTextCallbackData ImGuiInputTextCallbackData;
 typedef struct ImGuiIO ImGuiIO;
 typedef struct ImGuiContext ImGuiContext;
@@ -53,11 +55,13 @@ struct ImColor;
 struct ImGuiContext;
 struct ImGuiIO;
 struct ImGuiInputTextCallbackData;
+struct ImGuiKeyData;
 struct ImGuiListClipper;
 struct ImGuiOnceUponAFrame;
 struct ImGuiPayload;
 struct ImGuiPlatformIO;
 struct ImGuiPlatformMonitor;
+struct ImGuiPlatformImeData;
 struct ImGuiSizeCallbackData;
 struct ImGuiStorage;
 struct ImGuiStyle;
@@ -112,8 +116,8 @@ typedef signed short ImS16;
 typedef unsigned short ImU16;
 typedef signed int ImS32;
 typedef unsigned int ImU32;
-typedef int64_t ImS64;
-typedef uint64_t ImU64;
+typedef signed long long ImS64;
+typedef unsigned long long ImU64;
 typedef unsigned short ImWchar16;
 typedef unsigned int ImWchar32;
 typedef ImWchar16 ImWchar;
@@ -430,7 +434,8 @@ typedef enum {
     ImGuiSortDirection_Descending = 2
 }ImGuiSortDirection_;
 typedef enum {
-    ImGuiKey_Tab,
+    ImGuiKey_None = 0,
+    ImGuiKey_Tab = 512,
     ImGuiKey_LeftArrow,
     ImGuiKey_RightArrow,
     ImGuiKey_UpArrow,
@@ -445,14 +450,74 @@ typedef enum {
     ImGuiKey_Space,
     ImGuiKey_Enter,
     ImGuiKey_Escape,
-    ImGuiKey_KeyPadEnter,
-    ImGuiKey_A,
-    ImGuiKey_C,
-    ImGuiKey_V,
-    ImGuiKey_X,
-    ImGuiKey_Y,
-    ImGuiKey_Z,
-    ImGuiKey_COUNT
+    ImGuiKey_LeftCtrl, ImGuiKey_LeftShift, ImGuiKey_LeftAlt, ImGuiKey_LeftSuper,
+    ImGuiKey_RightCtrl, ImGuiKey_RightShift, ImGuiKey_RightAlt, ImGuiKey_RightSuper,
+    ImGuiKey_Menu,
+    ImGuiKey_0, ImGuiKey_1, ImGuiKey_2, ImGuiKey_3, ImGuiKey_4, ImGuiKey_5, ImGuiKey_6, ImGuiKey_7, ImGuiKey_8, ImGuiKey_9,
+    ImGuiKey_A, ImGuiKey_B, ImGuiKey_C, ImGuiKey_D, ImGuiKey_E, ImGuiKey_F, ImGuiKey_G, ImGuiKey_H, ImGuiKey_I, ImGuiKey_J,
+    ImGuiKey_K, ImGuiKey_L, ImGuiKey_M, ImGuiKey_N, ImGuiKey_O, ImGuiKey_P, ImGuiKey_Q, ImGuiKey_R, ImGuiKey_S, ImGuiKey_T,
+    ImGuiKey_U, ImGuiKey_V, ImGuiKey_W, ImGuiKey_X, ImGuiKey_Y, ImGuiKey_Z,
+    ImGuiKey_F1, ImGuiKey_F2, ImGuiKey_F3, ImGuiKey_F4, ImGuiKey_F5, ImGuiKey_F6,
+    ImGuiKey_F7, ImGuiKey_F8, ImGuiKey_F9, ImGuiKey_F10, ImGuiKey_F11, ImGuiKey_F12,
+    ImGuiKey_Apostrophe,
+    ImGuiKey_Comma,
+    ImGuiKey_Minus,
+    ImGuiKey_Period,
+    ImGuiKey_Slash,
+    ImGuiKey_Semicolon,
+    ImGuiKey_Equal,
+    ImGuiKey_LeftBracket,
+    ImGuiKey_Backslash,
+    ImGuiKey_RightBracket,
+    ImGuiKey_GraveAccent,
+    ImGuiKey_CapsLock,
+    ImGuiKey_ScrollLock,
+    ImGuiKey_NumLock,
+    ImGuiKey_PrintScreen,
+    ImGuiKey_Pause,
+    ImGuiKey_Keypad0, ImGuiKey_Keypad1, ImGuiKey_Keypad2, ImGuiKey_Keypad3, ImGuiKey_Keypad4,
+    ImGuiKey_Keypad5, ImGuiKey_Keypad6, ImGuiKey_Keypad7, ImGuiKey_Keypad8, ImGuiKey_Keypad9,
+    ImGuiKey_KeypadDecimal,
+    ImGuiKey_KeypadDivide,
+    ImGuiKey_KeypadMultiply,
+    ImGuiKey_KeypadSubtract,
+    ImGuiKey_KeypadAdd,
+    ImGuiKey_KeypadEnter,
+    ImGuiKey_KeypadEqual,
+    ImGuiKey_GamepadStart,
+    ImGuiKey_GamepadBack,
+    ImGuiKey_GamepadFaceUp,
+    ImGuiKey_GamepadFaceDown,
+    ImGuiKey_GamepadFaceLeft,
+    ImGuiKey_GamepadFaceRight,
+    ImGuiKey_GamepadDpadUp,
+    ImGuiKey_GamepadDpadDown,
+    ImGuiKey_GamepadDpadLeft,
+    ImGuiKey_GamepadDpadRight,
+    ImGuiKey_GamepadL1,
+    ImGuiKey_GamepadR1,
+    ImGuiKey_GamepadL2,
+    ImGuiKey_GamepadR2,
+    ImGuiKey_GamepadL3,
+    ImGuiKey_GamepadR3,
+    ImGuiKey_GamepadLStickUp,
+    ImGuiKey_GamepadLStickDown,
+    ImGuiKey_GamepadLStickLeft,
+    ImGuiKey_GamepadLStickRight,
+    ImGuiKey_GamepadRStickUp,
+    ImGuiKey_GamepadRStickDown,
+    ImGuiKey_GamepadRStickLeft,
+    ImGuiKey_GamepadRStickRight,
+    ImGuiKey_COUNT,
+    ImGuiKey_LegacyNativeKey_BEGIN = 0,
+    ImGuiKey_LegacyNativeKey_END = 512,
+    ImGuiKey_NamedKey_BEGIN = 512,
+    ImGuiKey_NamedKey_END = ImGuiKey_COUNT,
+    ImGuiKey_NamedKey_COUNT = ImGuiKey_NamedKey_END - ImGuiKey_NamedKey_BEGIN,
+    ImGuiKey_KeysData_SIZE = ImGuiKey_COUNT,
+    ImGuiKey_KeysData_OFFSET = ImGuiKey_LegacyNativeKey_BEGIN,
+    ImGuiKey_Gamepad_BEGIN = ImGuiKey_GamepadStart,
+    ImGuiKey_Gamepad_END = ImGuiKey_GamepadRStickRight + 1
 }ImGuiKey_;
 typedef enum {
     ImGuiKeyModFlags_None = 0,
@@ -482,8 +547,7 @@ typedef enum {
     ImGuiNavInput_KeyRight_,
     ImGuiNavInput_KeyUp_,
     ImGuiNavInput_KeyDown_,
-    ImGuiNavInput_COUNT,
-    ImGuiNavInput_InternalStart_ = ImGuiNavInput_KeyLeft_
+    ImGuiNavInput_COUNT
 }ImGuiNavInput_;
 typedef enum {
     ImGuiConfigFlags_None = 0,
@@ -713,6 +777,13 @@ struct ImGuiStyle
     float CircleTessellationMaxError;
     ImVec4 Colors[ImGuiCol_COUNT];
 };
+struct ImGuiKeyData
+{
+    _Bool Down;
+    float DownDuration;
+    float DownDurationPrev;
+    float AnalogValue;
+};
 struct ImGuiIO
 {
     ImGuiConfigFlags ConfigFlags;
@@ -725,7 +796,6 @@ struct ImGuiIO
     float MouseDoubleClickTime;
     float MouseDoubleClickMaxDist;
     float MouseDragThreshold;
-    int KeyMap[ImGuiKey_COUNT];
     float KeyRepeatDelay;
     float KeyRepeatRate;
     void* UserData;
@@ -744,6 +814,7 @@ struct ImGuiIO
     _Bool ConfigViewportsNoDefaultParent;
     _Bool MouseDrawCursor;
     _Bool ConfigMacOSXBehaviors;
+    _Bool ConfigInputTrickleEventQueue;
     _Bool ConfigInputTextCursorBlink;
     _Bool ConfigDragClickToInputText;
     _Bool ConfigWindowsResizeFromEdges;
@@ -757,17 +828,8 @@ struct ImGuiIO
     const char* (*GetClipboardTextFn)(void* user_data);
     void (*SetClipboardTextFn)(void* user_data, const char* text);
     void* ClipboardUserData;
-    ImVec2 MousePos;
-    _Bool MouseDown[5];
-    float MouseWheel;
-    float MouseWheelH;
-    ImGuiID MouseHoveredViewport;
-    _Bool KeyCtrl;
-    _Bool KeyShift;
-    _Bool KeyAlt;
-    _Bool KeySuper;
-    _Bool KeysDown[512];
-    float NavInputs[ImGuiNavInput_COUNT];
+    void (*SetPlatformImeDataFn)(ImGuiViewport* viewport, ImGuiPlatformImeData* data);
+    void* _UnusedPadding;
     _Bool WantCaptureMouse;
     _Bool WantCaptureKeyboard;
     _Bool WantTextInput;
@@ -782,9 +844,22 @@ struct ImGuiIO
     int MetricsActiveWindows;
     int MetricsActiveAllocations;
     ImVec2 MouseDelta;
-    _Bool WantCaptureMouseUnlessPopupClose;
+    int KeyMap[ImGuiKey_COUNT];
+    _Bool KeysDown[512];
+    ImVec2 MousePos;
+    _Bool MouseDown[5];
+    float MouseWheel;
+    float MouseWheelH;
+    ImGuiID MouseHoveredViewport;
+    _Bool KeyCtrl;
+    _Bool KeyShift;
+    _Bool KeyAlt;
+    _Bool KeySuper;
+    float NavInputs[ImGuiNavInput_COUNT];
     ImGuiKeyModFlags KeyMods;
     ImGuiKeyModFlags KeyModsPrev;
+    ImGuiKeyData KeysData[ImGuiKey_KeysData_SIZE];
+    _Bool WantCaptureMouseUnlessPopupClose;
     ImVec2 MousePosPrev;
     ImVec2 MouseClickedPos[5];
     double MouseClickedTime[5];
@@ -799,12 +874,12 @@ struct ImGuiIO
     float MouseDownDurationPrev[5];
     ImVec2 MouseDragMaxDistanceAbs[5];
     float MouseDragMaxDistanceSqr[5];
-    float KeysDownDuration[512];
-    float KeysDownDurationPrev[512];
     float NavInputsDownDuration[ImGuiNavInput_COUNT];
     float NavInputsDownDurationPrev[ImGuiNavInput_COUNT];
     float PenPressure;
     _Bool AppFocusLost;
+    ImS8 BackendUsingLegacyKeyArrays;
+    _Bool BackendUsingLegacyNavInputArray;
     ImWchar16 InputQueueSurrogate;
     ImVector_ImWchar InputQueueCharacters;
 };
@@ -1140,7 +1215,6 @@ struct ImGuiPlatformIO
     void (*Platform_SwapBuffers)(ImGuiViewport* vp, void* render_arg);
     float (*Platform_GetWindowDpiScale)(ImGuiViewport* vp);
     void (*Platform_OnChangedViewport)(ImGuiViewport* vp);
-    void (*Platform_SetImeInputPos)(ImGuiViewport* vp, ImVec2 pos);
     int (*Platform_CreateVkSurface)(ImGuiViewport* vp, ImU64 vk_inst, const void* vk_allocators, ImU64* out_vk_surface);
     void (*Renderer_CreateWindow)(ImGuiViewport* vp);
     void (*Renderer_DestroyWindow)(ImGuiViewport* vp);
@@ -1155,6 +1229,12 @@ struct ImGuiPlatformMonitor
     ImVec2 MainPos, MainSize;
     ImVec2 WorkPos, WorkSize;
     float DpiScale;
+};
+struct ImGuiPlatformImeData
+{
+    _Bool WantVisible;
+    ImVec2 InputPos;
+    float InputLineHeight;
 };
 extern  ImVec2* ImVec2_ImVec2_Nil(void);
 extern  void ImVec2_destroy(ImVec2* self);
@@ -1511,11 +1591,11 @@ extern  void igColorConvertU32ToFloat4(ImVec4 *pOut,ImU32 in);
 extern  ImU32 igColorConvertFloat4ToU32(const ImVec4 in);
 extern  void igColorConvertRGBtoHSV(float r,float g,float b,float* out_h,float* out_s,float* out_v);
 extern  void igColorConvertHSVtoRGB(float h,float s,float v,float* out_r,float* out_g,float* out_b);
-extern  int igGetKeyIndex(ImGuiKey imgui_key);
-extern  _Bool igIsKeyDown(int user_key_index);
-extern  _Bool igIsKeyPressed(int user_key_index,_Bool repeat);
-extern  _Bool igIsKeyReleased(int user_key_index);
-extern  int igGetKeyPressedAmount(int key_index,float repeat_delay,float rate);
+extern  _Bool igIsKeyDown(ImGuiKey key);
+extern  _Bool igIsKeyPressed(ImGuiKey key,_Bool repeat);
+extern  _Bool igIsKeyReleased(ImGuiKey key);
+extern  int igGetKeyPressedAmount(ImGuiKey key,float repeat_delay,float rate);
+extern  const char* igGetKeyName(ImGuiKey key);
 extern  void igCaptureKeyboardFromApp(_Bool want_capture_keyboard_value);
 extern  _Bool igIsMouseDown(ImGuiMouseButton button);
 extern  _Bool igIsMouseClicked(ImGuiMouseButton button,_Bool repeat);
@@ -1553,12 +1633,20 @@ extern  ImGuiViewport* igFindViewportByPlatformHandle(void* platform_handle);
 extern  ImGuiStyle* ImGuiStyle_ImGuiStyle(void);
 extern  void ImGuiStyle_destroy(ImGuiStyle* self);
 extern  void ImGuiStyle_ScaleAllSizes(ImGuiStyle* self,float scale_factor);
+extern  void ImGuiIO_AddKeyEvent(ImGuiIO* self,ImGuiKey key,_Bool down);
+extern  void ImGuiIO_AddKeyAnalogEvent(ImGuiIO* self,ImGuiKey key,_Bool down,float v);
+extern  void ImGuiIO_AddKeyModsEvent(ImGuiIO* self,ImGuiKeyModFlags modifiers);
+extern  void ImGuiIO_AddMousePosEvent(ImGuiIO* self,float x,float y);
+extern  void ImGuiIO_AddMouseButtonEvent(ImGuiIO* self,int button,_Bool down);
+extern  void ImGuiIO_AddMouseWheelEvent(ImGuiIO* self,float wh_x,float wh_y);
+extern  void ImGuiIO_AddMouseViewportEvent(ImGuiIO* self,ImGuiID id);
+extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_AddInputCharacter(ImGuiIO* self,unsigned int c);
 extern  void ImGuiIO_AddInputCharacterUTF16(ImGuiIO* self,ImWchar16 c);
 extern  void ImGuiIO_AddInputCharactersUTF8(ImGuiIO* self,const char* str);
-extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_ClearInputCharacters(ImGuiIO* self);
 extern  void ImGuiIO_ClearInputKeys(ImGuiIO* self);
+extern  void ImGuiIO_SetKeyEventNativeData(ImGuiIO* self,ImGuiKey key,int native_keycode,int native_scancode,int native_legacy_index);
 extern  ImGuiIO* ImGuiIO_ImGuiIO(void);
 extern  void ImGuiIO_destroy(ImGuiIO* self);
 extern  ImGuiInputTextCallbackData* ImGuiInputTextCallbackData_ImGuiInputTextCallbackData(void);
@@ -1787,6 +1875,9 @@ extern  ImGuiPlatformIO* ImGuiPlatformIO_ImGuiPlatformIO(void);
 extern  void ImGuiPlatformIO_destroy(ImGuiPlatformIO* self);
 extern  ImGuiPlatformMonitor* ImGuiPlatformMonitor_ImGuiPlatformMonitor(void);
 extern  void ImGuiPlatformMonitor_destroy(ImGuiPlatformMonitor* self);
+extern  ImGuiPlatformImeData* ImGuiPlatformImeData_ImGuiPlatformImeData(void);
+extern  void ImGuiPlatformImeData_destroy(ImGuiPlatformImeData* self);
+extern  int igGetKeyIndex(ImGuiKey key);
 extern  void igLogText(const char *fmt, ...);
 extern  void ImGuiTextBuffer_appendf(struct ImGuiTextBuffer *buffer, const char *fmt, ...);
 extern  float igGET_FLT_MAX();
