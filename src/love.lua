@@ -178,29 +178,32 @@ function M.RenderDrawLists()
 
         for k = 0, cmd_list.CmdBuffer.Size - 1 do
             local cmd = cmd_list.CmdBuffer.Data[k]
-            local clipX, clipY = cmd.ClipRect.x, cmd.ClipRect.y
-            local clipW = cmd.ClipRect.z - clipX
-            local clipH = cmd.ClipRect.w - clipY
+            if cmd.ElemCount > 0 then
+                local clipX, clipY = cmd.ClipRect.x, cmd.ClipRect.y
+                local clipW = cmd.ClipRect.z - clipX
+                local clipH = cmd.ClipRect.w - clipY
 
-            love.graphics.setBlendMode("alpha")
+                love.graphics.setBlendMode("alpha")
 
-            local texture_id = C.ImDrawCmd_GetTexID(cmd)
-            if texture_id ~= nil then
-                local obj = M._textures[tostring(texture_id)]
-                local status, value = pcall(love_texture_test, obj)
-                assert(status and value, "Only LÖVE Texture objects can be passed as ImTextureID arguments.")
-                if obj:typeOf("Canvas") then
-					love.graphics.setBlendMode("alpha", "premultiplied")
+                local texture_id = C.ImDrawCmd_GetTexID(cmd)
+                if texture_id ~= nil then
+                    local obj = M._textures[tostring(texture_id)]
+                    local status, value = pcall(love_texture_test, obj)
+                    assert(status and value, "Only LÖVE Texture objects can be passed as ImTextureID arguments.")
+                    if obj:typeOf("Canvas") then
+                        love.graphics.setBlendMode("alpha", "premultiplied")
+                    end
+                    mesh:setTexture(obj)
+                else
+                    mesh:setTexture(textureObject)
                 end
-                mesh:setTexture(obj)
-            else
-                mesh:setTexture(textureObject)
-            end
 
-            love.graphics.setScissor(clipX, clipY, clipW, clipH)
-            mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
-            love.graphics.draw(mesh)
-            love.graphics.setBlendMode("alpha")
+                love.graphics.setScissor(clipX, clipY, clipW, clipH)
+                print(cmd.IdxOffset + 1, cmd.ElemCount)
+                mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
+                love.graphics.draw(mesh)
+                love.graphics.setBlendMode("alpha")
+            end
         end
     end
     love.graphics.setScissor()
