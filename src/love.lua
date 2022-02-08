@@ -7,6 +7,10 @@ local bit = require("bit")
 
 local C = M.C
 
+local L = {}
+M.love = L
+
+
 local vertexformat = {
     {"VertexPosition", "float", 2},
     {"VertexTexCoord", "float", 2},
@@ -133,11 +137,11 @@ local lovekeymap = {
 local textureObject
 local strings = {}
 
-M._textures = setmetatable({},{__mode="v"})
+L._textures = setmetatable({},{__mode="v"})
 
-function M.Init()
+function L.Init()
     C.igCreateContext(nil)
-    M.BuildFontAtlas()
+    L.BuildFontAtlas()
 
     local io = C.igGetIO()
 
@@ -162,7 +166,7 @@ function M.Init()
     io.BackendFlags = bit.bor(C.ImGuiBackendFlags_HasMouseCursors, C.ImGuiBackendFlags_HasSetMousePos)
 end
 
-function M.BuildFontAtlas()
+function L.BuildFontAtlas()
     local io = C.igGetIO()
     local pixels, width, height = ffi.new("unsigned char*[1]"), ffi.new("int[1]"), ffi.new("int[1]")
     C.ImFontAtlas_GetTexDataAsRGBA32(io.Fonts, pixels, width, height, nil)
@@ -170,7 +174,7 @@ function M.BuildFontAtlas()
     textureObject = love.graphics.newImage(imgdata)
 end
 
-function M.Update(dt)
+function L.Update(dt)
     local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
     io.DeltaTime = dt
@@ -196,7 +200,7 @@ local cursors = {
     [C.ImGuiMouseCursor_NotAllowed] = love.mouse.getSystemCursor("no"),
 }
 
-function M.RenderDrawLists()
+function L.RenderDrawLists()
     local io = C.igGetIO()
     local data = C.igGetDrawData()
 
@@ -240,7 +244,7 @@ function M.RenderDrawLists()
 
                 local texture_id = C.ImDrawCmd_GetTexID(cmd)
                 if texture_id ~= nil then
-                    local obj = M._textures[tostring(texture_id)]
+                    local obj = L._textures[tostring(texture_id)]
                     local status, value = pcall(love_texture_test, obj)
                     assert(status and value, "Only LÖVE Texture objects can be passed as ImTextureID arguments.")
                     if obj:typeOf("Canvas") then
@@ -261,7 +265,7 @@ function M.RenderDrawLists()
     love.graphics.setScissor()
 end
 
-function M.MouseMoved(x, y)
+function L.MouseMoved(x, y)
     if love.window.hasMouseFocus() then
         C.igGetIO():AddMousePosEvent(x, y)
     end
@@ -269,23 +273,23 @@ end
 
 local mouse_buttons = {true, true, true}
 
-function M.MousePressed(button)
+function L.MousePressed(button)
     if mouse_buttons[button] then
         C.igGetIO():AddMouseButtonEvent(button - 1, true)
     end
 end
 
-function M.MouseReleased(button)
+function L.MouseReleased(button)
     if mouse_buttons[button] then
         C.igGetIO():AddMouseButtonEvent(button - 1, false)
     end
 end
 
-function M.WheelMoved(x, y)
+function L.WheelMoved(x, y)
     C.igGetIO():AddMouseWheelEvent(x, y)
 end
 
-function M.KeyPressed(key)
+function L.KeyPressed(key)
     local io = C.igGetIO()
     local t = lovekeymap[key]
     if type(t) == "table" then
@@ -296,7 +300,7 @@ function M.KeyPressed(key)
     end
 end
 
-function M.KeyReleased(key)
+function L.KeyReleased(key)
     local io = C.igGetIO()
     local t = lovekeymap[key]
     if type(t) == "table" then
@@ -307,21 +311,21 @@ function M.KeyReleased(key)
     end
 end
 
-function M.TextInput(text)
+function L.TextInput(text)
     C.ImGuiIO_AddInputCharactersUTF8(C.igGetIO(), text)
 end
 
-function M.Shutdown()
+function L.Shutdown()
     C.igDestroyContext(nil)
 end
 
-function M.JoystickAdded(joystick)
+function L.JoystickAdded(joystick)
     if not joystick:isGamepad() then return end
     local io = C.igGetIO()
     io.BackendFlags = bit.bor(io.BackendFlags, C.ImGuiBackendFlags_HasGamepad)
 end
 
-function M.JoystickRemoved()
+function L.JoystickRemoved()
     for _, joystick in ipairs(love.joystick.getJoysticks()) do
         if joystick:isGamepad() then return end
     end
@@ -353,15 +357,15 @@ local gamepad_map = {
     righty = {C.ImGuiKey_GamepadRStickUp, C.ImGuiKey_GamepadRStickDown},
 }
 
-function M.GamepadPressed(button)
+function L.GamepadPressed(button)
     C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, true)
 end
 
-function M.GamepadReleased(button)
+function L.GamepadReleased(button)
     C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, false)
 end
 
-function M.GamepadAxis(axis, value, threshold)
+function L.GamepadAxis(axis, value, threshold)
     threshold = threshold or 0
     local io = C.igGetIO()
     local imguikey = gamepad_map[axis]
@@ -383,15 +387,15 @@ end
 
 -- input capture
 
-function M.GetWantCaptureMouse()
+function L.GetWantCaptureMouse()
     return C.igGetIO().WantCaptureMouse
 end
 
-function M.GetWantCaptureKeyboard()
+function L.GetWantCaptureKeyboard()
     return C.igGetIO().WantCaptureKeyboard
 end
 
-function M.GetWantTextInput()
+function L.GetWantTextInput()
     return C.igGetIO().WantTextInput
 end
 
@@ -414,5 +418,18 @@ for name in pairs(flags) do
             t[#t + 1] = M[name .. "_" .. flag]
         end
         return bit.bor(unpack(t))
+    end
+end
+
+-- revert to old implementation names, i.e., imgui.RenderDrawLists instead of imgui.love.RenderDrawLists, etc.
+local old_names = {}
+
+for k, v in pairs(L) do
+    old_names[k] = v
+end
+
+function L.RevertToOldNames()
+    for k, v in pairs(old_names) do
+        M[k] = v
     end
 end

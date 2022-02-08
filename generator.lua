@@ -125,7 +125,7 @@ templates.out_arg =
 
 templates.texture_id =
 [[    local ptr = ffi.cast("void *", &arg&)
-    M._textures[tostring(ptr)] = &arg&
+    M.love._textures[tostring(ptr)] = &arg&
     &arg& = ptr]]
 
 local defaults_patterns = { -- in the order they should be tried
