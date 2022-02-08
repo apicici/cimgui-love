@@ -5,9 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.87-1] (2022-02-07)
+## [1.87-1] (2022-02-08)
+### Breaking changes
+- Moved implementation-specific function to their own table. For example `imgui.Init` is now `imgui.love.Init`. If you prefer the old convention or you want to upgrade an older project without breaking it you can move all the functions back to the old location by running `imgui.love.RevertToOldNames()`.
+
 ### Changed
 - Updated to Dear ImGui 1.87 (docking branch)
+- `imgui.love.RenderDrawLists` now does nothing if the window is minimised.
+- The generated Lua files are now filled in alphabetical order to make reading the diffs easier.
 
 ## [1.87WIP-1] (2022-01-24)
 ### Changed
