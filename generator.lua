@@ -1,3 +1,11 @@
+local function sorted_entries(t)
+    local tmp = {}
+    for k in pairs(t) do tmp[#tmp + 1] = k end
+    table.sort(tmp)
+    return tmp
+end
+
+
 ------------------
 -- cdef.lua
 ------------------
@@ -41,7 +49,8 @@ local classes = {}
 local functions = {}
 local ignored_defaults = {}
 
-for _, t in pairs(defs) do
+for _, k in ipairs(sorted_entries(defs)) do
+    local t = defs[k]
     for _, s in ipairs(t) do
         -- flag pointer arguments that are meant as outputs and list them separately as well
         s.in_argsT, s.out_argsT = {}, {}
@@ -192,7 +201,8 @@ local function out_args_string(t)
     return table.concat(args, ", ")
 end
 
-for name, class in pairs(classes) do
+for _, name in ipairs(sorted_entries(classes)) do
+    local class = classes[name]
     wrap[#wrap + 1] = templates.class_begin:gsub("&name&", name)
     for _, m in ipairs(class.methods) do
         local shortmethod = m.ov_cimguiname:gsub("^" .. name .. "_", "")
@@ -290,7 +300,8 @@ enums[1] =
 local M = require(path .. "master")
 ]]
 
-for _, t in pairs(structs_and_enums.enums) do
+for _, k in ipairs(sorted_entries(structs_and_enums.enums)) do
+    local t = structs_and_enums.enums[k]
     for _, s in ipairs(t) do
         enums[#enums + 1] = string.format("M.%s = %d", s.name, s.calc_value)
     end
