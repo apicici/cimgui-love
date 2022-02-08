@@ -130,7 +130,8 @@ local lovekeymap = {
     ["rgui"] = {C.ImGuiKey_RightSuper, C.ImGuiKey_ModSuper},
 }
 
-local ini_filename, textureObject
+local textureObject
+local strings = {}
 
 M._textures = setmetatable({},{__mode="v"})
 
@@ -151,8 +152,12 @@ function M.Init()
     io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.x = dpiscale, dpiscale
 
     love.filesystem.createDirectory("/")
-    ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
-    io.IniFilename = ini_filename
+    strings.ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
+    io.IniFilename = strings.ini_filename
+
+    strings.impl_name = "cimgui-love"
+    io.BackendPlatformName = strings.impl_name
+    io.BackendRendererName = strings.impl_name
 
     io.BackendFlags = bit.bor(C.ImGuiBackendFlags_HasMouseCursors, C.ImGuiBackendFlags_HasSetMousePos)
 end
