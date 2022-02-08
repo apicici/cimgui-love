@@ -199,7 +199,6 @@ function M.RenderDrawLists()
                 end
 
                 love.graphics.setScissor(clipX, clipY, clipW, clipH)
-                print(cmd.IdxOffset + 1, cmd.ElemCount)
                 mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
                 love.graphics.draw(mesh)
                 love.graphics.setBlendMode("alpha")
