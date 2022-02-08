@@ -275,7 +275,7 @@ function M.RenderDrawLists()
 
     -- Avoid rendering when minimized, scale coordinates for retina displays
     -- (screen coordinates != framebuffer coordinates)
-    if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 then return end
+    if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
     C.ImDrawData_ScaleClipRects(data, io.DisplayFramebufferScale)
 
     for i = 0, data.CmdListsCount - 1 do
