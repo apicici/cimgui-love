@@ -26,7 +26,7 @@ package.cpath = string.format("%s;%s/?.%s", package.cpath, lib_path, extension)
 local imgui = require "cimgui" -- cimgui is the folder containing the Lua module (the "src" folder in the github repository)
 
 love.load = function()
-    imgui.Init()
+    imgui.love.Init()
 end
 
 love.draw = function()
@@ -35,86 +35,86 @@ love.draw = function()
     
     -- code to render imgui
     imgui.Render()
-    imgui.RenderDrawLists()
+    imgui.love.RenderDrawLists()
 end
 
 love.update = function(dt)
-    imgui.Update(dt)
+    imgui.love.Update(dt)
     imgui.NewFrame()
 end
 
 love.mousemoved = function(x, y, ...)
-    imgui.MouseMoved(x, y)
-    if not imgui.GetWantCaptureMouse() then
+    imgui.love.MouseMoved(x, y)
+    if not imgui.love.GetWantCaptureMouse() then
         -- your code here
     end
 end
 
 love.mousepressed = function(x, y, button, ...)
-    imgui.MousePressed(button)
-    if not imgui.GetWantCaptureMouse() then
+    imgui.love.MousePressed(button)
+    if not imgui.love.GetWantCaptureMouse() then
         -- your code here 
     end
 end
 
 love.mousereleased = function(x, y, button, ...)
-    imgui.MouseReleased(button)
-    if not imgui.GetWantCaptureMouse() then
+    imgui.love.MouseReleased(button)
+    if not imgui.love.GetWantCaptureMouse() then
         -- your code here 
     end
 end
 
 love.wheelmoved = function(x, y)
-    imgui.WheelMoved(x, y)
-    if not imgui.GetWantCaptureMouse() then
+    imgui.love.WheelMoved(x, y)
+    if not imgui.love.GetWantCaptureMouse() then
         -- your code here 
     end
 end
 
 love.keypressed = function(key, ...)
-    imgui.KeyPressed(key)
-    if not imgui.GetWantCaptureKeyboard() then
+    imgui.love.KeyPressed(key)
+    if not imgui.love.GetWantCaptureKeyboard() then
         -- your code here 
     end
 end
 
 love.keyreleased = function(key, ...)
-    imgui.KeyReleased(key)
-    if not imgui.GetWantCaptureKeyboard() then
+    imgui.love.KeyReleased(key)
+    if not imgui.love.GetWantCaptureKeyboard() then
         -- your code here 
     end
 end
 
 love.textinput = function(t)
-    imgui.TextInput(t)
-    if not imgui.GetWantCaptureKeyboard() then
+    imgui.love.TextInput(t)
+    if not imgui.love.GetWantCaptureKeyboard() then
         -- your code here 
     end
 end
 
 love.quit = function()
-    return imgui.Shutdown()
+    return imgui.love.Shutdown()
 end
 
 -- for gamepad support also add the following:
 
 love.joystickadded = function(joystick)
-    imgui.JoystickAdded(joystick)
+    imgui.love.JoystickAdded(joystick)
     -- your code here 
 end
 
 love.joystickremoved = function(joystick)
-    imgui.JoystickRemoved()
+    imgui.love.JoystickRemoved()
     -- your code here 
 end
 
 love.gamepadpressed = function(joystick, button)
-    imgui.GamepadPressed(button)
+    imgui.love.GamepadPressed(button)
     -- your code here 
 end
 
 love.gamepadreleased = function(joystick, button)
-    imgui.GamepadReleased(button)
+    imgui.love.GamepadReleased(button)
     -- your code here 
 end
 
@@ -122,7 +122,7 @@ end
 local threshold = 0.2 
 
 love.gamepadaxis = function(joystick, axis, value)
-    imgui.GamepadAxis(axis, value, threshold)
+    imgui.love.GamepadAxis(axis, value, threshold)
     -- your code here 
 end
 ```
@@ -174,39 +174,43 @@ Some particular things to keep in mind:
 - `igGET_FLT_MIN` and `igGET_FLT_MAX`are not wrapped directly since they always return the same value. Instead, their return values are wrapped as the numbers `imgui.FLT_MIN`, `imgui.FLT_MAX`.
 - All the unwrapped functions are accessible through FFI and exposed through `imgui.C`, which is the clib returned by `ffi.load`. For example `imgui.C.igRender` is the unwrapped version of `imgui.Render`. The function names in `imgui.C` are the cimgui ones.
 
-#### Functions not from cimgui
-The following functions in the Lua module are not wrappers of cimgui functions. They provide the LÖVE implementation for imgui.
-- `imgui.Init()`
-- `imgui.BuildFontAtlas()`
-- `imgui.Update(dt)`
-- `imgui.RenderDrawLists()`
-- `imgui.MouseMoved(x, y)`
-- `imgui.MousePressed(button)`
-- `imgui.MouseReleased(button)`
-- `imgui.WheelMoved(x, y)`
-- `imgui.KeyPressed(key)`
-- `imgui.KeyReleased(key)`
-- `imgui.TextInput(text)`
-- `imgui.Shutdown()`
-- `imgui.GetWantCaptureMouse()`
-- `imgui.GetWantCaptureKeyboard()`
-- `imgui.GetWantTextInput()`
-- `imgui.JoystickAdded(joystick)`
-- `imgui.JoystickRemoved()`
-- `imgui.GamepadPressed(button)`
-- `imgui.GamepadReleased(button)`
-- `imgui.GamepadAxis(axis, value, threshold)`
+#### Implementation specific functions
 
-See the example above to figure out how to use them. `imgui.BuildFontAtlas` is used after changing/adding fonts (must be used *after* `imgui.Init`).
+Starting from version 1.87-1 the functions specific to the LÖVE implementation have been moved to the `imgui.love` table. The implementation functions are
+- `imgui.love.Init()`
+- `imgui.love.BuildFontAtlas()`
+- `imgui.love.Update(dt)`
+- `imgui.love.RenderDrawLists()`
+- `imgui.love.MouseMoved(x, y)`
+- `imgui.love.MousePressed(button)`
+- `imgui.love.MouseReleased(button)`
+- `imgui.love.WheelMoved(x, y)`
+- `imgui.love.KeyPressed(key)`
+- `imgui.love.KeyReleased(key)`
+- `imgui.love.TextInput(text)`
+- `imgui.love.Shutdown()`
+- `imgui.love.GetWantCaptureMouse()`
+- `imgui.love.GetWantCaptureKeyboard()`
+- `imgui.love.GetWantTextInput()`
+- `imgui.love.JoystickAdded(joystick)`
+- `imgui.love.JoystickRemoved()`
+- `imgui.love.GamepadPressed(button)`
+- `imgui.love.GamepadReleased(button)`
+- `imgui.love.GamepadAxis(axis, value, threshold)`
+
+See the example above to figure out how to use them. `imgui.love.BuildFontAtlas` is used after changing/adding fonts to rebuild the font atlas as a LÖVE texture, and must be used *after* `imgui.love.Init`.
+
+In versions earlier than 1.87-1 the implementation functions were located in the `imgui` table together with the wrappers. If you prefer this convention or you want to upgrade an older project without breaking it you can move all the functions back to the old location by running `imgui.love.RevertToOldNames()`.
 
 #### Flag helpers
-The various flag enums are generally meant to be added using bitwise or, which can be done directly using LuaJIT's `bit.bor`. To make it easier to write the combined flags, some helper functions are added to the Lua module (one for each type of flag). For example, the `ImGuiWindowFlags` has the flag helper `imgui.WindowFlags`, a function taking as input the needed flag labels (as strings) and returning their bitwise or.
+The various flag enums are generally meant to be added using bitwise or, which can be done directly using LuaJIT's `bit.bor`. To make it easier to write the combined flags, some helper functions are added to the Lua module (one for each type of flag). For example, the `ImGuiWindowFlags` has the flag helper `imgui.love.WindowFlags`, a function taking as input the needed flag labels (as strings) and returning their bitwise or.
 ```lua
-imgui.WindowFlags("NoTitleBar", "NoBackground", "HorizontalScrollbar")
+imgui.love.WindowFlags("NoTitleBar", "NoBackground", "HorizontalScrollbar")
 -- same as
 local bit = require "bit"
 bit.bor(imgui.ImGuiWindowFlags_NoTitleBar, imgui.ImGuiWindowFlags_NoBackground, imgui.ImGuiWindowFlags_HorizontalScrollbar)
 ```
+Prior to version 1.87-1 the flag helper functions were located in the `imgui` table. They can be moved back to the old location by running `imgui.love.RevertToOldNames()`.
 
 #### Excluded functions
 
@@ -243,20 +247,20 @@ The wrappers take into account default arguments for the functions. Pass `nil` t
 Overloaded functions from imgui are renamed in cimgui to wrap them in C, for example `BeginChild` is split into `igBeginChild_Str` and `igBeginChild_ID`. Overloaded functions from cimgui are wrapped individually, so you would call `imgui.BeginChild_Str` or `imgui.BeginChild_ID` depending on which arguments you plan to pass to the function. This was done to avoid the overhead of a type check in Lua and to allow for an easy implementation of default arguments.
 
 ### Changing fonts
-If you change or add fonts you need to rebuild the font atlas with `imgui.BuildFontAtlas()`. For example:
+If you change or add fonts you need to rebuild the font atlas with `imgui.love.BuildFontAtlas()`. For example:
 ```lua
 local ffi = require "ffi"
 local imio = imgui.GetIO()
     
 local config = imgui.ImFontConfig()
-config.FontDataOwnedByAtlas = false -- it's important to set this, or imgui.Shutdown() will crash trying to free already freed memory
+config.FontDataOwnedByAtlas = false -- it's important to set this, or imgui.love.Shutdown() will crash trying to free already freed memory
 
 local font_size = 16
 local content, size = love.filesystem.read("example.ttf")
 local newfont = imio.Fonts:AddFontFromMemoryTTF(ffi.cast("void*", content), size, font_size, config)
 imio.FontDefault = newfont
 
-imgui.BuildFontAtlas()
+imgui.love.BuildFontAtlas()
 ```
 Fonts can also be added from files, but you need to take care of where they are placed as `ImFontAtlas_AddFontFromFileTTF` cannot access files inside the source .love.
 
@@ -273,7 +277,7 @@ love.draw = function()
     imgui.End()
     
     imgui.Render()
-    imgui.RenderDrawLists()
+    imgui.love.RenderDrawLists()
 end
 ```
 The same applies to the wrappers of other functions taking "ImTextureID" as an argument.
