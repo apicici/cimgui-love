@@ -412,7 +412,7 @@ end
 for name in pairs(flags) do
     local shortname = name:gsub("^ImGui", "")
     shortname = shortname:gsub("^Im", "")
-    M[shortname] = function(...)
+    L[shortname] = function(...)
         local t = {}
         for _, flag in ipairs({...}) do
             t[#t + 1] = M[name .. "_" .. flag]
