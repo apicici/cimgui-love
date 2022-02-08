@@ -13,73 +13,188 @@ local vertexformat = {
     {"VertexColor", "byte", 4}
 }
 
-local lovekeymap = {}
+local lovekeymap = {
+    ["return"] = C.ImGuiKey_Enter,
+    ["escape"] = C.ImGuiKey_Escape,
+    ["backspace"] = C.ImGuiKey_Backspace,
+    ["tab"] = C.ImGuiKey_Tab,
+    ["space"] = C.ImGuiKey_Space,
+    [","] = C.ImGuiKey_Comma,
+    ["-"] = C.ImGuiKey_Minus,
+    ["."] = C.ImGuiKey_Period,
+    ["/"] = C.ImGuiKey_Slash,
 
-local letters = "abcdefghijklmnopqrstuvwxyz"
-for i = 1, #letters do
-    local letter = letters:sub(i,i)
-    lovekeymap[letter] = C["ImGuiKey_" .. letter:upper()]
-end
-for i = 0, 9 do
-    lovekeymap[tostring(i)] =  C["ImGuiKey_" .. i]
-    lovekeymap["kp" .. i] =  C["ImGuiKey_Keypad" .. i]
-end
-for i = 1, 12 do
-    lovekeymap["f" .. i] =  C["ImGuiKey_F" .. i]
-end
-local inverse_map = {
-    ["LeftArrow"] = "left",
-    ["RightArrow"] = "right",
-    ["UpArrow"] = "up",
-    ["DownArrow"] = "down",
-    ["Tab"] = string.lower,
-    ["PageUp"] = string.lower,
-    ["PageDown"] = string.lower,
-    ["Home"] = string.lower,
-    ["End"] = string.lower,
-    ["Insert"] = string.lower,
-    ["Delete"] = string.lower,
-    ["Backspace"] = string.lower,
-    ["Space"] = string.lower,
-    ["Enter"] = "return",
-    ["Escape"] = string.lower,
-    ["LeftCtrl"] = "lctrl",
-    ["LeftShift"] = "lshift",
-    ["LeftAlt"] = "lgui",
-    ["LeftSuper"] = "lgui",
-    ["RightCtrl"] = "rctrl",
-    ["RightShift"] = "rshift",
-    ["RightAlt"] = "ralt",
-    ["RightSuper"] = "rgui",
-    ["Menu"] = string.lower,
-    ["Apostrophe"] = "'",
-    ["Comma"] = ",",
-    ["Minus"] = "-",
-    ["Period"] = ".",
-    ["Slash"] = "/",
-    ["Semicolon"] = ";",
-    ["Equal"] = "=",
-    ["LeftBracket"] = "[",
-    ["Backslash"] = "\\",
-    ["RightBracket"] = "]",
-    ["GraveAccent"] = "`",
-    ["CapsLock"] = string.lower,
-    ["ScrollLock"] = string.lower,
-    ["NumLock"] = string.lower,
-    ["PrintScreen"] = string.lower,
-    ["Pause"] = string.lower,
-    ["KeypadDecimal"] = "kp.",
-    ["KeypadDivide"] = "kp/",
-    ["KeypadMultiply"] = "kp*",
-    ["KeypadSubtract"] = "kp-",
-    ["KeypadAdd"] = "kp+",
-    ["KeypadEnter"] = "kpenter",
-    ["KeypadEqual"] = "kp=",
+    ["0"] = C.ImGuiKey_0,
+    ["1"] = C.ImGuiKey_1,
+    ["2"] = C.ImGuiKey_2,
+    ["3"] = C.ImGuiKey_3,
+    ["4"] = C.ImGuiKey_4,
+    ["5"] = C.ImGuiKey_5,
+    ["6"] = C.ImGuiKey_6,
+    ["7"] = C.ImGuiKey_7,
+    ["8"] = C.ImGuiKey_8,
+    ["9"] = C.ImGuiKey_9,
+
+    [";"] = C.ImGuiKey_Semicolon,
+    ["="] = C.ImGuiKey_Equal,
+
+    ["["] = C.ImGuiKey_LeftBracket,
+    ["\\"] = C.ImGuiKey_Backslash,
+    ["]"] = C.ImGuiKey_RightBracket,
+    ["`"] = C.ImGuiKey_GraveAccent,
+
+    ["a"] = C.ImGuiKey_A,
+    ["b"] = C.ImGuiKey_B,
+    ["c"] = C.ImGuiKey_C,
+    ["d"] = C.ImGuiKey_D,
+    ["e"] = C.ImGuiKey_E,
+    ["f"] = C.ImGuiKey_F,
+    ["g"] = C.ImGuiKey_G,
+    ["h"] = C.ImGuiKey_H,
+    ["i"] = C.ImGuiKey_I,
+    ["j"] = C.ImGuiKey_J,
+    ["k"] = C.ImGuiKey_K,
+    ["l"] = C.ImGuiKey_L,
+    ["m"] = C.ImGuiKey_M,
+    ["n"] = C.ImGuiKey_N,
+    ["o"] = C.ImGuiKey_O,
+    ["p"] = C.ImGuiKey_P,
+    ["q"] = C.ImGuiKey_Q,
+    ["r"] = C.ImGuiKey_R,
+    ["s"] = C.ImGuiKey_S,
+    ["t"] = C.ImGuiKey_T,
+    ["u"] = C.ImGuiKey_U,
+    ["v"] = C.ImGuiKey_V,
+    ["w"] = C.ImGuiKey_W,
+    ["x"] = C.ImGuiKey_X,
+    ["y"] = C.ImGuiKey_Y,
+    ["z"] = C.ImGuiKey_Z,
+
+    ["capslock"] = C.ImGuiKey_CapsLock,
+
+    ["f1"] = C.ImGuiKey_F1,
+    ["f2"] = C.ImGuiKey_F2,
+    ["f3"] = C.ImGuiKey_F3,
+    ["f4"] = C.ImGuiKey_F4,
+    ["f5"] = C.ImGuiKey_F5,
+    ["f6"] = C.ImGuiKey_F6,
+    ["f7"] = C.ImGuiKey_F7,
+    ["f8"] = C.ImGuiKey_F8,
+    ["f9"] = C.ImGuiKey_F9,
+    ["f10"] = C.ImGuiKey_F10,
+    ["f11"] = C.ImGuiKey_F11,
+    ["f12"] = C.ImGuiKey_F12,
+
+    ["printscreen"] = C.ImGuiKey_PrintScreen,
+    ["scrolllock"] = C.ImGuiKey_ScrollLock,
+    ["pause"] = C.ImGuiKey_Pause,
+    ["insert"] = C.ImGuiKey_Insert,
+    ["home"] = C.ImGuiKey_Home,
+    ["pageup"] = C.ImGuiKey_PageUp,
+    ["delete"] = C.ImGuiKey_Delete,
+    ["end"] = C.ImGuiKey_End,
+    ["pagedown"] = C.ImGuiKey_PageDown,
+    ["right"] = C.ImGuiKey_RightArrow,
+    ["left"] = C.ImGuiKey_LeftArrow,
+    ["down"] = C.ImGuiKey_DownArrow,
+    ["up"] = C.ImGuiKey_UpArrow,
+
+    ["numlock"] = C.ImGuiKey_NumLock,
+    ["kp/"] = C.ImGuiKey_KeypadDivide,
+    ["kp*"] = C.ImGuiKey_KeypadMultiply,
+    ["kp-"] = C.ImGuiKey_KeypadSubtract,
+    ["kp+"] = C.ImGuiKey_KeypadAdd,
+    ["kpenter"] = C.ImGuiKey_KeypadEnter,
+    ["kp0"] = C.ImGuiKey_Keypad0,
+    ["kp1"] = C.ImGuiKey_Keypad1,
+    ["kp2"] = C.ImGuiKey_Keypad2,
+    ["kp3"] = C.ImGuiKey_Keypad3,
+    ["kp4"] = C.ImGuiKey_Keypad4,
+    ["kp5"] = C.ImGuiKey_Keypad5,
+    ["kp6"] = C.ImGuiKey_Keypad6,
+    ["kp7"] = C.ImGuiKey_Keypad7,
+    ["kp8"] = C.ImGuiKey_Keypad8,
+    ["kp9"] = C.ImGuiKey_Keypad9,
+    ["kp."] = C.ImGuiKey_KeypadDecimal,
+    ["kp="] = C.ImGuiKey_KeypadEqual,
+
+    ["menu"] = C.ImGuiKey_Menu,
+
+    ["lctrl"] = {C.ImGuiKey_LeftCtrl, C.ImGuiKey_ModCtrl},
+    ["lshift"] = {C.ImGuiKey_LeftShift, C.ImGuiKey_ModShift},
+    ["lalt"] = {C.ImGuiKey_LeftAlt, C.ImGuiKey_ModAlt},
+    ["lgui"] = {C.ImGuiKey_LeftSuper, C.ImGuiKey_ModSuper},
+    ["rctrl"] = {C.ImGuiKey_RightCtrl, C.ImGuiKey_ModCtrl},
+    ["rshift"] = {C.ImGuiKey_RightShift, C.ImGuiKey_ModShift},
+    ["ralt"] = {C.ImGuiKey_RightAlt, C.ImGuiKey_ModAlt},
+    ["rgui"] = {C.ImGuiKey_RightSuper, C.ImGuiKey_ModSuper},
 }
-for k, v in pairs(inverse_map) do
-    v = type(v) == "function" and v(k) or v
-    lovekeymap[v] = C["ImGuiKey_" .. k]
-end
+
+-- local letters = "abcdefghijklmnopqrstuvwxyz"
+-- for i = 1, #letters do
+--     local letter = letters:sub(i,i)
+--     lovekeymap[letter] = C["ImGuiKey_" .. letter:upper()]
+-- end
+-- for i = 0, 9 do
+--     lovekeymap[tostring(i)] =  C["ImGuiKey_" .. i]
+--     lovekeymap["kp" .. i] =  C["ImGuiKey_Keypad" .. i]
+-- end
+-- for i = 1, 12 do
+--     lovekeymap["f" .. i] =  C["ImGuiKey_F" .. i]
+-- end
+-- local inverse_map = {
+--     ["LeftArrow"] = "left",
+--     ["RightArrow"] = "right",
+--     ["UpArrow"] = "up",
+--     ["DownArrow"] = "down",
+--     ["Tab"] = string.lower,
+--     ["PageUp"] = string.lower,
+--     ["PageDown"] = string.lower,
+--     ["Home"] = string.lower,
+--     ["End"] = string.lower,
+--     ["Insert"] = string.lower,
+--     ["Delete"] = string.lower,
+--     ["Backspace"] = string.lower,
+--     ["Space"] = string.lower,
+--     ["Enter"] = "return",
+--     ["Escape"] = string.lower,
+--     ["LeftCtrl"] = "lctrl",
+--     ["LeftShift"] = "lshift",
+--     ["LeftAlt"] = "lgui",
+--     ["LeftSuper"] = "lgui",
+--     ["RightCtrl"] = "rctrl",
+--     ["RightShift"] = "rshift",
+--     ["RightAlt"] = "ralt",
+--     ["RightSuper"] = "rgui",
+--     ["Menu"] = string.lower,
+--     ["Apostrophe"] = "'",
+--     ["Comma"] = ",",
+--     ["Minus"] = "-",
+--     ["Period"] = ".",
+--     ["Slash"] = "/",
+--     ["Semicolon"] = ";",
+--     ["Equal"] = "=",
+--     ["LeftBracket"] = "[",
+--     ["Backslash"] = "\\",
+--     ["RightBracket"] = "]",
+--     ["GraveAccent"] = "`",
+--     ["CapsLock"] = string.lower,
+--     ["ScrollLock"] = string.lower,
+--     ["NumLock"] = string.lower,
+--     ["PrintScreen"] = string.lower,
+--     ["Pause"] = string.lower,
+--     ["KeypadDecimal"] = "kp.",
+--     ["KeypadDivide"] = "kp/",
+--     ["KeypadMultiply"] = "kp*",
+--     ["KeypadSubtract"] = "kp-",
+--     ["KeypadAdd"] = "kp+",
+--     ["KeypadEnter"] = "kpenter",
+--     ["KeypadEqual"] = "kp=",
+-- }
+-- for k, v in pairs(inverse_map) do
+--     v = type(v) == "function" and v(k) or v
+--     lovekeymap[v] = C["ImGuiKey_" .. k]
+-- end
 
 
 local ini_filename, textureObject
@@ -232,25 +347,26 @@ function M.WheelMoved(x, y)
     C.igGetIO():AddMouseWheelEvent(x, y)
 end
 
-
-local function update_mods()
-    local key_mods = bit.bor(
-        love.keyboard.isDown("rshift", "lshift") and C.ImGuiKeyModFlags_Shift or C.ImGuiKeyModFlags_None,
-        love.keyboard.isDown("rctrl", "lctrl") and C.ImGuiKeyModFlags_Ctrl or C.ImGuiKeyModFlags_None,
-        love.keyboard.isDown("ralt", "lalt") and C.ImGuiKeyModFlags_Alt or C.ImGuiKeyModFlags_None,
-        love.keyboard.isDown("rgui", "lgui") and C.ImGuiKeyModFlags_Super or C.ImGuiKeyModFlags_None
-    )
-    C.igGetIO():AddKeyModsEvent(key_mods)
-end
-
 function M.KeyPressed(key)
-    C.igGetIO():AddKeyEvent(lovekeymap[key] or C.ImGuiKey_None, true)
-    update_mods()
+    local io = C.igGetIO()
+    local t = lovekeymap[key]
+    if type(t) == "table" then
+        io:AddKeyEvent(t[1], true)
+        io:AddKeyEvent(t[2], true)
+    else
+        io:AddKeyEvent(t or C.ImGuiKey_None, true)
+    end
 end
 
 function M.KeyReleased(key)
-    C.igGetIO():AddKeyEvent(lovekeymap[key] or C.ImGuiKey_None, false)
-    update_mods()
+    local io = C.igGetIO()
+    local t = lovekeymap[key]
+    if type(t) == "table" then
+        io:AddKeyEvent(t[1], false)
+        io:AddKeyEvent(t[2], false)
+    else
+        io:AddKeyEvent(t or C.ImGuiKey_None, false)
+    end
 end
 
 function M.TextInput(text)
