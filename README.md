@@ -162,7 +162,7 @@ Some particular things to keep in mind:
   textbuffer:c_end()
   ```
   The automatic wrapper generator will use the same convention if similar member functions are introduced in future versions of imgui/cimgui.
-- Class constructors (those with a cimgui name of the form `ClassName_ClassName` or `ClassName_ClassName_OverloadIdentifier`) are wrapped as functions without the initial `ClassName_` (non-overloaded costructors are actually wrapped as the `__call` methametod of `imgui.ClassName`, but the result is the same).
+- Class constructors (those with a cimgui name of the form `ClassName_ClassName` or `ClassName_ClassName_OverloadIdentifier`) are wrapped as functions without the initial `ClassName_` (non-overloaded constructors are actually wrapped as the `__call` meta-method of `imgui.ClassName`, but the result is the same).
   
   ```lua
   local ffi = "ffi"
@@ -170,7 +170,7 @@ Some particular things to keep in mind:
   print(ffi.typeof(v)) -- ctype<struct ImVec2 &>
   ```
   Note that wrapped constructors return cdata of type `ClassName` rather than `ClassName*`, and can be passed both to `ClassName` and `ClassName*` arguments of functions.
-- cdata of type `ImVec2` and `ImVec4` have been given `__add`, `__sum`, `__unm`, `__mul`, and `__div` metamethods to simplify their manipulation (they can be added, subtracted, and multiplied/divided by numbers).
+- cdata of type `ImVec2` and `ImVec4` have been given `__add`, `__sum`, `__unm`, `__mul`, and `__div` meta-methods to simplify their manipulation (they can be added, subtracted, and multiplied/divided by numbers).
 - `igGET_FLT_MIN` and `igGET_FLT_MAX`are not wrapped directly since they always return the same value. Instead, their return values are wrapped as the numbers `imgui.FLT_MIN`, `imgui.FLT_MAX`.
 - All the unwrapped functions are accessible through FFI and exposed through `imgui.C`, which is the clib returned by `ffi.load`. For example `imgui.C.igRender` is the unwrapped version of `imgui.Render`. The function names in `imgui.C` are the cimgui ones.
 
@@ -200,7 +200,7 @@ The following functions in the Lua module are not wrappers of cimgui functions. 
 See the example above to figure out how to use them. `imgui.BuildFontAtlas` is used after changing/adding fonts (must be used *after* `imgui.Init`).
 
 #### Flag helpers
-The various flag enums are generally meant to be added using bitwise or, which can be done directly using LuaJIT's `bit.bor`. To make it easier to write the combined flags, some helper functions are added to the Lua module (one for each type of flag). For example, the `ImGuiWindowFlags` has the flag helper `imgui.WindowFlags`, a function taking as input the needed flag labels (as strings) and returing their bitwise or.
+The various flag enums are generally meant to be added using bitwise or, which can be done directly using LuaJIT's `bit.bor`. To make it easier to write the combined flags, some helper functions are added to the Lua module (one for each type of flag). For example, the `ImGuiWindowFlags` has the flag helper `imgui.WindowFlags`, a function taking as input the needed flag labels (as strings) and returning their bitwise or.
 ```lua
 imgui.WindowFlags("NoTitleBar", "NoBackground", "HorizontalScrollbar")
 -- same as
@@ -214,7 +214,7 @@ bit.bor(imgui.ImGuiWindowFlags_NoTitleBar, imgui.ImGuiWindowFlags_NoBackground, 
 - Class destructors (e.g., `ImVec2_destroy`) are not wrapped as the garbage collector takes care of freeing memory allocated by the wrapped constructors.
 - `ImVector_ImWchar_*` functions are not wrapped as creating an `ImVector_ImWchar` directly should not be needed.
 
-*Note*: functions that are not wrapped can still be accessed as C funtions through `imgui.C` as described above.
+*Note*: functions that are not wrapped can still be accessed as C functions through `imgui.C` as described above.
 
 #### Output arguments
 
@@ -222,7 +222,7 @@ Some cimgui/imgui functions have pointer arguments that are meant as outputs, fo
 ```c
 void igColorConvertRGBtoHSV(float r,float g,float b,float* out_h,float* out_s,float* out_v);
 ```
-Pointer arguments nameds `out`, `out_*`, or `pOut` are considered output arguments; they are omitted from the arguments list of the wrapped function and are returned instead. Note that they are returned *before* the "regular" function output (if any)!
+Pointer arguments named `out`, `out_*`, or `pOut` are considered output arguments; they are omitted from the arguments list of the wrapped function and are returned instead. Note that they are returned *before* the "regular" function output (if any)!
 
 For example the function above is wrapped as
 ```lua
