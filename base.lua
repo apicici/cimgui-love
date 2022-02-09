@@ -19,6 +19,7 @@ local M = require(path .. "master")
 local ffi = require("ffi")
 
 local C = M.C
+local _common = M._common
 
 -- add metamethods to ImVec2 and ImVec4
 

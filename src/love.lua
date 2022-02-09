@@ -6,10 +6,8 @@ local ffi = require("ffi")
 local bit = require("bit")
 
 local C = M.C
-
-local L = {}
-M.love = L
-
+local L = M.love
+local _common = M._common
 
 local vertexformat = {
     {"VertexPosition", "float", 2},
@@ -133,11 +131,12 @@ local lovekeymap = {
     ["ralt"] = {C.ImGuiKey_RightAlt, C.ImGuiKey_ModAlt},
     ["rgui"] = {C.ImGuiKey_RightSuper, C.ImGuiKey_ModSuper},
 }
+_common.lovekeymap = lovekeymap
 
 local textureObject
 local strings = {}
 
-L._textures = setmetatable({},{__mode="v"})
+_common.textures = setmetatable({},{__mode="v"})
 
 function L.Init()
     C.igCreateContext(nil)
@@ -244,7 +243,7 @@ function L.RenderDrawLists()
 
                 local texture_id = C.ImDrawCmd_GetTexID(cmd)
                 if texture_id ~= nil then
-                    local obj = L._textures[tostring(texture_id)]
+                    local obj = _common.textures[tostring(texture_id)]
                     local status, value = pcall(love_texture_test, obj)
                     assert(status and value, "Only LÖVE Texture objects can be passed as ImTextureID arguments.")
                     if obj:typeOf("Canvas") then

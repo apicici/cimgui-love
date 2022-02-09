@@ -1,1 +1,4 @@
-return {}
+return {
+    love = {},
+    _common = {}
+}
