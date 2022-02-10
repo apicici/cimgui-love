@@ -10,6 +10,7 @@ M.C = ffi.load(library_path)
 require(path .. "enums")
 require(path .. "wrap")
 require(path .. "love")
+require(path .. "shortcuts")
 
 -- remove access to M._common
 M._common = nil

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Added helper functions `imgui.love.Shortcut`, `imgui.love.Action`, `imgui.love.RunShortcuts` to run MenuItem actions using keyboard shortcuts.
 
 ## [1.87-1] (2022-02-08)
 ### Breaking changes

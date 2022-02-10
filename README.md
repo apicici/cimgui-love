@@ -212,6 +212,65 @@ bit.bor(imgui.ImGuiWindowFlags_NoTitleBar, imgui.ImGuiWindowFlags_NoBackground, 
 ```
 Prior to version 1.87-1 the flag helper functions were located in the `imgui` table. They can be moved back to the old location by running `imgui.love.RevertToOldNames()`.
 
+#### Shortcut helpers
+Dear ImGui does not currently have a way to process keyboard shortcuts defined in `MenuItem`. The Lua module contains some helper functions to easily implement and process keyboard shortcuts.
+
+-
+  ```lua
+  imgui.love.Action(func, ...)
+  ```
+  This function returns an action that can be passed to `imgui.love.Shortcut`.
+  - `func` is the function that should be run when the the shortcut is processed
+  - the optional arguments `...` are the arguments that should be passed to `func` when it's run. Note that if there are no arguments to pass to `func` there is no need to use this helper function, as `func` can be passed directly to `imgui.love.Shortcut`.
+
+- 
+  ```lua
+  imgui.love.Shortcut(modifiers, key, action, global)
+  ```
+  This function creates a new shortcut and adds it an internal list. It also outputs a table containing a string representation of the keyboard shortcut and the action that should be run.
+  - `modifiers` is a table containing the modifiers for the shortcut, chosen among "shift", "ctrl", "alt", "gui". This is an optional argument, if `nil` is passed to it it will default to `{}`, i.e., no modifiers.
+  - `key` should be a LÖVE [KeyConstant](https://love2d.org/wiki/KeyConstant) to be pressed together with the modifiers. The string representation assumes this is a letter or number key and it may look wrong if it is something different.
+  - `action` is the function to run when the shortcut is processed.
+  - `global` is an optional boolean flag specifying whether the shortcut should be always usable or only when the window it is defined in is focused. Defaults to `true`.
+
+-
+  ```lua
+  imgui.love.RunShortcuts(key)
+  ```
+  This is the function that starts the processing of the shortcuts. It is meant to be run inside `love.keypressed`. `key` is the KeyConstant that has just been pressed.
+
+```lua
+
+love.draw = function()
+     if imgui.Begin("test", nil, imgui.ImGuiWindowFlags_MenuBar) then
+        shortcut = imgui.love.Shortcut({"ctrl", "shift"}, "s", imgui.love.Action(print, "Shortcut processed."), false)
+
+        if imgui.BeginMenuBar() then
+            if imgui.BeginMenu("File") then
+                if imgui.MenuItem_Bool("Save", shortcut.text) then
+                    shortcut.action()
+                end
+                imgui.EndMenu()
+            end
+            imgui.EndMenuBar()
+        end
+
+    end
+    imgui.End()
+
+    imgui.Render()
+    imgui.love.RenderDrawLists()
+end
+
+love.keypressed = function(key, ...)
+    imgui.love.KeyPressed(key)
+    if not imgui.love.GetWantCaptureKeyboard() then
+        imgui.love.RunShortcuts(key)
+    end
+end
+
+```
+	
 #### Excluded functions
 
 - Functions taking `va_list` arguments are not wrapped, since the `...` versions are easier to use in Lua.

@@ -200,6 +200,7 @@ local cursors = {
 }
 
 function L.RenderDrawLists()
+    _common.RunShortcuts()
     local io = C.igGetIO()
     local data = C.igGetDrawData()
 
