@@ -138,18 +138,23 @@ local strings = {}
 
 _common.textures = setmetatable({},{__mode="v"})
 
+local cliboard_callback_get, cliboard_callback_set
+
 function L.Init()
     C.igCreateContext(nil)
     L.BuildFontAtlas()
 
     local io = C.igGetIO()
 
-    io.GetClipboardTextFn = function(userdata)
+    cliboard_callback_get = ffi.cast("const char* (*)(void*)", function(userdata)
         return love.system.getClipboardText()
-    end
-    io.SetClipboardTextFn = function(userdata, text)
+    end)
+    cliboard_callback_set = ffi.cast("void (*)(void*, const char*)", function(userdata, text)
         love.system.setClipboardText(ffi.string(text))
-    end
+    end)
+
+    io.GetClipboardTextFn = cliboard_callback_get
+    io.SetClipboardTextFn = cliboard_callback_set
 
     local dpiscale = love.window.getDPIScale()
     io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.x = dpiscale, dpiscale
@@ -317,6 +322,9 @@ end
 
 function L.Shutdown()
     C.igDestroyContext(nil)
+    cliboard_callback_get:free()
+    cliboard_callback_set:free()
+    cliboard_callback_get, cliboard_callback_set = nil
 end
 
 function L.JoystickAdded(joystick)
