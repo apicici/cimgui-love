@@ -217,13 +217,16 @@ Dear ImGui does not currently have a way to process keyboard shortcuts defined i
 
 - 
   ```lua
-  imgui.love.Shortcut(modifiers, key, action, global)
+  shortcut = imgui.love.Shortcut(modifiers, key, action, global)
   ```
   This function creates a new shortcut and adds it an internal list. It also outputs a table containing a string representation of the keyboard shortcut and the action that should be run.
   - `modifiers` is a table containing the modifiers for the shortcut, chosen among "shift", "ctrl", "alt", "gui". This is an optional argument, if `nil` is passed to it it will default to `{}`, i.e., no modifiers.
   - `key` should be a LÖVE [KeyConstant](https://love2d.org/wiki/KeyConstant) to be pressed together with the modifiers. The string representation assumes this is a letter or number key and it may look wrong if it is something different.
   - `action` is the function to run when the shortcut is processed.
   - `global` is an optional boolean flag specifying whether the shortcut should be always usable or only when the window it is defined in is focused. Defaults to `true`.
+  - The table returned by this function has two keys:
+    - `shortcut.text` is a string representing the keyboard shortcut (e.g., "Ctrl+S")
+    - `shortcut.action` is the function that was passud to the `action` argument of `imgui.love.Shortcut`.
 
 -
   ```lua
