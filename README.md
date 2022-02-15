@@ -215,14 +215,6 @@ Prior to version 1.87-1 the flag helper functions were located in the `imgui` ta
 #### Shortcut helpers
 Dear ImGui does not currently have a way to process keyboard shortcuts defined in `MenuItem`. The Lua module contains some helper functions to easily implement and process keyboard shortcuts.
 
--
-  ```lua
-  imgui.love.Action(func, ...)
-  ```
-  This function returns an action that can be passed to `imgui.love.Shortcut`.
-  - `func` is the function that should be run when the the shortcut is processed
-  - the optional arguments `...` are the arguments that should be passed to `func` when it's run. Note that if there are no arguments to pass to `func` there is no need to use this helper function, as `func` can be passed directly to `imgui.love.Shortcut`.
-
 - 
   ```lua
   imgui.love.Shortcut(modifiers, key, action, global)

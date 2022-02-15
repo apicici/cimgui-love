@@ -12,11 +12,6 @@ local modifier_names = {
     gui = jit.os == "Windows" and "Win" or jit.os == "OSX" and "Cmd" or "Super"
 }
 
-function L.Action(func, ...)
-    local args = {...}
-    return function() func(unpack(args)) end
-end
-
 local focused_flags = M.ImGuiFocusedFlags_RootAndChildWindows
 
 function L.Shortcut(modifiers, key, action, global)
