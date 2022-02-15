@@ -139,12 +139,12 @@ local strings = {}
 _common.textures = setmetatable({},{__mode="v"})
 
 local cliboard_callback_get, cliboard_callback_set
+local io
 
 function L.Init()
     C.igCreateContext(nil)
+    io = C.igGetIO()
     L.BuildFontAtlas()
-
-    local io = C.igGetIO()
 
     cliboard_callback_get = ffi.cast("const char* (*)(void*)", function(userdata)
         return love.system.getClipboardText()
@@ -171,7 +171,6 @@ function L.Init()
 end
 
 function L.BuildFontAtlas()
-    local io = C.igGetIO()
     local pixels, width, height = ffi.new("unsigned char*[1]"), ffi.new("int[1]"), ffi.new("int[1]")
     C.ImFontAtlas_GetTexDataAsRGBA32(io.Fonts, pixels, width, height, nil)
     local imgdata = love.image.newImageData(width[0], height[0], "rgba8", ffi.string(pixels[0], width[0]*height[0]*4))
@@ -179,7 +178,6 @@ function L.BuildFontAtlas()
 end
 
 function L.Update(dt)
-    local io = C.igGetIO()
     io.DisplaySize.x, io.DisplaySize.y = love.graphics.getDimensions()
     io.DeltaTime = dt
 
@@ -206,7 +204,6 @@ local cursors = {
 
 function L.RenderDrawLists()
     _common.RunShortcuts()
-    local io = C.igGetIO()
     local data = C.igGetDrawData()
 
     -- change mouse cursor
@@ -272,7 +269,7 @@ end
 
 function L.MouseMoved(x, y)
     if love.window.hasMouseFocus() then
-        C.igGetIO():AddMousePosEvent(x, y)
+        io:AddMousePosEvent(x, y)
     end
 end
 
@@ -280,22 +277,21 @@ local mouse_buttons = {true, true, true}
 
 function L.MousePressed(button)
     if mouse_buttons[button] then
-        C.igGetIO():AddMouseButtonEvent(button - 1, true)
+        io:AddMouseButtonEvent(button - 1, true)
     end
 end
 
 function L.MouseReleased(button)
     if mouse_buttons[button] then
-        C.igGetIO():AddMouseButtonEvent(button - 1, false)
+        io:AddMouseButtonEvent(button - 1, false)
     end
 end
 
 function L.WheelMoved(x, y)
-    C.igGetIO():AddMouseWheelEvent(x, y)
+    io:AddMouseWheelEvent(x, y)
 end
 
 function L.KeyPressed(key)
-    local io = C.igGetIO()
     local t = lovekeymap[key]
     if type(t) == "table" then
         io:AddKeyEvent(t[1], true)
@@ -306,7 +302,6 @@ function L.KeyPressed(key)
 end
 
 function L.KeyReleased(key)
-    local io = C.igGetIO()
     local t = lovekeymap[key]
     if type(t) == "table" then
         io:AddKeyEvent(t[1], false)
@@ -317,11 +312,12 @@ function L.KeyReleased(key)
 end
 
 function L.TextInput(text)
-    C.ImGuiIO_AddInputCharactersUTF8(C.igGetIO(), text)
+    C.ImGuiIO_AddInputCharactersUTF8(io, text)
 end
 
 function L.Shutdown()
     C.igDestroyContext(nil)
+    io = nil
     cliboard_callback_get:free()
     cliboard_callback_set:free()
     cliboard_callback_get, cliboard_callback_set = nil
@@ -329,7 +325,6 @@ end
 
 function L.JoystickAdded(joystick)
     if not joystick:isGamepad() then return end
-    local io = C.igGetIO()
     io.BackendFlags = bit.bor(io.BackendFlags, C.ImGuiBackendFlags_HasGamepad)
 end
 
@@ -337,7 +332,6 @@ function L.JoystickRemoved()
     for _, joystick in ipairs(love.joystick.getJoysticks()) do
         if joystick:isGamepad() then return end
     end
-    local io = C.igGetIO()
     io.BackendFlags = bit.band(io.BackendFlags, bit.bnot(C.ImGuiBackendFlags_HasGamepad))
 end
 
@@ -366,16 +360,15 @@ local gamepad_map = {
 }
 
 function L.GamepadPressed(button)
-    C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, true)
+    io:AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, true)
 end
 
 function L.GamepadReleased(button)
-    C.igGetIO():AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, false)
+    io:AddKeyEvent(gamepad_map[button] or C.ImGuiKey_None, false)
 end
 
 function L.GamepadAxis(axis, value, threshold)
     threshold = threshold or 0
-    local io = C.igGetIO()
     local imguikey = gamepad_map[axis]
     if type(imguikey) == "table" then
         if value > threshold then
@@ -396,15 +389,15 @@ end
 -- input capture
 
 function L.GetWantCaptureMouse()
-    return C.igGetIO().WantCaptureMouse
+    return io.WantCaptureMouse
 end
 
 function L.GetWantCaptureKeyboard()
-    return C.igGetIO().WantCaptureKeyboard
+    return io.WantCaptureKeyboard
 end
 
 function L.GetWantTextInput()
-    return C.igGetIO().WantTextInput
+    return io.WantTextInput
 end
 
 -- flag helpers
