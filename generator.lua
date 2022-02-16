@@ -48,6 +48,7 @@ local defs = require("cimgui.generator.output.definitions")
 local classes = {}
 local functions = {}
 local ignored_defaults = {}
+local overloads = {}
 
 for _, k in ipairs(sorted_entries(defs)) do
     local t = defs[k]
@@ -55,6 +56,7 @@ for _, k in ipairs(sorted_entries(defs)) do
         -- flag pointer arguments that are meant as outputs and list them separately as well
         s.in_argsT, s.out_argsT = {}, {}
         for _, arg in ipairs(s.argsT) do
+            s.va_list =  s.va_list or arg.type == "va_list"
             if arg.name:match("^out_") or arg.name:match("^out$") or arg.name:match("^pOut") then
                 arg.out = true
                 table.insert(s.out_argsT, arg)
@@ -63,9 +65,9 @@ for _, k in ipairs(sorted_entries(defs)) do
             end
         end
 
-        if not s.templated and not s.cimguiname:match("%lV$") and not s.cimguiname:match("appendfv$") then
-        --ignore templates and v_alist functions
-            if s.stname ~= "" and not s.templated then
+        if not s.templated and not s.va_list then
+        --ignore templates and va_list functions
+            if s.stname ~= "" then
                 --check if we're working with a class
                 local class_name = s.stname
                 classes[class_name] = classes[class_name] or {constructors={}, methods={}}
