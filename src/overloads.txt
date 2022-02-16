@@ -1,0 +1,140 @@
+ImColor
+    ImColor_ImColor_Nil()
+    ImColor_ImColor_Int(int r,int g,int b,int a)
+    ImColor_ImColor_U32(ImU32 rgba)
+    ImColor_ImColor_Float(float r,float g,float b,float a)
+    ImColor_ImColor_Vec4(const ImVec4 col)
+
+ImGuiStoragePair
+    ImGuiStoragePair_ImGuiStoragePair_Int(ImGuiID _key,int _val_i)
+    ImGuiStoragePair_ImGuiStoragePair_Float(ImGuiID _key,float _val_f)
+    ImGuiStoragePair_ImGuiStoragePair_Ptr(ImGuiID _key,void* _val_p)
+
+ImGuiTextRange
+    ImGuiTextRange_ImGuiTextRange_Nil()
+    ImGuiTextRange_ImGuiTextRange_Str(const char* _b,const char* _e)
+
+ImVec2
+    ImVec2_ImVec2_Nil()
+    ImVec2_ImVec2_Float(float _x,float _y)
+
+ImVec4
+    ImVec4_ImVec4_Nil()
+    ImVec4_ImVec4_Float(float _x,float _y,float _z,float _w)
+
+BeginChild
+    BeginChild_Str(const char* str_id,const ImVec2 size,bool border,ImGuiWindowFlags flags)
+    BeginChild_ID(ImGuiID id,const ImVec2 size,bool border,ImGuiWindowFlags flags)
+
+CheckboxFlags
+    CheckboxFlags_IntPtr(const char* label,int* flags,int flags_value)
+    CheckboxFlags_UintPtr(const char* label,unsigned int* flags,unsigned int flags_value)
+
+CollapsingHeader
+    CollapsingHeader_TreeNodeFlags(const char* label,ImGuiTreeNodeFlags flags)
+    CollapsingHeader_BoolPtr(const char* label,bool* p_visible,ImGuiTreeNodeFlags flags)
+
+Combo
+    Combo_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int popup_max_height_in_items)
+    Combo_Str(const char* label,int* current_item,const char* items_separated_by_zeros,int popup_max_height_in_items)
+    Combo_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int popup_max_height_in_items)
+
+GetBackgroundDrawList
+    GetBackgroundDrawList_Nil()
+    GetBackgroundDrawList_ViewportPtr(ImGuiViewport* viewport)
+
+GetColorU32
+    GetColorU32_Col(ImGuiCol idx,float alpha_mul)
+    GetColorU32_Vec4(const ImVec4 col)
+    GetColorU32_U32(ImU32 col)
+
+GetForegroundDrawList
+    GetForegroundDrawList_Nil()
+    GetForegroundDrawList_ViewportPtr(ImGuiViewport* viewport)
+
+GetID
+    GetID_Str(const char* str_id)
+    GetID_StrStr(const char* str_id_begin,const char* str_id_end)
+    GetID_Ptr(const void* ptr_id)
+
+IsRectVisible
+    IsRectVisible_Nil(const ImVec2 size)
+    IsRectVisible_Vec2(const ImVec2 rect_min,const ImVec2 rect_max)
+
+ListBox
+    ListBox_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int height_in_items)
+    ListBox_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int height_in_items)
+
+MenuItem
+    MenuItem_Bool(const char* label,const char* shortcut,bool selected,bool enabled)
+    MenuItem_BoolPtr(const char* label,const char* shortcut,bool* p_selected,bool enabled)
+
+OpenPopup
+    OpenPopup_Str(const char* str_id,ImGuiPopupFlags popup_flags)
+    OpenPopup_ID(ImGuiID id,ImGuiPopupFlags popup_flags)
+
+PlotHistogram
+    PlotHistogram_FloatPtr(const char* label,const float* values,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size,int stride)
+    PlotHistogram_FnFloatPtr(const char* label,float(*values_getter)(void* data,int idx),void* data,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size)
+
+PlotLines
+    PlotLines_FloatPtr(const char* label,const float* values,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size,int stride)
+    PlotLines_FnFloatPtr(const char* label,float(*values_getter)(void* data,int idx),void* data,int values_count,int values_offset,const char* overlay_text,float scale_min,float scale_max,ImVec2 graph_size)
+
+PushID
+    PushID_Str(const char* str_id)
+    PushID_StrStr(const char* str_id_begin,const char* str_id_end)
+    PushID_Ptr(const void* ptr_id)
+    PushID_Int(int int_id)
+
+PushStyleColor
+    PushStyleColor_U32(ImGuiCol idx,ImU32 col)
+    PushStyleColor_Vec4(ImGuiCol idx,const ImVec4 col)
+
+PushStyleVar
+    PushStyleVar_Float(ImGuiStyleVar idx,float val)
+    PushStyleVar_Vec2(ImGuiStyleVar idx,const ImVec2 val)
+
+RadioButton
+    RadioButton_Bool(const char* label,bool active)
+    RadioButton_IntPtr(const char* label,int* v,int v_button)
+
+Selectable
+    Selectable_Bool(const char* label,bool selected,ImGuiSelectableFlags flags,const ImVec2 size)
+    Selectable_BoolPtr(const char* label,bool* p_selected,ImGuiSelectableFlags flags,const ImVec2 size)
+
+SetWindowCollapsed
+    SetWindowCollapsed_Bool(bool collapsed,ImGuiCond cond)
+    SetWindowCollapsed_Str(const char* name,bool collapsed,ImGuiCond cond)
+
+SetWindowFocus
+    SetWindowFocus_Nil()
+    SetWindowFocus_Str(const char* name)
+
+SetWindowPos
+    SetWindowPos_Vec2(const ImVec2 pos,ImGuiCond cond)
+    SetWindowPos_Str(const char* name,const ImVec2 pos,ImGuiCond cond)
+
+SetWindowSize
+    SetWindowSize_Vec2(const ImVec2 size,ImGuiCond cond)
+    SetWindowSize_Str(const char* name,const ImVec2 size,ImGuiCond cond)
+
+TreeNode
+    TreeNode_Str(const char* label)
+    TreeNode_StrStr(const char* str_id,const char* fmt,...)
+    TreeNode_Ptr(const void* ptr_id,const char* fmt,...)
+
+TreeNodeEx
+    TreeNodeEx_Str(const char* label,ImGuiTreeNodeFlags flags)
+    TreeNodeEx_StrStr(const char* str_id,ImGuiTreeNodeFlags flags,const char* fmt,...)
+    TreeNodeEx_Ptr(const void* ptr_id,ImGuiTreeNodeFlags flags,const char* fmt,...)
+
+TreePush
+    TreePush_Str(const char* str_id)
+    TreePush_Ptr(const void* ptr_id)
+
+Value
+    Value_Bool(const char* prefix,bool b)
+    Value_Int(const char* prefix,int v)
+    Value_Uint(const char* prefix,unsigned int v)
+    Value_Float(const char* prefix,float v,const char* float_format)

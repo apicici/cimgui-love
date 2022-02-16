@@ -54,6 +54,7 @@ for _, k in ipairs(sorted_entries(defs)) do
     local t = defs[k]
     for _, s in ipairs(t) do
         -- flag pointer arguments that are meant as outputs and list them separately as well
+        -- flag if the function has va_list arguments
         s.in_argsT, s.out_argsT = {}, {}
         for _, arg in ipairs(s.argsT) do
             s.va_list =  s.va_list or arg.type == "va_list"
@@ -245,8 +246,10 @@ for _, name in ipairs(sorted_entries(classes)) do
             ["&callargs&"] = table.concat({"self", args ~= "" and args or nil}, ", "),
             ["&args&"] = args,
         })
-    else
-        for _, c in ipairs(class.constructors) do
+    elseif #class.constructors > 1 then
+        overloads[#overloads + 1] = name
+        for i, c in ipairs(class.constructors) do
+            overloads[#overloads + 1] = string.format("    %s%s", c.ov_cimguiname, c.args) 
             wrap[#wrap + 1] = templates.class_overloaded_constructor:gsub("&%w+&", {
                 ["&shortconstructor&"] = c.ov_cimguiname:gsub("^" .. name .. "_", ""),
                 ["&constructor&"] = c.ov_cimguiname,
@@ -254,11 +257,22 @@ for _, name in ipairs(sorted_entries(classes)) do
                 ["&args&"] = wrap_arguments_string(c),
             })
         end
+        overloads[#overloads + 1] = ""
     end
     wrap[#wrap + 1] = templates.class_end:gsub("&name&", name)
 end
 
+local overloaded_functions = {}
+
 for _, f in ipairs(functions) do
+    if f.cimguiname ~= f.ov_cimguiname then
+        local shortname = f.cimguiname:gsub("^ig", "")
+        if not overloads[shortname] then
+            overloads[shortname] = {}
+            table.insert(overloaded_functions, shortname)
+        end
+        table.insert(overloads[shortname], string.format("    %s%s", f.ov_cimguiname:gsub("^ig", ""), f.args))
+    end
     wrap[#wrap + 1] = templates.function_begin:gsub("&%w+&", {
         ["&shortfunction&"] = f.ov_cimguiname:gsub("^ig", ""),
         ["&wrapargs&"] = wrap_arguments_string(f),
@@ -289,6 +303,13 @@ f:close()
 
 local f = assert(io.open("src/ignored_defaults.txt", "w"))
 f:write(table.concat(ignored_defaults, "\n"))
+f:close()
+
+local f = assert(io.open("src/overloads.txt", "w"))
+f:write(table.concat(overloads, "\n"))
+for _, name in ipairs(overloaded_functions) do
+    f:write(string.format("\n%s\n%s\n", name, table.concat(overloads[name], "\n")))
+end
 f:close()
 
 ------------------
