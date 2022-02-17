@@ -1,26 +1,26 @@
 ImColor
-    ImColor_ImColor_Nil()
-    ImColor_ImColor_Int(int r,int g,int b,int a)
-    ImColor_ImColor_U32(ImU32 rgba)
-    ImColor_ImColor_Float(float r,float g,float b,float a)
-    ImColor_ImColor_Vec4(const ImVec4 col)
+    ImColor_Nil()
+    ImColor_Int(int r,int g,int b,int a)
+    ImColor_U32(ImU32 rgba)
+    ImColor_Float(float r,float g,float b,float a)
+    ImColor_Vec4(const ImVec4 col)
 
 ImGuiStoragePair
-    ImGuiStoragePair_ImGuiStoragePair_Int(ImGuiID _key,int _val_i)
-    ImGuiStoragePair_ImGuiStoragePair_Float(ImGuiID _key,float _val_f)
-    ImGuiStoragePair_ImGuiStoragePair_Ptr(ImGuiID _key,void* _val_p)
+    ImGuiStoragePair_Int(ImGuiID _key,int _val_i)
+    ImGuiStoragePair_Float(ImGuiID _key,float _val_f)
+    ImGuiStoragePair_Ptr(ImGuiID _key,void* _val_p)
 
 ImGuiTextRange
-    ImGuiTextRange_ImGuiTextRange_Nil()
-    ImGuiTextRange_ImGuiTextRange_Str(const char* _b,const char* _e)
+    ImGuiTextRange_Nil()
+    ImGuiTextRange_Str(const char* _b,const char* _e)
 
 ImVec2
-    ImVec2_ImVec2_Nil()
-    ImVec2_ImVec2_Float(float _x,float _y)
+    ImVec2_Nil()
+    ImVec2_Float(float _x,float _y)
 
 ImVec4
-    ImVec4_ImVec4_Nil()
-    ImVec4_ImVec4_Float(float _x,float _y,float _z,float _w)
+    ImVec4_Nil()
+    ImVec4_Float(float _x,float _y,float _z,float _w)
 
 BeginChild
     BeginChild_Str(const char* str_id,const ImVec2 size,bool border,ImGuiWindowFlags flags)

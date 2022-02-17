@@ -249,7 +249,7 @@ for _, name in ipairs(sorted_entries(classes)) do
     elseif #class.constructors > 1 then
         overloads[#overloads + 1] = name
         for i, c in ipairs(class.constructors) do
-            overloads[#overloads + 1] = string.format("    %s%s", c.ov_cimguiname, c.args) 
+            overloads[#overloads + 1] = string.format("    %s%s", c.ov_cimguiname:gsub("^" .. name .. "_", ""), c.args) 
             wrap[#wrap + 1] = templates.class_overloaded_constructor:gsub("&%w+&", {
                 ["&shortconstructor&"] = c.ov_cimguiname:gsub("^" .. name .. "_", ""),
                 ["&constructor&"] = c.ov_cimguiname,
