@@ -206,6 +206,8 @@ function L.RenderDrawLists()
     -- Avoid rendering when minimized
     if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
 
+    local mode, alphamode = love.graphics.getBlendMode()
+
     _common.RunShortcuts()
     local data = C.igGetDrawData()
 
@@ -263,6 +265,7 @@ function L.RenderDrawLists()
         end
     end
     love.graphics.setScissor()
+    love.graphics.setBlendMode(mode, alphamode)
 end
 
 function L.MouseMoved(x, y)
@@ -432,4 +435,3 @@ function L.RevertToOldNames()
         M[k] = v
     end
 end
-
