@@ -203,6 +203,9 @@ local cursors = {
 }
 
 function L.RenderDrawLists()
+    -- Avoid rendering when minimized
+    if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
+
     _common.RunShortcuts()
     local data = C.igGetDrawData()
 
@@ -216,9 +219,6 @@ function L.RenderDrawLists()
             love.mouse.setCursor(cursor)
         end
     end
-
-    -- Avoid rendering when minimized
-    if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
 
     for i = 0, data.CmdListsCount - 1 do
         local cmd_list = data.CmdLists[i]
@@ -432,3 +432,4 @@ function L.RevertToOldNames()
         M[k] = v
     end
 end
+
