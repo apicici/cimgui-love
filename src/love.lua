@@ -157,7 +157,7 @@ function L.Init()
     io.SetClipboardTextFn = cliboard_callback_set
 
     local dpiscale = love.window.getDPIScale()
-    io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.x = dpiscale, dpiscale
+    io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y = dpiscale, dpiscale
 
     love.filesystem.createDirectory("/")
     strings.ini_filename = love.filesystem.getSaveDirectory() .. "/imgui.ini"
@@ -217,10 +217,8 @@ function L.RenderDrawLists()
         end
     end
 
-    -- Avoid rendering when minimized, scale coordinates for retina displays
-    -- (screen coordinates != framebuffer coordinates)
+    -- Avoid rendering when minimized
     if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
-    C.ImDrawData_ScaleClipRects(data, io.DisplayFramebufferScale)
 
     for i = 0, data.CmdListsCount - 1 do
         local cmd_list = data.CmdLists[i]

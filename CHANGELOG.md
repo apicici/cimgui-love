@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - Added helper functions `imgui.love.Shortcut` and `imgui.love.RunShortcuts` to run MenuItem actions using keyboard shortcuts.
+- Fixed problem with high DPI caused by unnecessary scaling of ClipRects
 
 ## [1.87-1] (2022-02-08)
 ### Breaking changes
