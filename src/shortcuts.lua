@@ -48,7 +48,7 @@ function M._common.RunShortcuts()
     if pressed_key then
         for _, s in ipairs(shortcuts) do
             if s.key_triggers[pressed_key] then
-                flag = true
+                local flag = true
                 for _, t in ipairs(s.keys) do
                     flag = flag and love.keyboard.isDown(unpack(t))
                     if not flag then break end
