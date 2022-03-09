@@ -1,5 +1,7 @@
 local path = (...):gsub("[^%.]*$", "")
 local M = require(path .. "master")
+local love = require("love")
+local jit = require("jit")
 
 local L = M.love
 

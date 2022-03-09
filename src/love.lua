@@ -4,6 +4,7 @@ local path = (...):gsub("[^%.]*$", "")
 local M = require(path .. "master")
 local ffi = require("ffi")
 local bit = require("bit")
+local love = require("love")
 
 local C = M.C
 local L = M.love
@@ -435,3 +436,4 @@ function L.RevertToOldNames()
         M[k] = v
     end
 end
+
