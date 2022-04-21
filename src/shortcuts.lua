@@ -16,7 +16,8 @@ local modifier_names = {
 
 local focused_flags = M.ImGuiFocusedFlags_RootAndChildWindows
 
-function L.Shortcut(modifiers, key, action, global)
+function L.Shortcut(modifiers, key, action, enabled, global)
+    if enabled == nil then enabled = true end
     if global == nil then global = true end
     modifiers = modifiers or {}
     assert(type(modifiers) == "table" and type(key) == "string" and type(action) == "function", "Wrong arguments.")
@@ -37,11 +38,11 @@ function L.Shortcut(modifiers, key, action, global)
     end
     text_table[#text_table + 1] = string.upper(key)
 
-    if global or M.IsWindowFocused(focused_flags) then
+    if enabled and (global or M.IsWindowFocused(focused_flags)) then
         shortcuts[#shortcuts + 1] = {keys=keys, key_triggers=key_triggers, action=action}
     end
 
-    return {text=table.concat(text_table, "+"), action=action}
+    return {text=table.concat(text_table, "+"), action=action, enabled=enabled}
 end
 
 local pressed_key
