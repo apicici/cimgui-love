@@ -217,16 +217,18 @@ Dear ImGui does not currently have a way to process keyboard shortcuts defined i
 
 - 
   ```lua
-  shortcut = imgui.love.Shortcut(modifiers, key, action, global)
+  shortcut = imgui.love.Shortcut(modifiers, key, action, enabled, global)
   ```
   This function creates a new shortcut and adds it an internal list. It also outputs a table containing a string representation of the keyboard shortcut and the action that should be run.
   - `modifiers` is a table containing the modifiers for the shortcut, chosen among "shift", "ctrl", "alt", "gui". This is an optional argument, if `nil` is passed to it it will default to `{}`, i.e., no modifiers.
   - `key` should be a LÖVE [KeyConstant](https://love2d.org/wiki/KeyConstant) to be pressed together with the modifiers. The string representation assumes this is a letter or number key and it may look wrong if it is something different.
   - `action` is the function to run when the shortcut is processed.
+  - `enabled` is an optional boolean flag specified whether the shortcut is currently enabled. Useful to make the shortcut only work under certain conditions. Defaults to `true`.
   - `global` is an optional boolean flag specifying whether the shortcut should be always usable or only when the window it is defined in is focused. Defaults to `true`.
-  - The table returned by this function has two keys:
+  - The table returned by this function has 3 keys:
     - `shortcut.text` is a string representing the keyboard shortcut (e.g., "Ctrl+S")
-    - `shortcut.action` is the function that was passud to the `action` argument of `imgui.love.Shortcut`.
+    - `shortcut.action` is the function that was passed to the `action` argument of `imgui.love.Shortcut`.
+    - `shortcut.enabled` is the boolean flag that was passed to the `enabled` argument of `imgui.love.Shortcut`.
 
 -
   ```lua
@@ -238,11 +240,13 @@ Dear ImGui does not currently have a way to process keyboard shortcuts defined i
 
 love.draw = function()
      if imgui.Begin("test", nil, imgui.ImGuiWindowFlags_MenuBar) then
-        shortcut = imgui.love.Shortcut({"ctrl", "shift"}, "s", imgui.love.Action(print, "Shortcut processed."), false)
+        action = function print("Shortcut processed.") end
+        shortcut = imgui.love.Shortcut({"ctrl", "shift"}, "s", action, true, false)
 
         if imgui.BeginMenuBar() then
             if imgui.BeginMenu("File") then
-                if imgui.MenuItem_Bool("Save", shortcut.text) then
+                -- disable MenuItem if shortcut is not enabled
+                if imgui.MenuItem_Bool("Save", shortcut.text, nil, shortcut.enabled) then
                     shortcut.action()
                 end
                 imgui.EndMenu()
