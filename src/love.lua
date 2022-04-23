@@ -203,6 +203,9 @@ local cursors = {
     [C.ImGuiMouseCursor_NotAllowed] = love.mouse.getSystemCursor("no"),
 }
 
+local mesh, meshdata
+local max_vertexcount = -math.huge
+
 function L.RenderDrawLists()
     -- Avoid rendering when minimized
     if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
@@ -225,10 +228,20 @@ function L.RenderDrawLists()
 
     for i = 0, data.CmdListsCount - 1 do
         local cmd_list = data.CmdLists[i]
-        local VtxSize = cmd_list.VtxBuffer.Size*ffi.sizeof("ImDrawVert")
-        local meshdata = love.image.newImageData(VtxSize/4, 1)
-        ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, VtxSize)
-        local mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "static")
+
+        local vertexcount = cmd_list.VtxBuffer.Size
+        local data_size = vertexcount*ffi.sizeof("ImDrawVert")
+        if vertexcount > max_vertexcount then
+            max_vertexcount = vertexcount
+            if mesh then mesh:release() end
+            if meshdata then meshdata:release() end
+            meshdata = love.data.newByteData(data_size)
+            ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, data_size)
+            mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "static")
+        else
+            ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, data_size)
+            mesh:setVertices(meshdata)
+        end
 
         local IdxBuffer = {}
         for k = 1, cmd_list.IdxBuffer.Size do
