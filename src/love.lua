@@ -207,7 +207,7 @@ function L.RenderDrawLists()
     -- Avoid rendering when minimized
     if io.DisplaySize.x == 0 or io.DisplaySize.y == 0 or not love.window.isVisible() then return end
 
-    local mode, alphamode = love.graphics.getBlendMode()
+    love.graphics.push("all")
 
     _common.RunShortcuts()
     local data = C.igGetDrawData()
@@ -243,7 +243,7 @@ function L.RenderDrawLists()
                 local clipW = cmd.ClipRect.z - clipX
                 local clipH = cmd.ClipRect.w - clipY
 
-                love.graphics.setBlendMode("alpha")
+                love.graphics.setBlendMode("alpha", "alphamultiply")
 
                 local texture_id = C.ImDrawCmd_GetTexID(cmd)
                 if texture_id ~= nil then
@@ -261,12 +261,10 @@ function L.RenderDrawLists()
                 love.graphics.setScissor(clipX, clipY, clipW, clipH)
                 mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
                 love.graphics.draw(mesh)
-                love.graphics.setBlendMode("alpha")
             end
         end
     end
-    love.graphics.setScissor()
-    love.graphics.setBlendMode(mode, alphamode)
+    love.graphics.pop()
 end
 
 function L.MouseMoved(x, y)
@@ -436,4 +434,5 @@ function L.RevertToOldNames()
         M[k] = v
     end
 end
+
 
