@@ -275,6 +275,9 @@ function L.RenderDrawLists()
                 mesh:setDrawRange(cmd.IdxOffset + 1, cmd.ElemCount)
                 love.graphics.draw(mesh)
             end
+            if cmd.UserCallback ~= nil then
+                cmd.UserCallback(cmd_list, cmd)
+            end
         end
     end
     love.graphics.pop()
