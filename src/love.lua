@@ -138,6 +138,7 @@ local textureObject
 local strings = {}
 
 _common.textures = setmetatable({},{__mode="v"})
+_common.callbacks = setmetatable({},{__mode="v"})
 
 local cliboard_callback_get, cliboard_callback_set
 local io
@@ -235,7 +236,7 @@ function L.RenderDrawLists()
             max_vertexcount = vertexcount
             if mesh then mesh:release() end
             if meshdata then meshdata:release() end
-            meshdata = love.data.newByteData(data_size)
+            meshdata = love.data.newByteData(math.max(data_size, ffi.sizeof("ImDrawVert")))
             ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, data_size)
             mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "static")
         else
@@ -251,7 +252,10 @@ function L.RenderDrawLists()
 
         for k = 0, cmd_list.CmdBuffer.Size - 1 do
             local cmd = cmd_list.CmdBuffer.Data[k]
-            if cmd.ElemCount > 0 then
+            if cmd.UserCallback ~= nil then
+                local callback = _common.callbacks[ffi.string(ffi.cast("void*", cmd.UserCallback))] or cmd.UserCallback
+                callback(cmd_list, cmd)
+            elseif cmd.ElemCount > 0 then
                 local clipX, clipY = cmd.ClipRect.x, cmd.ClipRect.y
                 local clipW = cmd.ClipRect.z - clipX
                 local clipH = cmd.ClipRect.w - clipY

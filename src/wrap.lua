@@ -191,6 +191,11 @@ ImDrawList["AddBezierQuadratic"] = ImDrawList["AddBezierQuadratic"]  or function
 end
 ImDrawList["AddCallback"] = ImDrawList["AddCallback"]  or function(i1, i2, i3)
     jit.off(true)
+    if not ffi.istype("ImDrawCallback", i2) then
+        local str = tostring(i2)
+        _common.callbacks[str] = i2
+        i2 = ffi.cast("ImDrawCallback", str)
+    end
     local out = C.ImDrawList_AddCallback(i1, i2, i3)
     return out
 end

@@ -139,6 +139,13 @@ templates.texture_id =
 [[    local ptr = ffi.cast("void *", &arg&)
     _common.textures[tostring(ptr)] = &arg&
     &arg& = ptr]]
+    
+templates.drawcallback =
+[[    if not ffi.istype("ImDrawCallback", &arg&) then
+        local str = tostring(&arg&)
+        _common.callbacks[str] = &arg&
+        i2 = ffi.cast("ImDrawCallback", str)
+    end]]
 
 local defaults_patterns = { -- in the order they should be tried
     {[[^(".*")$]], "%1"}, -- string
@@ -218,6 +225,8 @@ for _, name in ipairs(sorted_entries(classes)) do
         for i, arg in ipairs(m.in_argsT) do
             if arg.type == "ImTextureID" then
                 wrap[#wrap + 1] = templates.texture_id:gsub("&arg&", string.format("i%d", i))
+            elseif arg.type == "ImDrawCallback" then
+                wrap[#wrap + 1] = templates.drawcallback:gsub("&arg&", string.format("i%d", i))
             end
         end
         for i, arg in ipairs(m.out_argsT) do
@@ -281,6 +290,8 @@ for _, f in ipairs(functions) do
     for i, arg in ipairs(f.in_argsT) do
         if arg.type == "ImTextureID" then
             wrap[#wrap + 1] = templates.texture_id:gsub("&arg&", string.format("i%d", i))
+        elseif arg.type == "ImDrawCallback" then
+                wrap[#wrap + 1] = templates.drawcallback:gsub("&arg&", string.format("i%d", i))
         end
     end
     for i, arg in ipairs(f.out_argsT) do

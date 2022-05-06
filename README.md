@@ -167,7 +167,7 @@ Some particular things to keep in mind:
 - Class constructors (those with a cimgui name of the form `ClassName_ClassName` or `ClassName_ClassName_OverloadIdentifier`) are wrapped as functions without the initial `ClassName_` (non-overloaded constructors are actually wrapped as the `__call` meta-method of `imgui.ClassName`, but the result is the same).
   
   ```lua
-  local ffi = "ffi"
+  local ffi = require "ffi"
   local v = imgui.ImVec2_Nil()
   print(ffi.typeof(v)) -- ctype<struct ImVec2 &>
   ```
@@ -341,6 +341,42 @@ love.draw = function()
 end
 ```
 The same applies to the wrappers of other functions taking "ImTextureID" as an argument.
+
+### ImDrawCallback
+Custom draw callbacks can be defined by passing either a Lua function or an `ImDrawCallback` cdata (function pointer) to `ImDrawList_AddCallback`. Passing a Lua function directly is recommended.
+```lua
+-- example 1: pass Lua function as callback
+love.draw = function()
+    imgui.ShowDemoWindow()
+    
+    local dl = imgui.GetForegroundDrawList_Nil()
+    -- pass the print function as callback, just as an example
+    dl:AddCallback(print, nil)
+    
+    imgui.Render()
+    imgui.love.RenderDrawLists()
+end
+```
+
+```lua
+-- example 2: pass a function pointer function as callback. Not recommended, unless the function pointer is *not* obtained by casting a Lua function.
+
+local ffi = require "ffi"
+-- cast the print function to a function pointer
+f = ffi.cast("ImDrawCallback", print)
+
+love.draw = function()
+    imgui.ShowDemoWindow()
+    
+    local dl = imgui.GetForegroundDrawList_Nil()
+    dl:AddCallback(f, nil)
+    
+    imgui.Render()
+    imgui.love.RenderDrawLists()
+end
+```
+
+Note that `ImDrawCallback_ResetRenderState` is currently not implemented.
 
 ### Gamepad
 Gamepad navigation is supported (once enabled in `io.ConfigFlags`). Note that it only works for joysticks that LÖVE recognises as gamepads. The mapping used is the default Xbox 360 mapping from Dear ImGui. You can change mappings using `love.joystick.setGamepadMapping`.
