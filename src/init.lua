@@ -1,3 +1,5 @@
+-- Dear Imgui version: 1.87
+
 local path = (...):gsub(".init$", "") .. "."
 
 require(path .. "cdef")
