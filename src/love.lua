@@ -134,7 +134,7 @@ local lovekeymap = {
 }
 _common.lovekeymap = lovekeymap
 
-local textureObject
+local textureObject, textureShader
 local strings = {}
 
 _common.textures = setmetatable({},{__mode="v"})
@@ -143,10 +143,11 @@ _common.callbacks = setmetatable({},{__mode="v"})
 local cliboard_callback_get, cliboard_callback_set
 local io
 
-function L.Init()
+function L.Init(format)
+    format = format or "RGBA32"
     C.igCreateContext(nil)
     io = C.igGetIO()
-    L.BuildFontAtlas()
+    L.BuildFontAtlas(format)
 
     cliboard_callback_get = ffi.cast("const char* (*)(void*)", function(userdata)
         return love.system.getClipboardText()
@@ -172,10 +173,30 @@ function L.Init()
     io.BackendFlags = bit.bor(C.ImGuiBackendFlags_HasMouseCursors, C.ImGuiBackendFlags_HasSetMousePos)
 end
 
-function L.BuildFontAtlas()
+local Alpha8_shader = love.graphics.newShader [[
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+    float alpha = Texel(tex, texture_coords).r;
+    return vec4(color.rgb, color.a*alpha);
+}
+]]
+
+function L.BuildFontAtlas(format)
+    format = format or "RGBA32"
     local pixels, width, height = ffi.new("unsigned char*[1]"), ffi.new("int[1]"), ffi.new("int[1]")
-    C.ImFontAtlas_GetTexDataAsRGBA32(io.Fonts, pixels, width, height, nil)
-    local imgdata = love.image.newImageData(width[0], height[0], "rgba8", ffi.string(pixels[0], width[0]*height[0]*4))
+    local imgdata
+
+    if format == "RGBA32" then
+        C.ImFontAtlas_GetTexDataAsRGBA32(io.Fonts, pixels, width, height, nil)
+        imgdata = love.image.newImageData(width[0], height[0], "rgba8", ffi.string(pixels[0], width[0]*height[0]*4))
+        textureShader = nil
+    elseif format == "Alpha8" then
+        C.ImFontAtlas_GetTexDataAsAlpha8(io.Fonts, pixels, width, height, nil)
+        imgdata = love.image.newImageData(width[0], height[0], "r8", ffi.string(pixels[0], width[0]*height[0]))
+        textureShader = Alpha8_shader
+    else
+        error([[Format should be either "RGBA32" or "Alpha8".]], 2)
+    end
+
     textureObject = love.graphics.newImage(imgdata)
 end
 
@@ -270,8 +291,10 @@ function L.RenderDrawLists()
                     if obj:typeOf("Canvas") then
                         love.graphics.setBlendMode("alpha", "premultiplied")
                     end
+                    love.graphics.setShader()
                     mesh:setTexture(obj)
                 else
+                    love.graphics.setShader(textureShader)
                     mesh:setTexture(textureObject)
                 end
 

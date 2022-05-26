@@ -26,7 +26,7 @@ package.cpath = string.format("%s;%s/?.%s", package.cpath, lib_path, extension)
 local imgui = require "cimgui" -- cimgui is the folder containing the Lua module (the "src" folder in the github repository)
 
 love.load = function()
-    imgui.love.Init()
+    imgui.love.Init() -- or imgui.love.Init("RGBA32") or imgui.love.Init("Alpha8")
 end
 
 love.draw = function()
@@ -179,8 +179,10 @@ Some particular things to keep in mind:
 #### Implementation specific functions
 
 Starting from version 1.87-1 the functions specific to the LÖVE implementation have been moved to the `imgui.love` table. The implementation functions are
-- `imgui.love.Init()`
-- `imgui.love.BuildFontAtlas()`
+- `imgui.love.Init(format)`
+  - `format` can be `"RGBA32"` or `"Alpha8"`, defaults to `"RGBA32"` if not provided
+- `imgui.love.BuildFontAtlas(format)`
+  - `format` can be `"RGBA32"` or `"Alpha8"`, defaults to `"RGBA32"` if not provided
 - `imgui.love.Update(dt)`
 - `imgui.love.RenderDrawLists()`
 - `imgui.love.MouseMoved(x, y)`
@@ -306,6 +308,21 @@ The wrappers take into account default arguments for the functions. Pass `nil` t
 
 Overloaded functions from imgui are renamed in cimgui to wrap them in C, for example `BeginChild` is split into `igBeginChild_Str` and `igBeginChild_ID`. Overloaded functions from cimgui are wrapped individually, so you would call `imgui.BeginChild_Str` or `imgui.BeginChild_ID` depending on which arguments you plan to pass to the function. This was done to avoid the overhead of a type check in Lua and to allow for an easy implementation of default arguments.
 
+### FontAtlas Texture format
+
+The LÖVE texture for the Dear Imgui FontAtlas can be built in two different formats.
+
+#### RGBA32
+This format uses 4 bytes for each pixel. Unless you are modifying the FontAtlas the pixels will always be white and this format will waste texture memory and bandwitdh.
+
+To use this mode pass `"RGBA32"` as the format when calling `imgui.love.Init` or  `imgui.love.BuildFontAtlas`. Passing no format to these functions will also default to `"RGBA32"`.
+
+#### Alpha8
+This format uses 1 byte for each pixel. It saves memory/bandwidth, but does not allow changing colours in the texture.
+
+To use this mode pass `"Alpha8"` as the format when calling `imgui.love.Init` or  `imgui.love.BuildFontAtlas`.
+
+
 ### Changing fonts
 If you change or add fonts you need to rebuild the font atlas with `imgui.love.BuildFontAtlas()`. For example:
 ```lua
@@ -320,7 +337,7 @@ local content, size = love.filesystem.read("example.ttf")
 local newfont = imio.Fonts:AddFontFromMemoryTTF(ffi.cast("void*", content), size, font_size, config)
 imio.FontDefault = newfont
 
-imgui.love.BuildFontAtlas()
+imgui.love.BuildFontAtlas() -- or imgui.love.BuildFontAtlas("RGBA32") or imgui.love.BuildFontAtlas("Alpha8")
 ```
 Fonts can also be added from files, but you need to take care of where they are placed as `ImFontAtlas_AddFontFromFileTTF` cannot access files inside the source .love.
 
