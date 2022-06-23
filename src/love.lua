@@ -180,6 +180,12 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
 }
 ]]
 
+local custom_shader
+
+function L.SetShader(shader)
+    custom_shader = shader
+end
+
 function L.BuildFontAtlas(format)
     format = format or "RGBA32"
     local pixels, width, height = ffi.new("unsigned char*[1]"), ffi.new("int[1]"), ffi.new("int[1]")
@@ -294,7 +300,7 @@ function L.RenderDrawLists()
                     love.graphics.setShader()
                     mesh:setTexture(obj)
                 else
-                    love.graphics.setShader(textureShader)
+                    love.graphics.setShader(custom_shader or textureShader)
                     mesh:setTexture(textureObject)
                 end
 

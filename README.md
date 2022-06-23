@@ -181,6 +181,7 @@ Starting from version 1.87-1 the functions specific to the LÖVE implementation 
   - `format` can be `"RGBA32"` or `"Alpha8"`, defaults to `"RGBA32"` if not provided
 - `imgui.love.BuildFontAtlas(format)`
   - `format` can be `"RGBA32"` or `"Alpha8"`, defaults to `"RGBA32"` if not provided
+- `imgui.love.SetShader(shader)` 
 - `imgui.love.Update(dt)`
 - `imgui.love.RenderDrawLists()`
 - `imgui.love.MouseMoved(x, y)`
@@ -319,6 +320,11 @@ To use this mode pass `"RGBA32"` as the format when calling `imgui.love.Init` or
 This format uses 1 byte for each pixel. It saves memory/bandwidth, but does not allow changing colours in the texture.
 
 To use this mode pass `"Alpha8"` as the format when calling `imgui.love.Init` or  `imgui.love.BuildFontAtlas`.
+
+### FontAtlas shader
+By default cimgui-love ignores the shader currently set through `love.graphics.setShader`. A custom shader can be specified by passing it to the function `imgui.love.SetShader`; passing `nil` (or nothing) resets the shader to default.
+
+Note that if using the "Alpha8" texture format the LÖVE [PixelFormat](https://love2d.org/wiki/PixelFormat) will be set to "r8", and that should be take into account by your shader.
 
 
 ### Changing fonts
