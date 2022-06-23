@@ -86,10 +86,8 @@ love.keyreleased = function(key, ...)
 end
 
 love.textinput = function(t)
-    -- only use imgui.love.TextInput when characters are expected
+    imgui.love.TextInput(t)
     if imgui.love.GetWantCaptureKeyboard() then
-        imgui.love.TextInput(t)
-    else
         -- your code here 
     end
 end
