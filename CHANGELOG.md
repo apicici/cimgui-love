@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+
+## [1.88-1] (2022-06-22)
+### Changed
+- Updated to Dear ImGui 1.88 (docking branch)
+
 ### Added
 - Added helper functions `imgui.love.Shortcut` and `imgui.love.RunShortcuts` to run MenuItem actions using keyboard shortcuts.
 - Fixed problem with high DPI caused by unnecessary scaling of ClipRects
@@ -75,7 +81,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial release of `generator.lua` and LÖVE implementation
 - Generated the wrappers using Dear ImGui 1.82 (docking branch)
 
-[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.87-1...HEAD
+[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.88-1...HEAD
+[1.88-1]: https://github.com/apicici/cimgui-love/compare/1.87-1...1.88-1
 [1.87-1]: https://github.com/apicici/cimgui-love/compare/1.87WIP-1...1.87-1
 [1.87WIP-1]: https://github.com/apicici/cimgui-love/compare/1.86-1...1.87WIP-1
 [1.86-1]: https://github.com/apicici/cimgui-love/compare/1.85-1...1.86-1
