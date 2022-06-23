@@ -1,4 +1,4 @@
--- Dear Imgui version: 1.87
+-- Dear Imgui version: 1.88
 
 local path = (...):gsub(".init$", "") .. "."
 

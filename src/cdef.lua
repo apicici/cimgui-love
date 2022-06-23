@@ -89,7 +89,7 @@ typedef int ImGuiDragDropFlags;
 typedef int ImGuiFocusedFlags;
 typedef int ImGuiHoveredFlags;
 typedef int ImGuiInputTextFlags;
-typedef int ImGuiKeyModFlags;
+typedef int ImGuiModFlags;
 typedef int ImGuiPopupFlags;
 typedef int ImGuiSelectableFlags;
 typedef int ImGuiSliderFlags;
@@ -357,6 +357,7 @@ typedef enum {
     ImGuiHoveredFlags_AllowWhenBlockedByActiveItem = 1 << 7,
     ImGuiHoveredFlags_AllowWhenOverlapped = 1 << 8,
     ImGuiHoveredFlags_AllowWhenDisabled = 1 << 9,
+    ImGuiHoveredFlags_NoNavOverride = 1 << 10,
     ImGuiHoveredFlags_RectOnly = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped,
     ImGuiHoveredFlags_RootAndChildWindows = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows
 }ImGuiHoveredFlags_;
@@ -483,10 +484,7 @@ typedef enum {
     ImGuiKey_GamepadRStickDown,
     ImGuiKey_GamepadRStickLeft,
     ImGuiKey_GamepadRStickRight,
-    ImGuiKey_ModCtrl,
-    ImGuiKey_ModShift,
-    ImGuiKey_ModAlt,
-    ImGuiKey_ModSuper,
+    ImGuiKey_ModCtrl, ImGuiKey_ModShift, ImGuiKey_ModAlt, ImGuiKey_ModSuper,
     ImGuiKey_COUNT,
     ImGuiKey_NamedKey_BEGIN = 512,
     ImGuiKey_NamedKey_END = ImGuiKey_COUNT,
@@ -495,12 +493,12 @@ typedef enum {
     ImGuiKey_KeysData_OFFSET = 0
 }ImGuiKey_;
 typedef enum {
-    ImGuiKeyModFlags_None = 0,
-    ImGuiKeyModFlags_Ctrl = 1 << 0,
-    ImGuiKeyModFlags_Shift = 1 << 1,
-    ImGuiKeyModFlags_Alt = 1 << 2,
-    ImGuiKeyModFlags_Super = 1 << 3
-}ImGuiKeyModFlags_;
+    ImGuiModFlags_None = 0,
+    ImGuiModFlags_Ctrl = 1 << 0,
+    ImGuiModFlags_Shift = 1 << 1,
+    ImGuiModFlags_Alt = 1 << 2,
+    ImGuiModFlags_Super = 1 << 3
+}ImGuiModFlags_;
 typedef enum {
     ImGuiNavInput_Activate,
     ImGuiNavInput_Cancel,
@@ -821,7 +819,7 @@ struct ImGuiIO
     int MetricsActiveAllocations;
     ImVec2 MouseDelta;
     int KeyMap[ImGuiKey_COUNT];
-    _Bool KeysDown[512];
+    _Bool KeysDown[ImGuiKey_COUNT];
     ImVec2 MousePos;
     _Bool MouseDown[5];
     float MouseWheel;
@@ -832,8 +830,7 @@ struct ImGuiIO
     _Bool KeyAlt;
     _Bool KeySuper;
     float NavInputs[ImGuiNavInput_COUNT];
-    ImGuiKeyModFlags KeyMods;
-    ImGuiKeyModFlags KeyModsPrev;
+    ImGuiModFlags KeyMods;
     ImGuiKeyData KeysData[ImGuiKey_KeysData_SIZE];
     _Bool WantCaptureMouseUnlessPopupClose;
     ImVec2 MousePosPrev;
@@ -854,6 +851,7 @@ struct ImGuiIO
     float NavInputsDownDurationPrev[ImGuiNavInput_COUNT];
     float PenPressure;
     _Bool AppFocusLost;
+    _Bool AppAcceptingEvents;
     ImS8 BackendUsingLegacyKeyArrays;
     _Bool BackendUsingLegacyNavInputArray;
     ImWchar16 InputQueueSurrogate;
@@ -1255,6 +1253,7 @@ extern  void igRender(void);
 extern  ImDrawData* igGetDrawData(void);
 extern  void igShowDemoWindow(_Bool* p_open);
 extern  void igShowMetricsWindow(_Bool* p_open);
+extern  void igShowDebugLogWindow(_Bool* p_open);
 extern  void igShowStackToolWindow(_Bool* p_open);
 extern  void igShowAboutWindow(_Bool* p_open);
 extern  void igShowStyleEditor(ImGuiStyle* ref);
@@ -1443,7 +1442,7 @@ extern  _Bool igColorEdit3(const char* label,float col[3],ImGuiColorEditFlags fl
 extern  _Bool igColorEdit4(const char* label,float col[4],ImGuiColorEditFlags flags);
 extern  _Bool igColorPicker3(const char* label,float col[3],ImGuiColorEditFlags flags);
 extern  _Bool igColorPicker4(const char* label,float col[4],ImGuiColorEditFlags flags,const float* ref_col);
-extern  _Bool igColorButton(const char* desc_id,const ImVec4 col,ImGuiColorEditFlags flags,ImVec2 size);
+extern  _Bool igColorButton(const char* desc_id,const ImVec4 col,ImGuiColorEditFlags flags,const ImVec2 size);
 extern  void igSetColorEditOptions(ImGuiColorEditFlags flags);
 extern  _Bool igTreeNode_Str(const char* label);
 extern  _Bool igTreeNode_StrStr(const char* str_id,const char* fmt,...);
@@ -1573,14 +1572,14 @@ extern  void igGetItemRectMax(ImVec2 *pOut);
 extern  void igGetItemRectSize(ImVec2 *pOut);
 extern  void igSetItemAllowOverlap(void);
 extern  ImGuiViewport* igGetMainViewport(void);
-extern  _Bool igIsRectVisible_Nil(const ImVec2 size);
-extern  _Bool igIsRectVisible_Vec2(const ImVec2 rect_min,const ImVec2 rect_max);
-extern  double igGetTime(void);
-extern  int igGetFrameCount(void);
 extern  ImDrawList* igGetBackgroundDrawList_Nil(void);
 extern  ImDrawList* igGetForegroundDrawList_Nil(void);
 extern  ImDrawList* igGetBackgroundDrawList_ViewportPtr(ImGuiViewport* viewport);
 extern  ImDrawList* igGetForegroundDrawList_ViewportPtr(ImGuiViewport* viewport);
+extern  _Bool igIsRectVisible_Nil(const ImVec2 size);
+extern  _Bool igIsRectVisible_Vec2(const ImVec2 rect_min,const ImVec2 rect_max);
+extern  double igGetTime(void);
+extern  int igGetFrameCount(void);
 extern  ImDrawListSharedData* igGetDrawListSharedData(void);
 extern  const char* igGetStyleColorName(ImGuiCol idx);
 extern  void igSetStateStorage(ImGuiStorage* storage);
@@ -1597,7 +1596,7 @@ extern  _Bool igIsKeyPressed(ImGuiKey key,_Bool repeat);
 extern  _Bool igIsKeyReleased(ImGuiKey key);
 extern  int igGetKeyPressedAmount(ImGuiKey key,float repeat_delay,float rate);
 extern  const char* igGetKeyName(ImGuiKey key);
-extern  void igCaptureKeyboardFromApp(_Bool want_capture_keyboard_value);
+extern  void igSetNextFrameWantCaptureKeyboard(_Bool want_capture_keyboard);
 extern  _Bool igIsMouseDown(ImGuiMouseButton button);
 extern  _Bool igIsMouseClicked(ImGuiMouseButton button,_Bool repeat);
 extern  _Bool igIsMouseReleased(ImGuiMouseButton button);
@@ -1613,13 +1612,14 @@ extern  void igGetMouseDragDelta(ImVec2 *pOut,ImGuiMouseButton button,float lock
 extern  void igResetMouseDragDelta(ImGuiMouseButton button);
 extern  ImGuiMouseCursor igGetMouseCursor(void);
 extern  void igSetMouseCursor(ImGuiMouseCursor cursor_type);
-extern  void igCaptureMouseFromApp(_Bool want_capture_mouse_value);
+extern  void igSetNextFrameWantCaptureMouse(_Bool want_capture_mouse);
 extern  const char* igGetClipboardText(void);
 extern  void igSetClipboardText(const char* text);
 extern  void igLoadIniSettingsFromDisk(const char* ini_filename);
 extern  void igLoadIniSettingsFromMemory(const char* ini_data,size_t ini_size);
 extern  void igSaveIniSettingsToDisk(const char* ini_filename);
 extern  const char* igSaveIniSettingsToMemory(size_t* out_ini_size);
+extern  void igDebugTextEncoding(const char* text);
 extern  _Bool igDebugCheckVersionAndDataLayout(const char* version_str,size_t sz_io,size_t sz_style,size_t sz_vec2,size_t sz_vec4,size_t sz_drawvert,size_t sz_drawidx);
 extern  void igSetAllocatorFunctions(ImGuiMemAllocFunc alloc_func,ImGuiMemFreeFunc free_func,void* user_data);
 extern  void igGetAllocatorFunctions(ImGuiMemAllocFunc* p_alloc_func,ImGuiMemFreeFunc* p_free_func,void** p_user_data);
@@ -1644,9 +1644,10 @@ extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_AddInputCharacter(ImGuiIO* self,unsigned int c);
 extern  void ImGuiIO_AddInputCharacterUTF16(ImGuiIO* self,ImWchar16 c);
 extern  void ImGuiIO_AddInputCharactersUTF8(ImGuiIO* self,const char* str);
+extern  void ImGuiIO_SetKeyEventNativeData(ImGuiIO* self,ImGuiKey key,int native_keycode,int native_scancode,int native_legacy_index);
+extern  void ImGuiIO_SetAppAcceptingEvents(ImGuiIO* self,_Bool accepting_events);
 extern  void ImGuiIO_ClearInputCharacters(ImGuiIO* self);
 extern  void ImGuiIO_ClearInputKeys(ImGuiIO* self);
-extern  void ImGuiIO_SetKeyEventNativeData(ImGuiIO* self,ImGuiKey key,int native_keycode,int native_scancode,int native_legacy_index);
 extern  ImGuiIO* ImGuiIO_ImGuiIO(void);
 extern  void ImGuiIO_destroy(ImGuiIO* self);
 extern  ImGuiInputTextCallbackData* ImGuiInputTextCallbackData_ImGuiInputTextCallbackData(void);
@@ -1720,10 +1721,10 @@ extern  _Bool ImGuiListClipper_Step(ImGuiListClipper* self);
 extern  void ImGuiListClipper_ForceDisplayRangeByIndices(ImGuiListClipper* self,int item_min,int item_max);
 extern  ImColor* ImColor_ImColor_Nil(void);
 extern  void ImColor_destroy(ImColor* self);
-extern  ImColor* ImColor_ImColor_Int(int r,int g,int b,int a);
-extern  ImColor* ImColor_ImColor_U32(ImU32 rgba);
 extern  ImColor* ImColor_ImColor_Float(float r,float g,float b,float a);
 extern  ImColor* ImColor_ImColor_Vec4(const ImVec4 col);
+extern  ImColor* ImColor_ImColor_Int(int r,int g,int b,int a);
+extern  ImColor* ImColor_ImColor_U32(ImU32 rgba);
 extern  void ImColor_SetHSV(ImColor* self,float h,float s,float v,float a);
 extern  void ImColor_HSV(ImColor *pOut,float h,float s,float v,float a);
 extern  ImDrawCmd* ImDrawCmd_ImDrawCmd(void);
@@ -1738,7 +1739,7 @@ extern  void ImDrawListSplitter_Merge(ImDrawListSplitter* self,ImDrawList* draw_
 extern  void ImDrawListSplitter_SetCurrentChannel(ImDrawListSplitter* self,ImDrawList* draw_list,int channel_idx);
 extern  ImDrawList* ImDrawList_ImDrawList(const ImDrawListSharedData* shared_data);
 extern  void ImDrawList_destroy(ImDrawList* self);
-extern  void ImDrawList_PushClipRect(ImDrawList* self,ImVec2 clip_rect_min,ImVec2 clip_rect_max,_Bool intersect_with_current_clip_rect);
+extern  void ImDrawList_PushClipRect(ImDrawList* self,const ImVec2 clip_rect_min,const ImVec2 clip_rect_max,_Bool intersect_with_current_clip_rect);
 extern  void ImDrawList_PushClipRectFullScreen(ImDrawList* self);
 extern  void ImDrawList_PopClipRect(ImDrawList* self);
 extern  void ImDrawList_PushTextureID(ImDrawList* self,ImTextureID texture_id);
@@ -1858,8 +1859,8 @@ extern  _Bool ImFont_IsLoaded(ImFont* self);
 extern  const char* ImFont_GetDebugName(ImFont* self);
 extern  void ImFont_CalcTextSizeA(ImVec2 *pOut,ImFont* self,float size,float max_width,float wrap_width,const char* text_begin,const char* text_end,const char** remaining);
 extern  const char* ImFont_CalcWordWrapPositionA(ImFont* self,float scale,const char* text,const char* text_end,float wrap_width);
-extern  void ImFont_RenderChar(ImFont* self,ImDrawList* draw_list,float size,ImVec2 pos,ImU32 col,ImWchar c);
-extern  void ImFont_RenderText(ImFont* self,ImDrawList* draw_list,float size,ImVec2 pos,ImU32 col,const ImVec4 clip_rect,const char* text_begin,const char* text_end,float wrap_width,_Bool cpu_fine_clip);
+extern  void ImFont_RenderChar(ImFont* self,ImDrawList* draw_list,float size,const ImVec2 pos,ImU32 col,ImWchar c);
+extern  void ImFont_RenderText(ImFont* self,ImDrawList* draw_list,float size,const ImVec2 pos,ImU32 col,const ImVec4 clip_rect,const char* text_begin,const char* text_end,float wrap_width,_Bool cpu_fine_clip);
 extern  void ImFont_BuildLookupTable(ImFont* self);
 extern  void ImFont_ClearOutputData(ImFont* self);
 extern  void ImFont_GrowIndex(ImFont* self,int new_size);
@@ -1880,9 +1881,9 @@ extern  void ImGuiPlatformImeData_destroy(ImGuiPlatformImeData* self);
 extern  int igGetKeyIndex(ImGuiKey key);
 extern  void igLogText(const char *fmt, ...);
 extern  void ImGuiTextBuffer_appendf(struct ImGuiTextBuffer *buffer, const char *fmt, ...);
-extern  float igGET_FLT_MAX();
-extern  float igGET_FLT_MIN();
-extern  ImVector_ImWchar* ImVector_ImWchar_create();
+extern  float igGET_FLT_MAX(void);
+extern  float igGET_FLT_MIN(void);
+extern  ImVector_ImWchar* ImVector_ImWchar_create(void);
 extern  void ImVector_ImWchar_destroy(ImVector_ImWchar* self);
 extern  void ImVector_ImWchar_Init(ImVector_ImWchar* p);
 extern  void ImVector_ImWchar_UnInit(ImVector_ImWchar* p);

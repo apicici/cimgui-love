@@ -108,16 +108,6 @@ M.ImColor_Nil = M.ImColor_Nil  or function()
     local p = C.ImColor_ImColor_Nil()
     return ffi.gc(p[0], C.ImColor_destroy)
 end
-M.ImColor_Int = M.ImColor_Int  or function(i1, i2, i3, i4)
-    jit.off(true)
-    local p = C.ImColor_ImColor_Int(i1, i2, i3, i4)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
-M.ImColor_U32 = M.ImColor_U32  or function(i1)
-    jit.off(true)
-    local p = C.ImColor_ImColor_U32(i1)
-    return ffi.gc(p[0], C.ImColor_destroy)
-end
 M.ImColor_Float = M.ImColor_Float  or function(i1, i2, i3, i4)
     jit.off(true)
     local p = C.ImColor_ImColor_Float(i1, i2, i3, i4)
@@ -126,6 +116,16 @@ end
 M.ImColor_Vec4 = M.ImColor_Vec4  or function(i1)
     jit.off(true)
     local p = C.ImColor_ImColor_Vec4(i1)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_Int = M.ImColor_Int  or function(i1, i2, i3, i4)
+    jit.off(true)
+    local p = C.ImColor_ImColor_Int(i1, i2, i3, i4)
+    return ffi.gc(p[0], C.ImColor_destroy)
+end
+M.ImColor_U32 = M.ImColor_U32  or function(i1)
+    jit.off(true)
+    local p = C.ImColor_ImColor_U32(i1)
     return ffi.gc(p[0], C.ImColor_destroy)
 end
 M.ImColor = ImColor
@@ -990,6 +990,11 @@ ImGuiIO["ClearInputKeys"] = ImGuiIO["ClearInputKeys"]  or function(i1)
     local out = C.ImGuiIO_ClearInputKeys(i1)
     return out
 end
+ImGuiIO["SetAppAcceptingEvents"] = ImGuiIO["SetAppAcceptingEvents"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_SetAppAcceptingEvents(i1, i2)
+    return out
+end
 ImGuiIO["SetKeyEventNativeData"] = ImGuiIO["SetKeyEventNativeData"]  or function(i1, i2, i3, i4, i5)
     jit.off(true)
     if i5 == nil then i5 = -1 end
@@ -1670,18 +1675,6 @@ M.CalcTextSize = M.CalcTextSize  or function(i1, i2, i3, i4)
     local out = C.igCalcTextSize(o1, i1, i2, i3, i4)
     return o1[0], out
 end
-M.CaptureKeyboardFromApp = M.CaptureKeyboardFromApp  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = true end
-    local out = C.igCaptureKeyboardFromApp(i1)
-    return out
-end
-M.CaptureMouseFromApp = M.CaptureMouseFromApp  or function(i1)
-    jit.off(true)
-    if i1 == nil then i1 = true end
-    local out = C.igCaptureMouseFromApp(i1)
-    return out
-end
 M.Checkbox = M.Checkbox  or function(i1, i2)
     jit.off(true)
     local out = C.igCheckbox(i1, i2)
@@ -1805,6 +1798,11 @@ end
 M.DebugCheckVersionAndDataLayout = M.DebugCheckVersionAndDataLayout  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
     local out = C.igDebugCheckVersionAndDataLayout(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
+M.DebugTextEncoding = M.DebugTextEncoding  or function(i1)
+    jit.off(true)
+    local out = C.igDebugTextEncoding(i1)
     return out
 end
 M.DestroyContext = M.DestroyContext  or function(i1)
@@ -3142,6 +3140,16 @@ M.SetMouseCursor = M.SetMouseCursor  or function(i1)
     local out = C.igSetMouseCursor(i1)
     return out
 end
+M.SetNextFrameWantCaptureKeyboard = M.SetNextFrameWantCaptureKeyboard  or function(i1)
+    jit.off(true)
+    local out = C.igSetNextFrameWantCaptureKeyboard(i1)
+    return out
+end
+M.SetNextFrameWantCaptureMouse = M.SetNextFrameWantCaptureMouse  or function(i1)
+    jit.off(true)
+    local out = C.igSetNextFrameWantCaptureMouse(i1)
+    return out
+end
 M.SetNextItemOpen = M.SetNextItemOpen  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = 0 end
@@ -3311,6 +3319,11 @@ end
 M.ShowAboutWindow = M.ShowAboutWindow  or function(i1)
     jit.off(true)
     local out = C.igShowAboutWindow(i1)
+    return out
+end
+M.ShowDebugLogWindow = M.ShowDebugLogWindow  or function(i1)
+    jit.off(true)
+    local out = C.igShowDebugLogWindow(i1)
     return out
 end
 M.ShowDemoWindow = M.ShowDemoWindow  or function(i1)

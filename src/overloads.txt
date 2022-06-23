@@ -1,9 +1,9 @@
 ImColor
     ImColor_Nil()
-    ImColor_Int(int r,int g,int b,int a)
-    ImColor_U32(ImU32 rgba)
     ImColor_Float(float r,float g,float b,float a)
     ImColor_Vec4(const ImVec4 col)
+    ImColor_Int(int r,int g,int b,int a)
+    ImColor_U32(ImU32 rgba)
 
 ImGuiStoragePair
     ImGuiStoragePair_Int(ImGuiID _key,int _val_i)
