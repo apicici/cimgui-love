@@ -143,7 +143,16 @@ _common.callbacks = setmetatable({},{__mode="v"})
 local cliboard_callback_get, cliboard_callback_set
 local io
 
+local Alpha8_shader
+
 function L.Init(format)
+    Alpha8_shader = love.graphics.newShader [[
+        vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+            float alpha = Texel(tex, texture_coords).r;
+            return vec4(color.rgb, color.a*alpha);
+        }
+    ]]
+
     format = format or "RGBA32"
     C.igCreateContext(nil)
     io = C.igGetIO()
@@ -172,13 +181,6 @@ function L.Init(format)
 
     io.BackendFlags = bit.bor(C.ImGuiBackendFlags_HasMouseCursors, C.ImGuiBackendFlags_HasSetMousePos)
 end
-
-local Alpha8_shader = love.graphics.newShader [[
-vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
-    float alpha = Texel(tex, texture_coords).r;
-    return vec4(color.rgb, color.a*alpha);
-}
-]]
 
 local custom_shader
 
