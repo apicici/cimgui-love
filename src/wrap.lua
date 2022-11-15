@@ -781,6 +781,11 @@ ImFontAtlas["GetGlyphRangesDefault"] = ImFontAtlas["GetGlyphRangesDefault"]  or 
     local out = C.ImFontAtlas_GetGlyphRangesDefault(i1)
     return out
 end
+ImFontAtlas["GetGlyphRangesGreek"] = ImFontAtlas["GetGlyphRangesGreek"]  or function(i1)
+    jit.off(true)
+    local out = C.ImFontAtlas_GetGlyphRangesGreek(i1)
+    return out
+end
 ImFontAtlas["GetGlyphRangesJapanese"] = ImFontAtlas["GetGlyphRangesJapanese"]  or function(i1)
     jit.off(true)
     local out = C.ImFontAtlas_GetGlyphRangesJapanese(i1)
@@ -2432,14 +2437,13 @@ M.Image = M.Image  or function(i1, i2, i3, i4, i5, i6)
 end
 M.ImageButton = M.ImageButton  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
-    if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
-    if i4 == nil then i4 = M.ImVec2_Float(1, 1) end
-    if i5 == nil then i5 = -1 end
+    if i4 == nil then i4 = M.ImVec2_Float(0, 0) end
+    if i5 == nil then i5 = M.ImVec2_Float(1, 1) end
     if i6 == nil then i6 = M.ImVec4_Float(0, 0, 0, 0) end
     if i7 == nil then i7 = M.ImVec4_Float(1, 1, 1, 1) end
-    local ptr = ffi.cast("void *", i1)
-    _common.textures[tostring(ptr)] = i1
-    i1 = ptr
+    local ptr = ffi.cast("void *", i2)
+    _common.textures[tostring(ptr)] = i2
+    i2 = ptr
     local out = C.igImageButton(i1, i2, i3, i4, i5, i6, i7)
     return out
 end
@@ -3198,6 +3202,11 @@ M.SetNextWindowPos = M.SetNextWindowPos  or function(i1, i2, i3)
     if i2 == nil then i2 = 0 end
     if i3 == nil then i3 = M.ImVec2_Float(0, 0) end
     local out = C.igSetNextWindowPos(i1, i2, i3)
+    return out
+end
+M.SetNextWindowScroll = M.SetNextWindowScroll  or function(i1)
+    jit.off(true)
+    local out = C.igSetNextWindowScroll(i1)
     return out
 end
 M.SetNextWindowSize = M.SetNextWindowSize  or function(i1, i2)
