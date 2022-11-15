@@ -8,11 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [1.89-1] (2022-11-15)
 ### Changed
 - Updated to Dear ImGui 1.89 (docking branch)
-- 
+
 ## [1.88-2] (2022-07-26)
 ### Changed
 - The shader for the `Alpha8` texture format is now created by `imgui.love.Init`, to avoid errors if the library is loaded before the LÖVE window is created.
-
 
 ## [1.88-1] (2022-06-22)
 ### Changed
