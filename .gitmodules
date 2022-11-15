@@ -1,4 +1,4 @@
 [submodule "cimgui"]
 	path = cimgui
 	url = https://github.com/apicici/cimgui.git
-	branch = docking_inter
+	branch = main
