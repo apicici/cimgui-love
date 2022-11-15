@@ -123,14 +123,14 @@ local lovekeymap = {
 
     ["menu"] = C.ImGuiKey_Menu,
 
-    ["lctrl"] = {C.ImGuiKey_LeftCtrl, C.ImGuiKey_ModCtrl},
-    ["lshift"] = {C.ImGuiKey_LeftShift, C.ImGuiKey_ModShift},
-    ["lalt"] = {C.ImGuiKey_LeftAlt, C.ImGuiKey_ModAlt},
-    ["lgui"] = {C.ImGuiKey_LeftSuper, C.ImGuiKey_ModSuper},
-    ["rctrl"] = {C.ImGuiKey_RightCtrl, C.ImGuiKey_ModCtrl},
-    ["rshift"] = {C.ImGuiKey_RightShift, C.ImGuiKey_ModShift},
-    ["ralt"] = {C.ImGuiKey_RightAlt, C.ImGuiKey_ModAlt},
-    ["rgui"] = {C.ImGuiKey_RightSuper, C.ImGuiKey_ModSuper},
+    ["lctrl"] = {C.ImGuiKey_LeftCtrl, C.ImGuiMod_Ctrl},
+    ["lshift"] = {C.ImGuiKey_LeftShift, C.ImGuiMod_Shift},
+    ["lalt"] = {C.ImGuiKey_LeftAlt, C.ImGuiMod_Alt},
+    ["lgui"] = {C.ImGuiKey_LeftSuper, C.ImGuiMod_Super},
+    ["rctrl"] = {C.ImGuiKey_RightCtrl, C.ImGuiMod_Ctrl},
+    ["rshift"] = {C.ImGuiKey_RightShift, C.ImGuiMod_Shift},
+    ["ralt"] = {C.ImGuiKey_RightAlt, C.ImGuiMod_Alt},
+    ["rgui"] = {C.ImGuiKey_RightSuper, C.ImGuiMod_Super},
 }
 _common.lovekeymap = lovekeymap
 
