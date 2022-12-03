@@ -1240,6 +1240,7 @@ struct ImGuiViewport
     void* PlatformUserData;
     void* PlatformHandle;
     void* PlatformHandleRaw;
+    _Bool PlatformWindowCreated;
     _Bool PlatformRequestMove;
     _Bool PlatformRequestResize;
     _Bool PlatformRequestClose;
