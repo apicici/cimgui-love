@@ -559,8 +559,8 @@ ImGuiMod_Ctrl=1 << 12,
 ImGuiMod_Shift=1 << 13,
 ImGuiMod_Alt=1 << 14,
 ImGuiMod_Super=1 << 15,
-ImGuiMod_Mask_=0xF000,
-ImGuiMod_Shortcut=ImGuiMod_Ctrl,
+ImGuiMod_Shortcut=1 << 11,
+ImGuiMod_Mask_=0xF800,
 ImGuiKey_NamedKey_BEGIN=512,
 ImGuiKey_NamedKey_END=ImGuiKey_COUNT,
 ImGuiKey_NamedKey_COUNT=ImGuiKey_NamedKey_END - ImGuiKey_NamedKey_BEGIN,
@@ -1170,6 +1170,7 @@ struct ImFontAtlas
     int TexDesiredWidth;
     int TexGlyphPadding;
     _Bool Locked;
+    void* UserData;
     _Bool TexReady;
     _Bool TexPixelsUseColors;
     unsigned char* TexPixelsAlpha8;
@@ -1620,6 +1621,7 @@ extern  _Bool igIsItemToggledOpen(void);
 extern  _Bool igIsAnyItemHovered(void);
 extern  _Bool igIsAnyItemActive(void);
 extern  _Bool igIsAnyItemFocused(void);
+extern  ImGuiID igGetItemID(void);
 extern  void igGetItemRectMin(ImVec2 *pOut);
 extern  void igGetItemRectMax(ImVec2 *pOut);
 extern  void igGetItemRectSize(ImVec2 *pOut);

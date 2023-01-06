@@ -2231,6 +2231,11 @@ M.GetIO = M.GetIO  or function()
     local out = C.igGetIO()
     return out
 end
+M.GetItemID = M.GetItemID  or function()
+    jit.off(true)
+    local out = C.igGetItemID()
+    return out
+end
 M.GetItemRectMax = M.GetItemRectMax  or function()
     jit.off(true)
     local o1 = ffi.new("ImVec2[1]")
