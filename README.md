@@ -243,8 +243,8 @@ Dear ImGui does not currently have a way to process keyboard shortcuts defined i
 
 love.draw = function()
      if imgui.Begin("test", nil, imgui.ImGuiWindowFlags_MenuBar) then
-        action = function print("Shortcut processed.") end
-        shortcut = imgui.love.Shortcut({"ctrl", "shift"}, "s", action, true, false)
+        local action = function() print("Shortcut processed.") end
+        local shortcut = imgui.love.Shortcut({"ctrl", "shift"}, "s", action, true, false)
 
         if imgui.BeginMenuBar() then
             if imgui.BeginMenu("File") then
