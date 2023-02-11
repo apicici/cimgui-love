@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.1)
+
+set(CMAKE_XCODE_ATTRIBUTE_ARCHS "$(ARCHS_STANDARD)")
+set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)" CACHE STRING "" FORCE)
+set(CMAKE_XCODE_ATTRIBUTE_MACOSX_DEPLOYMENT_TARGET "10.7")
+
+
+project(cimgui)
+
+set (CMAKE_CXX_STANDARD 11)
+
+add_library(cimgui SHARED
+    cimgui.cpp
+    imgui/imgui.cpp
+    imgui/imgui_draw.cpp
+    imgui/imgui_demo.cpp
+    imgui/imgui_widgets.cpp
+    imgui/imgui_tables.cpp
+)
+
+target_compile_definitions(cimgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1)
+
+target_include_directories(cimgui PUBLIC .)
+target_include_directories(cimgui PUBLIC imgui)
+set_target_properties(cimgui PROPERTIES PREFIX "")

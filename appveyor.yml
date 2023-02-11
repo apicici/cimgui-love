@@ -17,17 +17,19 @@ environment:
     - job_name: Linux
       appveyor_build_worker_image: Ubuntu1604
       artifact_name: $(APPVEYOR_PROJECT_SLUG)-linux-x64
+      SH_FILE: linux.sh
       
     - job_name: macOS
-      appveyor_build_worker_image: macOS-Mojave
-      artifact_name: $(APPVEYOR_PROJECT_SLUG)-macos-x64
+      appveyor_build_worker_image: macos-monterey
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-macos-universal
+      SH_FILE: mac.sh
       
 install:
   - git submodule update --init --recursive
 
 build_script:
   - cmd: .appveyor\build.bat
-  - sh: bash .appveyor/build.sh
+  - sh: bash .appveyor/${SH_FILE}
 
 after_build:
   - cmd: appveyor PushArtifact build.zip -FileName %artifact_name%-%APPVEYOR_REPO_TAG_NAME%.zip
