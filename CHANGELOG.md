@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.89.2-1] (2023-02-11)
+## [1.89.2-2] (2023-02-11)
 ### Added
 - Compatibility with the WIP version of LÖVE 12
 - Start building macos releases with universal library
