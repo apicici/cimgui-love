@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [1.89.2-1] (2023-02-11)
 ### Added
 - Compatibility with the WIP version of LÖVE 12
+- Start building macos releases with universal library
 
 ## [1.89.2-1] (2023-01-06)
 ### Changed
@@ -98,7 +101,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial release of `generator.lua` and LÖVE implementation
 - Generated the wrappers using Dear ImGui 1.82 (docking branch)
 
-[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.89.2-1...HEAD
+[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.89.2-2...HEAD
+[1.89.2-2]: https://github.com/apicici/cimgui-love/compare/1.89.2-1...1.89.2-2
 [1.89.2-1]: https://github.com/apicici/cimgui-love/compare/1.89.1-1...1.89.2-1
 [1.89.1-1]: https://github.com/apicici/cimgui-love/compare/1.89-1...1.89.1-1
 [1.89-1]: https://github.com/apicici/cimgui-love/compare/1.88-2...1.89-1
