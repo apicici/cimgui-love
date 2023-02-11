@@ -4,6 +4,11 @@ clone_depth: 1
 
 environment:
   matrix:
+    - job_name: macOS
+      appveyor_build_worker_image: macos-bigsur
+      artifact_name: $(APPVEYOR_PROJECT_SLUG)-macos-universal
+      SH_FILE: mac.sh
+      
     - job_name: Windows 64
       appveyor_build_worker_image: Visual Studio 2017
       artifact_name: $(APPVEYOR_PROJECT_SLUG)-windows-x64
@@ -19,10 +24,7 @@ environment:
       artifact_name: $(APPVEYOR_PROJECT_SLUG)-linux-x64
       SH_FILE: linux.sh
       
-    - job_name: macOS
-      appveyor_build_worker_image: macos-monterey
-      artifact_name: $(APPVEYOR_PROJECT_SLUG)-macos-universal
-      SH_FILE: mac.sh
+    
       
 install:
   - git submodule update --init --recursive
