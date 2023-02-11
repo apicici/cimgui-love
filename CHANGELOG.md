@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Compatibility with the WIP version of LÖVE 12
 
 ## [1.89.2-1] (2023-01-06)
 ### Changed

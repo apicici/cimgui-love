@@ -10,11 +10,24 @@ local C = M.C
 local L = M.love
 local _common = M._common
 
-local vertexformat = {
-    {"VertexPosition", "float", 2},
-    {"VertexTexCoord", "float", 2},
-    {"VertexColor", "byte", 4}
-}
+local vertexformat
+
+local major, minor = love.getVersion()
+if major == 12 then
+    vertexformat = {
+        {name="VertexPosition", format="floatvec2"},
+        {name="VertexTexCoord", format="floatvec2"},
+        {name="VertexColor", format="unorm8vec4"}
+    }
+elseif major == 11 then
+    vertexformat = {
+        {"VertexPosition", "float", 2},
+        {"VertexTexCoord", "float", 2},
+        {"VertexColor", "byte", 4}
+    }
+else
+    error("This version of LÖVE is not supported by cimgui-love")
+end
 
 local lovekeymap = {
     ["return"] = C.ImGuiKey_Enter,
