@@ -681,6 +681,9 @@ typedef enum {
     ImGuiStyleVar_TabRounding,
     ImGuiStyleVar_ButtonTextAlign,
     ImGuiStyleVar_SelectableTextAlign,
+    ImGuiStyleVar_SeparatorTextBorderSize,
+    ImGuiStyleVar_SeparatorTextAlign,
+    ImGuiStyleVar_SeparatorTextPadding,
     ImGuiStyleVar_COUNT
 }ImGuiStyleVar_;
 typedef enum {
@@ -790,6 +793,9 @@ struct ImGuiStyle
     ImGuiDir ColorButtonPosition;
     ImVec2 ButtonTextAlign;
     ImVec2 SelectableTextAlign;
+    float SeparatorTextBorderSize;
+    ImVec2 SeparatorTextAlign;
+    ImVec2 SeparatorTextPadding;
     ImVec2 DisplayWindowPadding;
     ImVec2 DisplaySafeAreaPadding;
     float MouseCursorScale;
@@ -1203,7 +1209,9 @@ struct ImFont
     short ConfigDataCount;
     ImWchar FallbackChar;
     ImWchar EllipsisChar;
-    ImWchar DotChar;
+    short EllipsisCharCount;
+    float EllipsisWidth;
+    float EllipsisCharStep;
     _Bool DirtyLookupTables;
     float Scale;
     float Ascent, Descent;
@@ -1434,6 +1442,7 @@ extern  void igLabelText(const char* label,const char* fmt,...);
 extern  void igLabelTextV(const char* label,const char* fmt,va_list args);
 extern  void igBulletText(const char* fmt,...);
 extern  void igBulletTextV(const char* fmt,va_list args);
+extern  void igSeparatorText(const char* label);
 extern  _Bool igButton(const char* label,const ImVec2 size);
 extern  _Bool igSmallButton(const char* label);
 extern  _Bool igInvisibleButton(const char* str_id,const ImVec2 size,ImGuiButtonFlags flags);
@@ -1693,7 +1702,7 @@ extern  void ImGuiIO_AddKeyEvent(ImGuiIO* self,ImGuiKey key,_Bool down);
 extern  void ImGuiIO_AddKeyAnalogEvent(ImGuiIO* self,ImGuiKey key,_Bool down,float v);
 extern  void ImGuiIO_AddMousePosEvent(ImGuiIO* self,float x,float y);
 extern  void ImGuiIO_AddMouseButtonEvent(ImGuiIO* self,int button,_Bool down);
-extern  void ImGuiIO_AddMouseWheelEvent(ImGuiIO* self,float wh_x,float wh_y);
+extern  void ImGuiIO_AddMouseWheelEvent(ImGuiIO* self,float wheel_x,float wheel_y);
 extern  void ImGuiIO_AddMouseViewportEvent(ImGuiIO* self,ImGuiID id);
 extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_AddInputCharacter(ImGuiIO* self,unsigned int c);

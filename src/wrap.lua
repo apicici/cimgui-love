@@ -3072,6 +3072,11 @@ M.Separator = M.Separator  or function()
     local out = C.igSeparator()
     return out
 end
+M.SeparatorText = M.SeparatorText  or function(i1)
+    jit.off(true)
+    local out = C.igSeparatorText(i1)
+    return out
+end
 M.SetAllocatorFunctions = M.SetAllocatorFunctions  or function(i1, i2, i3)
     jit.off(true)
     local out = C.igSetAllocatorFunctions(i1, i2, i3)
