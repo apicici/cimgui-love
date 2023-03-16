@@ -2884,11 +2884,6 @@ M.PlotLines_FnFloatPtr = M.PlotLines_FnFloatPtr  or function(i1, i2, i3, i4, i5,
     local out = C.igPlotLines_FnFloatPtr(i1, i2, i3, i4, i5, i6, i7, i8, i9)
     return out
 end
-M.PopAllowKeyboardFocus = M.PopAllowKeyboardFocus  or function()
-    jit.off(true)
-    local out = C.igPopAllowKeyboardFocus()
-    return out
-end
 M.PopButtonRepeat = M.PopButtonRepeat  or function()
     jit.off(true)
     local out = C.igPopButtonRepeat()
@@ -2926,6 +2921,11 @@ M.PopStyleVar = M.PopStyleVar  or function(i1)
     local out = C.igPopStyleVar(i1)
     return out
 end
+M.PopTabStop = M.PopTabStop  or function()
+    jit.off(true)
+    local out = C.igPopTabStop()
+    return out
+end
 M.PopTextWrapPos = M.PopTextWrapPos  or function()
     jit.off(true)
     local out = C.igPopTextWrapPos()
@@ -2935,11 +2935,6 @@ M.ProgressBar = M.ProgressBar  or function(i1, i2, i3)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(-FLT_MIN, 0) end
     local out = C.igProgressBar(i1, i2, i3)
-    return out
-end
-M.PushAllowKeyboardFocus = M.PushAllowKeyboardFocus  or function(i1)
-    jit.off(true)
-    local out = C.igPushAllowKeyboardFocus(i1)
     return out
 end
 M.PushButtonRepeat = M.PushButtonRepeat  or function(i1)
@@ -3000,6 +2995,11 @@ end
 M.PushStyleVar_Vec2 = M.PushStyleVar_Vec2  or function(i1, i2)
     jit.off(true)
     local out = C.igPushStyleVar_Vec2(i1, i2)
+    return out
+end
+M.PushTabStop = M.PushTabStop  or function(i1)
+    jit.off(true)
+    local out = C.igPushTabStop(i1)
     return out
 end
 M.PushTextWrapPos = M.PushTextWrapPos  or function(i1)

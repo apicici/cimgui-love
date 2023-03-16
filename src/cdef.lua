@@ -853,6 +853,8 @@ struct ImGuiIO
     _Bool ConfigWindowsResizeFromEdges;
     _Bool ConfigWindowsMoveFromTitleBarOnly;
     float ConfigMemoryCompactTimer;
+    _Bool ConfigDebugBeginReturnValueOnce;
+    _Bool ConfigDebugBeginReturnValueLoop;
     const char* BackendPlatformName;
     const char* BackendRendererName;
     void* BackendPlatformUserData;
@@ -880,6 +882,7 @@ struct ImGuiIO
     int KeyMap[ImGuiKey_COUNT];
     _Bool KeysDown[ImGuiKey_COUNT];
     float NavInputs[ImGuiNavInput_COUNT];
+    ImGuiContext* Ctx;
     ImVec2 MousePos;
     _Bool MouseDown[5];
     float MouseWheel;
@@ -916,6 +919,7 @@ struct ImGuiIO
 };
 struct ImGuiInputTextCallbackData
 {
+    ImGuiContext* Ctx;
     ImGuiInputTextFlags EventFlag;
     ImGuiInputTextFlags Flags;
     void* UserData;
@@ -1008,6 +1012,7 @@ struct ImGuiStorage
 typedef struct ImGuiStoragePair ImGuiStoragePair;
 struct ImGuiListClipper
 {
+    ImGuiContext* Ctx;
     int DisplayStart;
     int DisplayEnd;
     int ItemsCount;
@@ -1381,8 +1386,8 @@ extern  void igPopStyleColor(int count);
 extern  void igPushStyleVar_Float(ImGuiStyleVar idx,float val);
 extern  void igPushStyleVar_Vec2(ImGuiStyleVar idx,const ImVec2 val);
 extern  void igPopStyleVar(int count);
-extern  void igPushAllowKeyboardFocus(_Bool allow_keyboard_focus);
-extern  void igPopAllowKeyboardFocus(void);
+extern  void igPushTabStop(_Bool tab_stop);
+extern  void igPopTabStop(void);
 extern  void igPushButtonRepeat(_Bool repeat);
 extern  void igPopButtonRepeat(void);
 extern  void igPushItemWidth(float item_width);
@@ -1546,7 +1551,7 @@ extern  _Bool igBeginMenu(const char* label,_Bool enabled);
 extern  void igEndMenu(void);
 extern  _Bool igMenuItem_Bool(const char* label,const char* shortcut,_Bool selected,_Bool enabled);
 extern  _Bool igMenuItem_BoolPtr(const char* label,const char* shortcut,_Bool* p_selected,_Bool enabled);
-extern  void igBeginTooltip(void);
+extern  _Bool igBeginTooltip(void);
 extern  void igEndTooltip(void);
 extern  void igSetTooltip(const char* fmt,...);
 extern  void igSetTooltipV(const char* fmt,va_list args);
