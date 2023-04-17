@@ -753,6 +753,12 @@ typedef enum {
     ImGuiMouseCursor_COUNT
 }ImGuiMouseCursor_;
 typedef enum {
+ImGuiMouseSource_Mouse=0,
+ImGuiMouseSource_TouchScreen=1,
+ImGuiMouseSource_Pen=2,
+ImGuiMouseSource_COUNT=3,
+}ImGuiMouseSource;
+typedef enum {
     ImGuiCond_None = 0,
     ImGuiCond_Always = 1 << 0,
     ImGuiCond_Once = 1 << 1,
@@ -887,6 +893,7 @@ struct ImGuiIO
     _Bool MouseDown[5];
     float MouseWheel;
     float MouseWheelH;
+    ImGuiMouseSource MouseSource;
     ImGuiID MouseHoveredViewport;
     _Bool KeyCtrl;
     _Bool KeyShift;
@@ -905,6 +912,7 @@ struct ImGuiIO
     _Bool MouseReleased[5];
     _Bool MouseDownOwned[5];
     _Bool MouseDownOwnedUnlessPopupClose[5];
+    _Bool MouseWheelRequestAxisSwap;
     float MouseDownDuration[5];
     float MouseDownDurationPrev[5];
     ImVec2 MouseDragMaxDistanceAbs[5];
@@ -1234,10 +1242,11 @@ typedef enum {
     ImGuiViewportFlags_NoFocusOnClick = 1 << 6,
     ImGuiViewportFlags_NoInputs = 1 << 7,
     ImGuiViewportFlags_NoRendererClear = 1 << 8,
-    ImGuiViewportFlags_TopMost = 1 << 9,
-    ImGuiViewportFlags_Minimized = 1 << 10,
-    ImGuiViewportFlags_NoAutoMerge = 1 << 11,
-    ImGuiViewportFlags_CanHostOtherWindows = 1 << 12,
+    ImGuiViewportFlags_NoAutoMerge = 1 << 9,
+    ImGuiViewportFlags_TopMost = 1 << 10,
+    ImGuiViewportFlags_CanHostOtherWindows = 1 << 11,
+    ImGuiViewportFlags_IsMinimized = 1 << 12,
+    ImGuiViewportFlags_IsFocused = 1 << 13,
 }ImGuiViewportFlags_;
 struct ImGuiViewport
 {
@@ -1708,6 +1717,7 @@ extern  void ImGuiIO_AddKeyAnalogEvent(ImGuiIO* self,ImGuiKey key,_Bool down,flo
 extern  void ImGuiIO_AddMousePosEvent(ImGuiIO* self,float x,float y);
 extern  void ImGuiIO_AddMouseButtonEvent(ImGuiIO* self,int button,_Bool down);
 extern  void ImGuiIO_AddMouseWheelEvent(ImGuiIO* self,float wheel_x,float wheel_y);
+extern  void ImGuiIO_AddMouseSourceEvent(ImGuiIO* self,ImGuiMouseSource source);
 extern  void ImGuiIO_AddMouseViewportEvent(ImGuiIO* self,ImGuiID id);
 extern  void ImGuiIO_AddFocusEvent(ImGuiIO* self,_Bool focused);
 extern  void ImGuiIO_AddInputCharacter(ImGuiIO* self,unsigned int c);

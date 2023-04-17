@@ -975,6 +975,11 @@ ImGuiIO["AddMousePosEvent"] = ImGuiIO["AddMousePosEvent"]  or function(i1, i2, i
     local out = C.ImGuiIO_AddMousePosEvent(i1, i2, i3)
     return out
 end
+ImGuiIO["AddMouseSourceEvent"] = ImGuiIO["AddMouseSourceEvent"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImGuiIO_AddMouseSourceEvent(i1, i2)
+    return out
+end
 ImGuiIO["AddMouseViewportEvent"] = ImGuiIO["AddMouseViewportEvent"]  or function(i1, i2)
     jit.off(true)
     local out = C.ImGuiIO_AddMouseViewportEvent(i1, i2)
