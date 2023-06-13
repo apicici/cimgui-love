@@ -861,6 +861,7 @@ struct ImGuiIO
     float ConfigMemoryCompactTimer;
     _Bool ConfigDebugBeginReturnValueOnce;
     _Bool ConfigDebugBeginReturnValueLoop;
+    _Bool ConfigDebugIgnoreFocusLoss;
     const char* BackendPlatformName;
     const char* BackendRendererName;
     void* BackendPlatformUserData;
@@ -1303,6 +1304,7 @@ struct ImGuiPlatformMonitor
     ImVec2 MainPos, MainSize;
     ImVec2 WorkPos, WorkSize;
     float DpiScale;
+    void* PlatformHandle;
 };
 struct ImGuiPlatformImeData
 {
@@ -1797,7 +1799,7 @@ extern  void ImGuiListClipper_destroy(ImGuiListClipper* self);
 extern  void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height);
 extern  void ImGuiListClipper_End(ImGuiListClipper* self);
 extern  _Bool ImGuiListClipper_Step(ImGuiListClipper* self);
-extern  void ImGuiListClipper_ForceDisplayRangeByIndices(ImGuiListClipper* self,int item_min,int item_max);
+extern  void ImGuiListClipper_IncludeRangeByIndices(ImGuiListClipper* self,int item_begin,int item_end);
 extern  ImColor* ImColor_ImColor_Nil(void);
 extern  void ImColor_destroy(ImColor* self);
 extern  ImColor* ImColor_ImColor_Float(float r,float g,float b,float a);

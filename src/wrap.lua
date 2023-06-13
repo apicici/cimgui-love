@@ -1071,9 +1071,9 @@ ImGuiListClipper["End"] = ImGuiListClipper["End"]  or function(i1)
     local out = C.ImGuiListClipper_End(i1)
     return out
 end
-ImGuiListClipper["ForceDisplayRangeByIndices"] = ImGuiListClipper["ForceDisplayRangeByIndices"]  or function(i1, i2, i3)
+ImGuiListClipper["IncludeRangeByIndices"] = ImGuiListClipper["IncludeRangeByIndices"]  or function(i1, i2, i3)
     jit.off(true)
-    local out = C.ImGuiListClipper_ForceDisplayRangeByIndices(i1, i2, i3)
+    local out = C.ImGuiListClipper_IncludeRangeByIndices(i1, i2, i3)
     return out
 end
 ImGuiListClipper["Step"] = ImGuiListClipper["Step"]  or function(i1)
