@@ -1579,6 +1579,11 @@ M.BeginGroup = M.BeginGroup  or function()
     local out = C.igBeginGroup()
     return out
 end
+M.BeginItemTooltip = M.BeginItemTooltip  or function()
+    jit.off(true)
+    local out = C.igBeginItemTooltip()
+    return out
+end
 M.BeginListBox = M.BeginListBox  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(0, 0) end
@@ -3138,14 +3143,14 @@ M.SetDragDropPayload = M.SetDragDropPayload  or function(i1, i2, i3, i4)
     local out = C.igSetDragDropPayload(i1, i2, i3, i4)
     return out
 end
-M.SetItemAllowOverlap = M.SetItemAllowOverlap  or function()
-    jit.off(true)
-    local out = C.igSetItemAllowOverlap()
-    return out
-end
 M.SetItemDefaultFocus = M.SetItemDefaultFocus  or function()
     jit.off(true)
     local out = C.igSetItemDefaultFocus()
+    return out
+end
+M.SetItemTooltip = M.SetItemTooltip  or function(i1, ...)
+    jit.off(true)
+    local out = C.igSetItemTooltip(i1, ...)
     return out
 end
 M.SetKeyboardFocusHere = M.SetKeyboardFocusHere  or function(i1)
@@ -3167,6 +3172,11 @@ end
 M.SetNextFrameWantCaptureMouse = M.SetNextFrameWantCaptureMouse  or function(i1)
     jit.off(true)
     local out = C.igSetNextFrameWantCaptureMouse(i1)
+    return out
+end
+M.SetNextItemAllowOverlap = M.SetNextItemAllowOverlap  or function()
+    jit.off(true)
+    local out = C.igSetNextItemAllowOverlap()
     return out
 end
 M.SetNextItemOpen = M.SetNextItemOpen  or function(i1, i2)

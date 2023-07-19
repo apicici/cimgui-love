@@ -189,7 +189,7 @@ typedef enum {
     ImGuiTreeNodeFlags_None = 0,
     ImGuiTreeNodeFlags_Selected = 1 << 0,
     ImGuiTreeNodeFlags_Framed = 1 << 1,
-    ImGuiTreeNodeFlags_AllowItemOverlap = 1 << 2,
+    ImGuiTreeNodeFlags_AllowOverlap = 1 << 2,
     ImGuiTreeNodeFlags_NoTreePushOnOpen = 1 << 3,
     ImGuiTreeNodeFlags_NoAutoOpenOnLog = 1 << 4,
     ImGuiTreeNodeFlags_DefaultOpen = 1 << 5,
@@ -222,7 +222,7 @@ typedef enum {
     ImGuiSelectableFlags_SpanAllColumns = 1 << 1,
     ImGuiSelectableFlags_AllowDoubleClick = 1 << 2,
     ImGuiSelectableFlags_Disabled = 1 << 3,
-    ImGuiSelectableFlags_AllowItemOverlap = 1 << 4,
+    ImGuiSelectableFlags_AllowOverlap = 1 << 4,
 }ImGuiSelectableFlags_;
 typedef enum {
     ImGuiComboFlags_None = 0,
@@ -354,14 +354,19 @@ typedef enum {
     ImGuiHoveredFlags_DockHierarchy = 1 << 4,
     ImGuiHoveredFlags_AllowWhenBlockedByPopup = 1 << 5,
     ImGuiHoveredFlags_AllowWhenBlockedByActiveItem = 1 << 7,
-    ImGuiHoveredFlags_AllowWhenOverlapped = 1 << 8,
-    ImGuiHoveredFlags_AllowWhenDisabled = 1 << 9,
-    ImGuiHoveredFlags_NoNavOverride = 1 << 10,
+    ImGuiHoveredFlags_AllowWhenOverlappedByItem = 1 << 8,
+    ImGuiHoveredFlags_AllowWhenOverlappedByWindow = 1 << 9,
+    ImGuiHoveredFlags_AllowWhenDisabled = 1 << 10,
+    ImGuiHoveredFlags_NoNavOverride = 1 << 11,
+    ImGuiHoveredFlags_AllowWhenOverlapped = ImGuiHoveredFlags_AllowWhenOverlappedByItem | ImGuiHoveredFlags_AllowWhenOverlappedByWindow,
     ImGuiHoveredFlags_RectOnly = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped,
     ImGuiHoveredFlags_RootAndChildWindows = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows,
-    ImGuiHoveredFlags_DelayNormal = 1 << 11,
-    ImGuiHoveredFlags_DelayShort = 1 << 12,
-    ImGuiHoveredFlags_NoSharedDelay = 1 << 13,
+    ImGuiHoveredFlags_ForTooltip = 1 << 11,
+    ImGuiHoveredFlags_Stationary = 1 << 12,
+    ImGuiHoveredFlags_DelayNone = 1 << 13,
+    ImGuiHoveredFlags_DelayShort = 1 << 14,
+    ImGuiHoveredFlags_DelayNormal = 1 << 15,
+    ImGuiHoveredFlags_NoSharedDelay = 1 << 16,
 }ImGuiHoveredFlags_;
 typedef enum {
     ImGuiDockNodeFlags_None = 0,
@@ -811,6 +816,11 @@ struct ImGuiStyle
     float CurveTessellationTol;
     float CircleTessellationMaxError;
     ImVec4 Colors[ImGuiCol_COUNT];
+    float HoverStationaryDelay;
+    float HoverDelayShort;
+    float HoverDelayNormal;
+    ImGuiHoveredFlags HoverFlagsForTooltipMouse;
+    ImGuiHoveredFlags HoverFlagsForTooltipNav;
 };
 struct ImGuiKeyData
 {
@@ -829,13 +839,6 @@ struct ImGuiIO
     float IniSavingRate;
     const char* IniFilename;
     const char* LogFilename;
-    float MouseDoubleClickTime;
-    float MouseDoubleClickMaxDist;
-    float MouseDragThreshold;
-    float KeyRepeatDelay;
-    float KeyRepeatRate;
-    float HoverDelayNormal;
-    float HoverDelayShort;
     void* UserData;
     ImFontAtlas*Fonts;
     float FontGlobalScale;
@@ -859,9 +862,15 @@ struct ImGuiIO
     _Bool ConfigWindowsResizeFromEdges;
     _Bool ConfigWindowsMoveFromTitleBarOnly;
     float ConfigMemoryCompactTimer;
+    float MouseDoubleClickTime;
+    float MouseDoubleClickMaxDist;
+    float MouseDragThreshold;
+    float KeyRepeatDelay;
+    float KeyRepeatRate;
     _Bool ConfigDebugBeginReturnValueOnce;
     _Bool ConfigDebugBeginReturnValueLoop;
     _Bool ConfigDebugIgnoreFocusLoss;
+    _Bool ConfigDebugIniSettings;
     const char* BackendPlatformName;
     const char* BackendRendererName;
     void* BackendPlatformUserData;
@@ -1566,6 +1575,9 @@ extern  _Bool igBeginTooltip(void);
 extern  void igEndTooltip(void);
 extern  void igSetTooltip(const char* fmt,...);
 extern  void igSetTooltipV(const char* fmt,va_list args);
+extern  _Bool igBeginItemTooltip(void);
+extern  void igSetItemTooltip(const char* fmt,...);
+extern  void igSetItemTooltipV(const char* fmt,va_list args);
 extern  _Bool igBeginPopup(const char* str_id,ImGuiWindowFlags flags);
 extern  _Bool igBeginPopupModal(const char* name,_Bool* p_open,ImGuiWindowFlags flags);
 extern  void igEndPopup(void);
@@ -1633,6 +1645,7 @@ extern  void igPushClipRect(const ImVec2 clip_rect_min,const ImVec2 clip_rect_ma
 extern  void igPopClipRect(void);
 extern  void igSetItemDefaultFocus(void);
 extern  void igSetKeyboardFocusHere(int offset);
+extern  void igSetNextItemAllowOverlap(void);
 extern  _Bool igIsItemHovered(ImGuiHoveredFlags flags);
 extern  _Bool igIsItemActive(void);
 extern  _Bool igIsItemFocused(void);
@@ -1650,7 +1663,6 @@ extern  ImGuiID igGetItemID(void);
 extern  void igGetItemRectMin(ImVec2 *pOut);
 extern  void igGetItemRectMax(ImVec2 *pOut);
 extern  void igGetItemRectSize(ImVec2 *pOut);
-extern  void igSetItemAllowOverlap(void);
 extern  ImGuiViewport* igGetMainViewport(void);
 extern  ImDrawList* igGetBackgroundDrawList_Nil(void);
 extern  ImDrawList* igGetForegroundDrawList_Nil(void);
