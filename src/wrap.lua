@@ -150,6 +150,11 @@ ffi.metatype("ImDrawCmd", ImDrawCmd)
 
 local ImDrawData = ImDrawData or {}
 ImDrawData.__index = ImDrawData
+ImDrawData["AddDrawList"] = ImDrawData["AddDrawList"]  or function(i1, i2)
+    jit.off(true)
+    local out = C.ImDrawData_AddDrawList(i1, i2)
+    return out
+end
 ImDrawData["Clear"] = ImDrawData["Clear"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawData_Clear(i1)
@@ -990,9 +995,9 @@ ImGuiIO["AddMouseWheelEvent"] = ImGuiIO["AddMouseWheelEvent"]  or function(i1, i
     local out = C.ImGuiIO_AddMouseWheelEvent(i1, i2, i3)
     return out
 end
-ImGuiIO["ClearInputCharacters"] = ImGuiIO["ClearInputCharacters"]  or function(i1)
+ImGuiIO["ClearEventsQueue"] = ImGuiIO["ClearEventsQueue"]  or function(i1)
     jit.off(true)
-    local out = C.ImGuiIO_ClearInputCharacters(i1)
+    local out = C.ImGuiIO_ClearEventsQueue(i1)
     return out
 end
 ImGuiIO["ClearInputKeys"] = ImGuiIO["ClearInputKeys"]  or function(i1)
@@ -1071,9 +1076,14 @@ ImGuiListClipper["End"] = ImGuiListClipper["End"]  or function(i1)
     local out = C.ImGuiListClipper_End(i1)
     return out
 end
-ImGuiListClipper["IncludeRangeByIndices"] = ImGuiListClipper["IncludeRangeByIndices"]  or function(i1, i2, i3)
+ImGuiListClipper["IncludeItemByIndex"] = ImGuiListClipper["IncludeItemByIndex"]  or function(i1, i2)
     jit.off(true)
-    local out = C.ImGuiListClipper_IncludeRangeByIndices(i1, i2, i3)
+    local out = C.ImGuiListClipper_IncludeItemByIndex(i1, i2)
+    return out
+end
+ImGuiListClipper["IncludeItemsByIndex"] = ImGuiListClipper["IncludeItemsByIndex"]  or function(i1, i2, i3)
+    jit.off(true)
+    local out = C.ImGuiListClipper_IncludeItemsByIndex(i1, i2, i3)
     return out
 end
 ImGuiListClipper["Step"] = ImGuiListClipper["Step"]  or function(i1)

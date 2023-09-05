@@ -270,7 +270,7 @@ function L.RenderDrawLists()
     end
 
     for i = 0, data.CmdListsCount - 1 do
-        local cmd_list = data.CmdLists[i]
+        local cmd_list = data.CmdLists.Data[i]
 
         local vertexcount = cmd_list.VtxBuffer.Size
         local data_size = vertexcount*ffi.sizeof("ImDrawVert")

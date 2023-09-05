@@ -361,12 +361,12 @@ typedef enum {
     ImGuiHoveredFlags_AllowWhenOverlapped = ImGuiHoveredFlags_AllowWhenOverlappedByItem | ImGuiHoveredFlags_AllowWhenOverlappedByWindow,
     ImGuiHoveredFlags_RectOnly = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped,
     ImGuiHoveredFlags_RootAndChildWindows = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows,
-    ImGuiHoveredFlags_ForTooltip = 1 << 11,
-    ImGuiHoveredFlags_Stationary = 1 << 12,
-    ImGuiHoveredFlags_DelayNone = 1 << 13,
-    ImGuiHoveredFlags_DelayShort = 1 << 14,
-    ImGuiHoveredFlags_DelayNormal = 1 << 15,
-    ImGuiHoveredFlags_NoSharedDelay = 1 << 16,
+    ImGuiHoveredFlags_ForTooltip = 1 << 12,
+    ImGuiHoveredFlags_Stationary = 1 << 13,
+    ImGuiHoveredFlags_DelayNone = 1 << 14,
+    ImGuiHoveredFlags_DelayShort = 1 << 15,
+    ImGuiHoveredFlags_DelayNormal = 1 << 16,
+    ImGuiHoveredFlags_NoSharedDelay = 1 << 17,
 }ImGuiHoveredFlags_;
 typedef enum {
     ImGuiDockNodeFlags_None = 0,
@@ -689,6 +689,7 @@ typedef enum {
     ImGuiStyleVar_SeparatorTextBorderSize,
     ImGuiStyleVar_SeparatorTextAlign,
     ImGuiStyleVar_SeparatorTextPadding,
+    ImGuiStyleVar_DockingSeparatorSize,
     ImGuiStyleVar_COUNT
 }ImGuiStyleVar_;
 typedef enum {
@@ -809,6 +810,7 @@ struct ImGuiStyle
     ImVec2 SeparatorTextPadding;
     ImVec2 DisplayWindowPadding;
     ImVec2 DisplaySafeAreaPadding;
+    float DockingSeparatorSize;
     float MouseCursorScale;
     _Bool AntiAliasedLines;
     _Bool AntiAliasedLinesUseTex;
@@ -881,6 +883,7 @@ struct ImGuiIO
     void* ClipboardUserData;
     void (*SetPlatformImeDataFn)(ImGuiViewport* viewport, ImGuiPlatformImeData* data);
     void* _UnusedPadding;
+    ImWchar PlatformLocaleDecimalPoint;
     _Bool WantCaptureMouse;
     _Bool WantCaptureKeyboard;
     _Bool WantTextInput;
@@ -1125,13 +1128,14 @@ struct ImDrawList
     ImDrawListSplitter _Splitter;
     float _FringeScale;
 };
+typedef struct ImVector_ImDrawListPtr {int Size;int Capacity;ImDrawList** Data;} ImVector_ImDrawListPtr;
 struct ImDrawData
 {
     _Bool Valid;
     int CmdListsCount;
     int TotalIdxCount;
     int TotalVtxCount;
-    ImDrawList** CmdLists;
+    ImVector_ImDrawListPtr CmdLists;
     ImVec2 DisplayPos;
     ImVec2 DisplaySize;
     ImVec2 FramebufferScale;
@@ -1739,7 +1743,7 @@ extern  void ImGuiIO_AddInputCharacterUTF16(ImGuiIO* self,ImWchar16 c);
 extern  void ImGuiIO_AddInputCharactersUTF8(ImGuiIO* self,const char* str);
 extern  void ImGuiIO_SetKeyEventNativeData(ImGuiIO* self,ImGuiKey key,int native_keycode,int native_scancode,int native_legacy_index);
 extern  void ImGuiIO_SetAppAcceptingEvents(ImGuiIO* self,_Bool accepting_events);
-extern  void ImGuiIO_ClearInputCharacters(ImGuiIO* self);
+extern  void ImGuiIO_ClearEventsQueue(ImGuiIO* self);
 extern  void ImGuiIO_ClearInputKeys(ImGuiIO* self);
 extern  ImGuiIO* ImGuiIO_ImGuiIO(void);
 extern  void ImGuiIO_destroy(ImGuiIO* self);
@@ -1811,7 +1815,8 @@ extern  void ImGuiListClipper_destroy(ImGuiListClipper* self);
 extern  void ImGuiListClipper_Begin(ImGuiListClipper* self,int items_count,float items_height);
 extern  void ImGuiListClipper_End(ImGuiListClipper* self);
 extern  _Bool ImGuiListClipper_Step(ImGuiListClipper* self);
-extern  void ImGuiListClipper_IncludeRangeByIndices(ImGuiListClipper* self,int item_begin,int item_end);
+extern  void ImGuiListClipper_IncludeItemByIndex(ImGuiListClipper* self,int item_index);
+extern  void ImGuiListClipper_IncludeItemsByIndex(ImGuiListClipper* self,int item_begin,int item_end);
 extern  ImColor* ImColor_ImColor_Nil(void);
 extern  void ImColor_destroy(ImColor* self);
 extern  ImColor* ImColor_ImColor_Float(float r,float g,float b,float a);
@@ -1897,6 +1902,7 @@ extern  void ImDrawList__PathArcToN(ImDrawList* self,const ImVec2 center,float r
 extern  ImDrawData* ImDrawData_ImDrawData(void);
 extern  void ImDrawData_destroy(ImDrawData* self);
 extern  void ImDrawData_Clear(ImDrawData* self);
+extern  void ImDrawData_AddDrawList(ImDrawData* self,ImDrawList* draw_list);
 extern  void ImDrawData_DeIndexAllBuffers(ImDrawData* self);
 extern  void ImDrawData_ScaleClipRects(ImDrawData* self,const ImVec2 fb_scale);
 extern  ImFontConfig* ImFontConfig_ImFontConfig(void);
