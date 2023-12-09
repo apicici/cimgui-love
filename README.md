@@ -1,3 +1,15 @@
+# Give Up GitHub
+
+This project has given up GitHub.  ([See Software Freedom Conservancy's *Give Up  GitHub* site for details](https://GiveUpGitHub.org).)
+
+You can now find this project at [https://codeberg.org/apicici/cimgui-love](https://codeberg.org/apicici/cimgui-love) instead.
+
+Any use of this project's code by GitHub Copilot, past or present, is done without our permission.  We do not consent to GitHub's use of this project's code in Copilot.
+
+Join us; you can [give up GitHub](https://GiveUpGitHub.org) too!
+
+![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
+
 # cimgui-love
 
 [LÖVE](https://love2d.org/) module for [Dear ImGui](https://github.com/ocornut/imgui) obtained by wrapping [cimgui](https://github.com/cimgui/cimgui) (programmatically generated C-api) using LuaJIT FFI.
