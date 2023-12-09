@@ -48,7 +48,36 @@ local defs = require("cimgui.generator.output.definitions")
 local classes = {}
 local functions = {}
 local ignored_defaults = {}
+local ignored_out_arg = {}
 local overloads = {}
+
+local degault_out_template = {
+    [[    local &arg& = ffi.new("&type&[1]")]],
+    "&arg&[0]"
+}
+
+local arg_out_types = {
+    ["ImVec2*"] = {
+        [[    local &arg& = M.ImVec2_Nil()]],
+        [[&arg&]]
+    },
+    ["ImVec4*"] = {
+        [[    local &arg& = M.ImVec4_Nil()]],
+        [[&arg&]]
+    },
+    ["ImColor*"] = {
+        [[    local &arg& = M.ImColor_Nil()]],
+        [[&arg&]]
+    },
+    ["ImVector_ImWchar*"] = {
+        [[    local &arg& = M.ImVector_ImWchar()]],
+        [[&arg&]]
+    },
+    ["float*"] = degault_out_template,
+    ["size_t*"] = degault_out_template,
+    ["unsigned char**"] = degault_out_template,
+    ["int*"] = degault_out_template,
+}
 
 for _, k in ipairs(sorted_entries(defs)) do
     local t = defs[k]
@@ -56,11 +85,16 @@ for _, k in ipairs(sorted_entries(defs)) do
         -- flag pointer arguments that are meant as outputs and list them separately as well
         -- flag if the function has va_list arguments
         s.in_argsT, s.out_argsT = {}, {}
-        for _, arg in ipairs(s.argsT) do
+        for i, arg in ipairs(s.argsT) do
             s.va_list =  s.va_list or arg.type == "va_list"
             if arg.name:match("^out_") or arg.name:match("^out$") or arg.name:match("^pOut") then
-                arg.out = true
-                table.insert(s.out_argsT, arg)
+                if arg_out_types[arg.type] then
+                    arg.out = true
+                    table.insert(s.out_argsT, arg)
+                else
+                    table.insert(ignored_out_arg, string.format([[%s: %s %s]], s.ov_cimguiname, arg.type, arg.name))
+                    table.insert(s.in_argsT, arg)
+                end
             else
                 table.insert(s.in_argsT, arg)
             end
@@ -132,9 +166,6 @@ templates.function_begin =
 [[M.&shortfunction& = M.&shortfunction&  or function(&wrapargs&)
     jit.off(true)]]
 
-templates.out_arg =
-[[    local &arg& = ffi.new("&type&[1]")]]
-
 templates.texture_id =
 [[    local ptr = ffi.cast("void *", &arg&)
     _common.textures[tostring(ptr)] = &arg&
@@ -204,8 +235,9 @@ end
 
 local function out_args_string(t)
     local args = {}
-    for i = 1,  #t.out_argsT do
-        args[i] = string.format("o%d[0]", i)
+    for i, arg in ipairs(t.out_argsT) do
+        local name = string.format("o%d", i)
+        args[i] = arg_out_types[arg.type][2]:gsub("&arg&", name)
     end
     args[#args + 1] = "out"
     return table.concat(args, ", ")
@@ -230,7 +262,7 @@ for _, name in ipairs(sorted_entries(classes)) do
             end
         end
         for i, arg in ipairs(m.out_argsT) do
-            wrap[#wrap + 1] = templates.out_arg:gsub("&%w+&", {
+            wrap[#wrap + 1] = arg_out_types[arg.type][1]:gsub("&%w+&", {
                 ["&arg&"] = string.format("o%d", i),
                 ["&type&"] = arg.type:gsub("%*$", "")
             })
@@ -295,7 +327,7 @@ for _, f in ipairs(functions) do
         end
     end
     for i, arg in ipairs(f.out_argsT) do
-        wrap[#wrap + 1] = templates.out_arg:gsub("&%w+&", {
+        wrap[#wrap + 1] = arg_out_types[arg.type][1]:gsub("&%w+&", {
             ["&arg&"] = string.format("o%d", i),
             ["&type&"] = arg.type:gsub("%*$", "")
         })
@@ -314,6 +346,10 @@ f:close()
 
 local f = assert(io.open("src/ignored_defaults.txt", "w"))
 f:write(table.concat(ignored_defaults, "\n"))
+f:close()
+
+local f = assert(io.open("src/ignored_out_arg.txt", "w"))
+f:write(table.concat(ignored_out_arg, "\n"))
 f:close()
 
 local f = assert(io.open("src/overloads.txt", "w"))
