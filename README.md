@@ -172,6 +172,7 @@ Some particular things to keep in mind:
   Note that wrapped constructors return cdata of type `ClassName` rather than `ClassName*`, and can be passed both to `ClassName` and `ClassName*` arguments of functions.
 - cdata of type `ImVec2` and `ImVec4` have been given `__add`, `__sum`, `__unm`, `__mul`, and `__div` meta-methods to simplify their manipulation (they can be added, subtracted, and multiplied/divided by numbers).
 - `igGET_FLT_MIN` and `igGET_FLT_MAX`are not wrapped directly since they always return the same value. Instead, their return values are wrapped as the numbers `imgui.FLT_MIN`, `imgui.FLT_MAX`.
+- The constructor `ImVector_ImWchar_create` is wrapped as `imgui.ImVector_ImWchar`.
 - All the unwrapped functions are accessible through FFI and exposed through `imgui.C`, which is the clib returned by `ffi.load`. For example `imgui.C.igRender` is the unwrapped version of `imgui.Render`. The function names in `imgui.C` are the cimgui ones.
 
 #### Implementation specific functions
@@ -277,7 +278,7 @@ end
 
 - Functions taking `va_list` arguments are not wrapped, since the `...` versions are easier to use in Lua.
 - Class destructors (e.g., `ImVec2_destroy`) are not wrapped as the garbage collector takes care of freeing memory allocated by the wrapped constructors.
-- `ImVector_ImWchar_*` functions are not wrapped as creating an `ImVector_ImWchar` directly should not be needed.
+- `ImVector_ImWchar_*` functions other than `ImVector_ImWchar_create` are not wrapped.
 
 *Note*: functions that are not wrapped can still be accessed as C functions through `imgui.C` as described above.
 
@@ -295,7 +296,7 @@ imgui.ColorConvertRGBtoHSV(r, g, b)
 ```
 and it returns 3 numbers.
 
-*Note*: only arguments with the specific names listed above are treated like this by the wrapper generator. It's possible that other arguments are also meant as outputs but are not omitted/returned because they have different names.
+*Note*: only arguments with the specific names listed above are treated like this by the wrapper generator. It's possible that other arguments are also meant as outputs but are not omitted/returned because they have different names. Additionally, some arguments matching the description are not omitted/returned based on their type (see `ignored_out_arg.txt` for a list).
 
 #### Default arguments
 
