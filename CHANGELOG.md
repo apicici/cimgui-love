@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Changed
-- Updated to Dear ImGui 1.89.9 (docking branch)
+- Updated to Dear ImGui 1.90 (docking branch)
 
 ## [1.89.7-1] (2023-07-19)
 ### Changed

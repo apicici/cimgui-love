@@ -227,6 +227,21 @@ ImDrawList["AddDrawCmd"] = ImDrawList["AddDrawCmd"]  or function(i1)
     local out = C.ImDrawList_AddDrawCmd(i1)
     return out
 end
+ImDrawList["AddEllipse"] = ImDrawList["AddEllipse"]  or function(i1, i2, i3, i4, i5, i6, i7, i8)
+    jit.off(true)
+    if i6 == nil then i6 = 0.0 end
+    if i7 == nil then i7 = 0 end
+    if i8 == nil then i8 = 1.0 end
+    local out = C.ImDrawList_AddEllipse(i1, i2, i3, i4, i5, i6, i7, i8)
+    return out
+end
+ImDrawList["AddEllipseFilled"] = ImDrawList["AddEllipseFilled"]  or function(i1, i2, i3, i4, i5, i6, i7)
+    jit.off(true)
+    if i6 == nil then i6 = 0.0 end
+    if i7 == nil then i7 = 0 end
+    local out = C.ImDrawList_AddEllipseFilled(i1, i2, i3, i4, i5, i6, i7)
+    return out
+end
 ImDrawList["AddImage"] = ImDrawList["AddImage"]  or function(i1, i2, i3, i4, i5, i6, i7)
     jit.off(true)
     if i5 == nil then i5 = M.ImVec2_Float(0, 0) end
@@ -393,6 +408,12 @@ end
 ImDrawList["PathClear"] = ImDrawList["PathClear"]  or function(i1)
     jit.off(true)
     local out = C.ImDrawList_PathClear(i1)
+    return out
+end
+ImDrawList["PathEllipticalArcTo"] = ImDrawList["PathEllipticalArcTo"]  or function(i1, i2, i3, i4, i5, i6, i7, i8)
+    jit.off(true)
+    if i8 == nil then i8 = 0 end
+    local out = C.ImDrawList_PathEllipticalArcTo(i1, i2, i3, i4, i5, i6, i7, i8)
     return out
 end
 ImDrawList["PathFillConvex"] = ImDrawList["PathFillConvex"]  or function(i1, i2)
@@ -1542,7 +1563,7 @@ end
 M.BeginChild_Str = M.BeginChild_Str  or function(i1, i2, i3, i4)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(0, 0) end
-    if i3 == nil then i3 = false end
+    if i3 == nil then i3 = 0 end
     if i4 == nil then i4 = 0 end
     local out = C.igBeginChild_Str(i1, i2, i3, i4)
     return out
@@ -1550,15 +1571,9 @@ end
 M.BeginChild_ID = M.BeginChild_ID  or function(i1, i2, i3, i4)
     jit.off(true)
     if i2 == nil then i2 = M.ImVec2_Float(0, 0) end
-    if i3 == nil then i3 = false end
+    if i3 == nil then i3 = 0 end
     if i4 == nil then i4 = 0 end
     local out = C.igBeginChild_ID(i1, i2, i3, i4)
-    return out
-end
-M.BeginChildFrame = M.BeginChildFrame  or function(i1, i2, i3)
-    jit.off(true)
-    if i3 == nil then i3 = 0 end
-    local out = C.igBeginChildFrame(i1, i2, i3)
     return out
 end
 M.BeginCombo = M.BeginCombo  or function(i1, i2, i3)
@@ -1809,10 +1824,10 @@ M.Combo_Str = M.Combo_Str  or function(i1, i2, i3, i4)
     local out = C.igCombo_Str(i1, i2, i3, i4)
     return out
 end
-M.Combo_FnBoolPtr = M.Combo_FnBoolPtr  or function(i1, i2, i3, i4, i5, i6)
+M.Combo_FnStrPtr = M.Combo_FnStrPtr  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
     if i6 == nil then i6 = -1 end
-    local out = C.igCombo_FnBoolPtr(i1, i2, i3, i4, i5, i6)
+    local out = C.igCombo_FnStrPtr(i1, i2, i3, i4, i5, i6)
     return out
 end
 M.CreateContext = M.CreateContext  or function(i1)
@@ -1980,11 +1995,6 @@ end
 M.EndChild = M.EndChild  or function()
     jit.off(true)
     local out = C.igEndChild()
-    return out
-end
-M.EndChildFrame = M.EndChildFrame  or function()
-    jit.off(true)
-    local out = C.igEndChildFrame()
     return out
 end
 M.EndCombo = M.EndCombo  or function()
@@ -2652,6 +2662,11 @@ M.IsItemVisible = M.IsItemVisible  or function()
     local out = C.igIsItemVisible()
     return out
 end
+M.IsKeyChordPressed = M.IsKeyChordPressed  or function(i1)
+    jit.off(true)
+    local out = C.igIsKeyChordPressed(i1)
+    return out
+end
 M.IsKeyDown = M.IsKeyDown  or function(i1)
     jit.off(true)
     local out = C.igIsKeyDown(i1)
@@ -2760,10 +2775,10 @@ M.ListBox_Str_arr = M.ListBox_Str_arr  or function(i1, i2, i3, i4, i5)
     local out = C.igListBox_Str_arr(i1, i2, i3, i4, i5)
     return out
 end
-M.ListBox_FnBoolPtr = M.ListBox_FnBoolPtr  or function(i1, i2, i3, i4, i5, i6)
+M.ListBox_FnStrPtr = M.ListBox_FnStrPtr  or function(i1, i2, i3, i4, i5, i6)
     jit.off(true)
     if i6 == nil then i6 = -1 end
-    local out = C.igListBox_FnBoolPtr(i1, i2, i3, i4, i5, i6)
+    local out = C.igListBox_FnStrPtr(i1, i2, i3, i4, i5, i6)
     return out
 end
 M.LoadIniSettingsFromDisk = M.LoadIniSettingsFromDisk  or function(i1)
@@ -3380,14 +3395,14 @@ M.ShowFontSelector = M.ShowFontSelector  or function(i1)
     local out = C.igShowFontSelector(i1)
     return out
 end
+M.ShowIDStackToolWindow = M.ShowIDStackToolWindow  or function(i1)
+    jit.off(true)
+    local out = C.igShowIDStackToolWindow(i1)
+    return out
+end
 M.ShowMetricsWindow = M.ShowMetricsWindow  or function(i1)
     jit.off(true)
     local out = C.igShowMetricsWindow(i1)
-    return out
-end
-M.ShowStackToolWindow = M.ShowStackToolWindow  or function(i1)
-    jit.off(true)
-    local out = C.igShowStackToolWindow(i1)
     return out
 end
 M.ShowStyleEditor = M.ShowStyleEditor  or function(i1)
@@ -3511,6 +3526,11 @@ M.TabItemButton = M.TabItemButton  or function(i1, i2)
     jit.off(true)
     if i2 == nil then i2 = 0 end
     local out = C.igTabItemButton(i1, i2)
+    return out
+end
+M.TableAngledHeadersRow = M.TableAngledHeadersRow  or function()
+    jit.off(true)
+    local out = C.igTableAngledHeadersRow()
     return out
 end
 M.TableGetColumnCount = M.TableGetColumnCount  or function()

@@ -6,9 +6,9 @@ ImColor
     ImColor_U32(ImU32 rgba)
 
 ImGuiStoragePair
-    ImGuiStoragePair_Int(ImGuiID _key,int _val_i)
-    ImGuiStoragePair_Float(ImGuiID _key,float _val_f)
-    ImGuiStoragePair_Ptr(ImGuiID _key,void* _val_p)
+    ImGuiStoragePair_Int(ImGuiID _key,int _val)
+    ImGuiStoragePair_Float(ImGuiID _key,float _val)
+    ImGuiStoragePair_Ptr(ImGuiID _key,void* _val)
 
 ImGuiTextRange
     ImGuiTextRange_Nil()
@@ -23,8 +23,8 @@ ImVec4
     ImVec4_Float(float _x,float _y,float _z,float _w)
 
 BeginChild
-    BeginChild_Str(const char* str_id,const ImVec2 size,bool border,ImGuiWindowFlags flags)
-    BeginChild_ID(ImGuiID id,const ImVec2 size,bool border,ImGuiWindowFlags flags)
+    BeginChild_Str(const char* str_id,const ImVec2 size,ImGuiChildFlags child_flags,ImGuiWindowFlags window_flags)
+    BeginChild_ID(ImGuiID id,const ImVec2 size,ImGuiChildFlags child_flags,ImGuiWindowFlags window_flags)
 
 CheckboxFlags
     CheckboxFlags_IntPtr(const char* label,int* flags,int flags_value)
@@ -37,7 +37,7 @@ CollapsingHeader
 Combo
     Combo_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int popup_max_height_in_items)
     Combo_Str(const char* label,int* current_item,const char* items_separated_by_zeros,int popup_max_height_in_items)
-    Combo_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int popup_max_height_in_items)
+    Combo_FnStrPtr(const char* label,int* current_item,const char*(*getter)(void* user_data,int idx),void* user_data,int items_count,int popup_max_height_in_items)
 
 GetBackgroundDrawList
     GetBackgroundDrawList_Nil()
@@ -63,7 +63,7 @@ IsRectVisible
 
 ListBox
     ListBox_Str_arr(const char* label,int* current_item,const char* const items[],int items_count,int height_in_items)
-    ListBox_FnBoolPtr(const char* label,int* current_item,bool(*items_getter)(void* data,int idx,const char** out_text),void* data,int items_count,int height_in_items)
+    ListBox_FnStrPtr(const char* label,int* current_item,const char*(*getter)(void* user_data,int idx),void* user_data,int items_count,int height_in_items)
 
 MenuItem
     MenuItem_Bool(const char* label,const char* shortcut,bool selected,bool enabled)

@@ -280,7 +280,7 @@ function L.RenderDrawLists()
             if meshdata then meshdata:release() end
             meshdata = love.data.newByteData(math.max(data_size, ffi.sizeof("ImDrawVert")))
             ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, data_size)
-            mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "static")
+            mesh = love.graphics.newMesh(vertexformat, meshdata, "triangles", "stream")
         else
             ffi.copy(meshdata:getFFIPointer(), cmd_list.VtxBuffer.Data, data_size)
             mesh:setVertices(meshdata)
