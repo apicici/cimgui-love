@@ -83,3 +83,11 @@ end
 
 local FLT_MIN, FLT_MAX = C.igGET_FLT_MIN(), C.igGET_FLT_MAX()
 M.FLT_MIN, M.FLT_MAX = FLT_MIN, FLT_MAX
+
+-- handwritten functions
+
+M.ImVector_ImWchar = function()
+    jit.off(true)
+    local p = C.ImVector_ImWchar_create()
+    return ffi.gc(p[0], C.ImVector_ImWchar_destroy)
+end
