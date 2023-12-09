@@ -3,9 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## Unreleased
+
+## [1.90-1] (2023-12-09)
 ### Changed
 - Updated to Dear ImGui 1.90 (docking branch)
+- Fixed behaviour of functions with output arguments
 
 ## [1.89.7-1] (2023-07-19)
 ### Changed
@@ -123,7 +126,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial release of `generator.lua` and LÖVE implementation
 - Generated the wrappers using Dear ImGui 1.82 (docking branch)
 
-[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.89.7-1...HEAD
+[Unreleased]: https://github.com/apicici/cimgui-love/compare/1.90-1...HEAD
+[1.90-1]: https://github.com/apicici/cimgui-love/compare/1.89.7-1...1.90-1
 [1.89.7-1]: https://github.com/apicici/cimgui-love/compare/1.89.6-1...1.89.7-1
 [1.89.6-1]: https://github.com/apicici/cimgui-love/compare/1.89.5-1...1.89.6-1
 [1.89.5-1]: https://github.com/apicici/cimgui-love/compare/1.89.4-1...1.89.5-1
